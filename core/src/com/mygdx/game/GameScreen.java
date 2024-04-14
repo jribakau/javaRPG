@@ -1,29 +1,30 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.awt.*;
+import java.util.ArrayList;
 
 public class GameScreen implements Screen {
-	private static final int SCREEN_WIDTH = 800;
-	private static final int SCREEN_HEIGHT = 480;
 	private static final int BUCKET_WIDTH = 64;
 	private static final int BUCKET_HEIGHT = 64;
 	private static final String BUCKET_IMAGE_PATH = "bucket.png";
 	private static final String RAIN_MUSIC_PATH = "rain.mp3";
 
 	private final RPG game;
+	private Player player;
+	private ArrayList<Obstacle> obstacles;
+
 	private Texture bucketImage;
+	private Texture obstacleTexture;
 	private Music rainMusic;
 	private OrthographicCamera camera;
-	private Rectangle bucket;
-	private float playerSpeed;
 
 	public GameScreen(final RPG game) {
 		this.game = game;
@@ -33,8 +34,10 @@ public class GameScreen implements Screen {
 	private void initialize() {
 		loadAssets();
 		setupCamera();
-		setupBucket();
-		playerSpeed = 200 * Gdx.graphics.getDeltaTime();
+		player = new Player("Player1", Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, BUCKET_WIDTH, BUCKET_HEIGHT);
+		obstacles = new ArrayList<Obstacle>();
+		generateObstacles();
+		createObstacleTexture();
 	}
 
 	private void loadAssets() {
@@ -45,15 +48,15 @@ public class GameScreen implements Screen {
 
 	private void setupCamera() {
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+		camera.setToOrtho(false, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 	}
 
-	private void setupBucket() {
-		bucket = new Rectangle();
-		bucket.x = SCREEN_WIDTH / 2 - BUCKET_WIDTH / 2;
-		bucket.y = 20;
-		bucket.width = BUCKET_WIDTH;
-		bucket.height = BUCKET_HEIGHT;
+	private void createObstacleTexture() {
+		Pixmap pixmap = new Pixmap(BUCKET_WIDTH, BUCKET_HEIGHT, Pixmap.Format.RGBA8888);
+		pixmap.setColor(1, 0, 0, 1);
+		pixmap.fill();
+		obstacleTexture = new Texture(pixmap);
+		pixmap.dispose();
 	}
 
 	@Override
@@ -62,35 +65,36 @@ public class GameScreen implements Screen {
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.font.draw(game.batch, "Hello there", 0, SCREEN_HEIGHT);
-		game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
-		game.batch.end();
-		playerInput();
-		restrictWithinScreenBounds();
-	}
 
-	private void restrictWithinScreenBounds() {
-		bucket.x = Math.max(0, Math.min(SCREEN_WIDTH - BUCKET_WIDTH, bucket.x));
-		bucket.y = Math.max(0, Math.min(SCREEN_HEIGHT - BUCKET_HEIGHT, bucket.y));
-	}
-
-	private void playerInput() {
-		float dx = 0, dy = 0;
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) dx -= playerSpeed;
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) dx += playerSpeed;
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) dy += playerSpeed;
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) dy -= playerSpeed;
-		normalizeAndMove(dx, dy);
-	}
-
-	private void normalizeAndMove(float dx, float dy) {
-		if (dx != 0 || dy != 0) {
-			float length = (float) Math.sqrt(dx * dx + dy * dy);
-			dx /= length;
-			dy /= length;
+		for (Obstacle obstacle : obstacles) {
+			game.batch.draw(obstacleTexture, obstacle.getBounds().x, obstacle.getBounds().y, BUCKET_WIDTH, BUCKET_HEIGHT);
 		}
-		bucket.x += (int) (dx * playerSpeed);
-		bucket.y += (int) (dy * playerSpeed);
+
+		String playerStatus = player.isAlive() ? "Alive" : "Dead";
+		game.font.draw(game.batch, playerStatus, 0, Constants.SCREEN_HEIGHT);
+
+		game.batch.draw(bucketImage, player.getBucket().x, player.getBucket().y, BUCKET_WIDTH, BUCKET_HEIGHT);
+		game.batch.end();
+
+		player.handleInput();
+		checkCollisions();
+	}
+
+	private void generateObstacles() {
+		for (int i = 0; i < 10; i++) {
+			int x = MathUtils.random(0, Constants.SCREEN_HEIGHT - BUCKET_WIDTH);
+			int y = MathUtils.random(0, Constants.SCREEN_HEIGHT - BUCKET_HEIGHT);
+			obstacles.add(new Obstacle(x, y, BUCKET_WIDTH, BUCKET_HEIGHT));
+		}
+	}
+
+	private void checkCollisions() {
+		for (Obstacle obstacle : obstacles) {
+			if (obstacle.collidesWith(player.getBucket())) {
+				player.dealDamage(player.getHealth());
+				break;
+			}
+		}
 	}
 
 	@Override

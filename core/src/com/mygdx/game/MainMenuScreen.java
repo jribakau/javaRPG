@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
-    private static final int SCREEN_WIDTH = 800;
-    private static final int SCREEN_HEIGHT = 480;
     private static final String WELCOME_MESSAGE = "Welcome to RPG!!! ";
     private static final String START_MESSAGE = "Tap anywhere to begin!";
 
@@ -25,7 +23,7 @@ public class MainMenuScreen implements Screen {
 
     private void setupCamera() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+        camera.setToOrtho(false, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     }
 
     private void clearScreen() {
