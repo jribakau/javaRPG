@@ -39,7 +39,7 @@ public class MainMenuScreen implements Screen {
 
     private void checkForStart() {
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameEngine(game));
             dispose();
         }
     }
