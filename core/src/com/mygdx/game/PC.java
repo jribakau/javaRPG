@@ -12,7 +12,7 @@ public class PC extends Entity {
         super(name, 1, 100, new Rectangle((float) screenWidth / 2 - (float) bucketWidth / 2, 20, bucketWidth, bucketHeight));
         this.stamina = 100;
         this.experience = 0;
-        this.position = new Rectangle((float) screenWidth / 2 - (float) bucketWidth / 2, 20, bucketWidth, bucketHeight);
+        this.position = new Rectangle((float) screenWidth / 2 - (float) bucketWidth / 2, (float) screenHeight / 2 - (float) bucketHeight / 2, bucketWidth, bucketHeight);
         this.acceleration = 0.1f;
     }
 
@@ -76,12 +76,6 @@ public class PC extends Entity {
         if (dx != 0 || dy != 0) {
             updateVelocity();
         }
-        restrictWithinScreenBounds();
-    }
-
-    private void restrictWithinScreenBounds() {
-        position.x = Math.max(0, Math.min(Constants.SCREEN_WIDTH - position.width, position.x));
-        position.y = Math.max(0, Math.min(Constants.SCREEN_HEIGHT - position.height, position.y));
     }
 
     public int getStamina() {

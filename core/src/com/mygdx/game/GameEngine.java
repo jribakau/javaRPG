@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,17 +17,20 @@ public class GameEngine implements Screen {
 	private static final int BUCKET_HEIGHT = 64;
 	private static final String BUCKET_IMAGE_PATH = "bucket.png";
 	private static final String RAIN_MUSIC_PATH = "rain.mp3";
+	private static final String MAP_PATH = "map.jpg";
 	private static final Boolean DRAW_OBSTACLES = false;
 
 	private final RPG game;
 	private PC pc;
 	private NPC npc;
+	private UI ui;
 	private ArrayList<Obstacle> obstacles;
 
-	private Texture bucketImage;
+	private Texture bucketTexture;
 	private Texture obstacleTexture;
+	private Texture mapTexture;
 	private Music rainMusic;
-	private OrthographicCamera camera;
+	private CameraManager cameraManager;
 
 	private boolean debugInteractionAndCollisionBoxes = true;
 
@@ -39,21 +41,18 @@ public class GameEngine implements Screen {
 
 	private void initialize() {
 		loadAssets();
-		setupCamera();
+		cameraManager = new CameraManager(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 		createPlayerCharacter();
 		createObstacles();
 		createNonPlayerCharacter();
+		ui = new UI(game.batch, game.font, pc, npc);
 	}
 
 	private void loadAssets() {
-		bucketImage = new Texture(Gdx.files.internal(BUCKET_IMAGE_PATH));
+		bucketTexture = new Texture(Gdx.files.internal(BUCKET_IMAGE_PATH));
+		mapTexture = new Texture(Gdx.files.internal(MAP_PATH));
 		rainMusic = Gdx.audio.newMusic(Gdx.files.internal(RAIN_MUSIC_PATH));
 		rainMusic.setLooping(true);
-	}
-
-	private void setupCamera() {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 	}
 
 	private void createPlayerCharacter() {
@@ -87,11 +86,13 @@ public class GameEngine implements Screen {
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
-		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
-		game.batch.begin();
+		cameraManager.updateCameraPosition(pc);
 
-        boolean showTooltip = pc.getInteractionRange().overlaps(npc.getInteractionRange());
+		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
+		game.batch.begin();
+		game.batch.draw(mapTexture, 0, 0);
+
+		boolean showTooltip = pc.getInteractionRange().overlaps(npc.getInteractionRange());
 
 		if (showTooltip) {
 			game.font.draw(game.batch, "E", npc.getPosition().x, npc.getPosition().y + npc.getPosition().height + 20);
@@ -101,20 +102,14 @@ public class GameEngine implements Screen {
 			game.font.draw(game.batch, npc.getDialogue(), 0, Constants.SCREEN_HEIGHT - 80);
 		}
 
-		String playerStatus = pc.isAlive() ? "Alive" : "Dead";
-		game.font.draw(game.batch, playerStatus, 0, Constants.SCREEN_HEIGHT);
-		game.font.draw(game.batch, "Health: " + pc.getHealth(), 0, Constants.SCREEN_HEIGHT - 20);
-		game.font.draw(game.batch, "Stamina: " + pc.getStamina(), 0, Constants.SCREEN_HEIGHT - 40);
-		game.font.draw(game.batch, "Experience: " + pc.getExperience(), 0, Constants.SCREEN_HEIGHT - 60);
-
-		game.font.draw(game.batch, "Velocity: " + pc.getVelocity(), Constants.SCREEN_WIDTH - 100, Constants.SCREEN_HEIGHT);
+		ui.draw(cameraManager.getCamera());
 
 		if (DRAW_OBSTACLES) {
 			drawObstacles();
 		}
 
-		game.batch.draw(bucketImage, pc.getPosition().x, pc.getPosition().y, BUCKET_WIDTH, BUCKET_HEIGHT);
-		game.batch.draw(bucketImage, npc.getPosition().x, npc.getPosition().y, npc.getPosition().width, npc.getPosition().height);
+		game.batch.draw(bucketTexture, pc.getPosition().x, pc.getPosition().y, BUCKET_WIDTH, BUCKET_HEIGHT);
+		game.batch.draw(bucketTexture, npc.getPosition().x, npc.getPosition().y, BUCKET_WIDTH, BUCKET_HEIGHT);
 		game.batch.end();
 
 		pc.handleInput();
@@ -131,7 +126,6 @@ public class GameEngine implements Screen {
 	}
 
 	public void handlePlayerCollision() {
-		// Check collision with obstacles
 		for (Obstacle obstacle : obstacles) {
 			if (pc.getCollisionRange().overlaps(obstacle.getBounds())) {
 				pc.dealDamage(10);
@@ -139,7 +133,6 @@ public class GameEngine implements Screen {
 			}
 		}
 
-		// Check collision with NPC
 		if (pc.getCollisionRange().overlaps(npc.getCollisionRange())) {
 			// TODO: Handle collision with NPC
 		}
@@ -170,7 +163,7 @@ public class GameEngine implements Screen {
 
 	@Override
 	public void dispose() {
-		bucketImage.dispose();
+		bucketTexture.dispose();
 		rainMusic.dispose();
 		pc.getInteractionShape().dispose();
 		pc.getCollisionShape().dispose();
