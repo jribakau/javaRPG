@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Obstacle {
-    private Rectangle bounds;
+    private final Rectangle bounds;
 
     public Obstacle(int x, int y, int width, int height) {
         this.bounds = new Rectangle(x, y, width, height);
