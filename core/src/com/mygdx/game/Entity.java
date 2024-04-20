@@ -5,94 +5,73 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Entity {
-    protected String name;
-    protected int level;
-    protected int health;
-    protected float velocity;
-    protected float acceleration;
-    protected float maxVelocity;
-    protected Rectangle position;
+    private float velocity;
+    private float acceleration;
+    private float maxVelocity;
+    private Rectangle position;
 
     // DEBUG
-    private Rectangle interactionRange;
-    private Rectangle collisionRange;
     private final ShapeRenderer interactionShape;
     private final ShapeRenderer collisionShape;
 
-    public Entity(String name, int level, int health, Rectangle position) {
-        this.name = name;
-        this.level = level;
-        this.health = health;
+    public Entity(Rectangle position) {
         this.position = position;
         this.velocity = 0;
         this.acceleration = 1;
         this.maxVelocity = 5;
-
-        this.interactionRange = new Rectangle(position.x - 50, position.y - 50, position.width + 100, position.height + 100);
-        this.collisionRange = new Rectangle(position.x - 10, position.y - 10, position.width + 20, position.height + 20);
 
         interactionShape = new ShapeRenderer();
         collisionShape = new ShapeRenderer();
     }
 
     public void updatePosition(float x, float y) {
-        this.position.x += x * velocity;
-        this.position.y += y * velocity;
-        updateInteractionRectangle();
-        updateCollisionRectangle();
-    }
-
-    public void updateVelocity() {
-        if (this.velocity < maxVelocity) {
-            this.velocity += acceleration;
-        }
-    }
-
-    public void updateInteractionRectangle() {
-        interactionRange.x = position.x - 50;
-        interactionRange.y = position.y - 50;
-    }
-
-    public void updateCollisionRectangle() {
-        collisionRange.x = position.x - 10;
-        collisionRange.y = position.y - 10;
+        setX(getX() + x * getVelocity());
+        setY(getY() + y * getVelocity());
     }
 
     public void drawDebug() {
-        getInteractionShape().begin(ShapeRenderer.ShapeType.Line);
-        getInteractionShape().setColor(Color.GREEN);
-        Rectangle interactionRectangle = getInteractionRange();
-        getInteractionShape().rect(interactionRectangle.x, interactionRectangle.y, interactionRectangle.width, interactionRectangle.height);
-        getInteractionShape().end();
-        getCollisionShape().begin(ShapeRenderer.ShapeType.Line);
-        getCollisionShape().setColor(Color.RED);
-        Rectangle collisionRectangle = getCollisionRange();
-        getCollisionShape().rect(collisionRectangle.x, collisionRectangle.y, collisionRectangle.width, collisionRectangle.height);
-        getCollisionShape().end();
+        float interactionRange = 150;
+        float collisionRange = 75;
+
+        float interactionX = getX() + getWidth() / 2 - interactionRange / 2;
+        float interactionY = getY() + getHeight() / 2 - interactionRange / 2;
+
+        float collisionX = getX() + getWidth() / 2 - collisionRange / 2;
+        float collisionY = getY() + getHeight() / 2 - collisionRange / 2;
+
+        this.interactionShape.begin(ShapeRenderer.ShapeType.Line);
+        this.interactionShape.setColor(Color.GREEN);
+        this.interactionShape.rect(interactionX, interactionY, interactionRange, interactionRange);
+        this.interactionShape.end();
+
+        this.collisionShape.begin(ShapeRenderer.ShapeType.Line);
+        this.collisionShape.setColor(Color.RED);
+        this.collisionShape.rect(collisionX, collisionY, collisionRange, collisionRange);
+        this.collisionShape.end();
     }
 
-    public String getName() {
-        return name;
+    public float getVelocity() {
+        return velocity;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
     }
 
-    public int getLevel() {
-        return level;
+    public float getAcceleration() {
+        return acceleration;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
     }
 
-    public int getHealth() {
-        return health;
+    public float getMaxVelocity() {
+        return maxVelocity;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setMaxVelocity(float maxVelocity) {
+        this.maxVelocity = maxVelocity;
     }
 
     public Rectangle getPosition() {
@@ -103,22 +82,6 @@ public class Entity {
         this.position = position;
     }
 
-    public Rectangle getInteractionRange() {
-        return interactionRange;
-    }
-
-    public void setInteractionRange(Rectangle interactionRange) {
-        this.interactionRange = interactionRange;
-    }
-
-    public Rectangle getCollisionRange() {
-        return collisionRange;
-    }
-
-    public void setCollisionRange(Rectangle collisionRange) {
-        this.collisionRange = collisionRange;
-    }
-
     public ShapeRenderer getInteractionShape() {
         return interactionShape;
     }
@@ -127,11 +90,27 @@ public class Entity {
         return collisionShape;
     }
 
-    public float getVelocity() {
-        return velocity;
+    public float getX() {
+        return position.getX();
     }
 
-    public void setVelocity(float velocity) {
-        this.velocity = velocity;
+    public float getY() {
+        return position.getY();
+    }
+
+    public void setX(float x) {
+        position.setX(x);
+    }
+
+    public void setY(float y) {
+        position.setY(y);
+    }
+
+    public float getWidth() {
+        return position.getWidth();
+    }
+
+    public float getHeight() {
+        return position.getHeight();
     }
 }

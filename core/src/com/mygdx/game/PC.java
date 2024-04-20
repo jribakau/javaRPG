@@ -5,92 +5,50 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 
 public class PC extends Entity {
-    private int stamina;
-    private int experience;
+    private static final int width = 64;
+    private static final int height = 64;
 
-    public PC(String name, int screenWidth, int screenHeight, int bucketWidth, int bucketHeight) {
-        super(name, 1, 100, new Rectangle((float) screenWidth / 2 - (float) bucketWidth / 2, 20, bucketWidth, bucketHeight));
-        this.stamina = 100;
-        this.experience = 0;
-        this.position = new Rectangle((float) screenWidth / 2 - (float) bucketWidth / 2, (float) screenHeight / 2 - (float) bucketHeight / 2, bucketWidth, bucketHeight);
-        this.acceleration = 0.1f;
+    public PC(float x, float y) {
+        super(new Rectangle(x, y, width, height));
+        this.setAcceleration(0.1f);
     }
 
-    public void levelUp() {
-        this.level++;
-        this.health += 10;
-        this.stamina += 10;
-    }
-
-    public boolean isAlive() {
-        return this.health > 0;
-    }
-
-    public void dealDamage(int damage) {
-        this.health -= damage;
-        if (this.health < 0) {
-            this.health = 0;
-        }
-    }
-
-    public void gainExperience(int exp) {
-        this.experience += exp;
-        if (this.experience >= this.level * 100) {
-            this.levelUp();
-            this.experience = 0;
-        }
-    }
-
-    public void handleInput() {
+    public void processInput() {
         float dx = 0, dy = 0;
         boolean isMoving = false;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            dx -= acceleration;
+            dx -= this.getAcceleration();
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            dx += acceleration;
+            dx += this.getAcceleration();
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            dy += acceleration;
+            dy += this.getAcceleration();
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            dy -= acceleration;
+            dy -= this.getAcceleration();
             isMoving = true;
         }
         if (!isMoving) {
-            this.velocity = 0;
+            setVelocity(0);
         }
-        normalizeAndMove(dx, dy);
+        move(dx, dy);
     }
 
-    private void normalizeAndMove(float dx, float dy) {
-        float length = (float) Math.sqrt(dx * dx + dy * dy);
+    private void move(float dx, float dy) {
+        float length = Utils.normalize(dx, dy);
         if (length > 0) {
             dx = dx / length;
             dy = dy / length;
         }
         updatePosition(dx, dy);
         if (dx != 0 || dy != 0) {
-            updateVelocity();
+            if (getVelocity() < getMaxVelocity()) {
+                setVelocity(getVelocity() + getAcceleration());
+            }
         }
-    }
-
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
-    }
-
-    public int getExperience() {
-        return experience;
-    }
-
-    public void setExperience(int experience) {
-        this.experience = experience;
     }
 }

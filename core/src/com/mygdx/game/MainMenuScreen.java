@@ -23,7 +23,7 @@ public class MainMenuScreen implements Screen {
 
     private void setupCamera() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        camera.setToOrtho(false, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
     }
 
     private void clearScreen() {
