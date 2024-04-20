@@ -7,8 +7,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("RPG");
-		config.setWindowedMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-		config.setForegroundFPS(Constants.FRAME_RATE);
+		config.setWindowedMode(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
+		config.setForegroundFPS(Settings.FRAME_RATE);
 		new Lwjgl3Application(new RPG(), config);
 	}
 }

@@ -11,7 +11,14 @@ public class CameraManager {
     }
 
     public void updateCameraPosition(PC pc) {
-        camera.position.set(pc.getPosition().x + pc.getPosition().width / 2, pc.getPosition().y + pc.getPosition().height / 2, 0);
+        float targetX = pc.getX() + pc.getWidth() / 2;
+        float targetY = pc.getY() + pc.getHeight() / 2;
+
+        float lerpAlpha = 0.1f;
+        float cameraX = camera.position.x + (targetX - camera.position.x) * lerpAlpha;
+        float cameraY = camera.position.y + (targetY - camera.position.y) * lerpAlpha;
+
+        camera.position.set(cameraX, cameraY, 0);
         camera.update();
     }
 
