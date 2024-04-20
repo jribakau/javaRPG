@@ -1,22 +1,20 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class CameraManager {
     private final OrthographicCamera camera;
 
-    public CameraManager(int screenWidth, int screenHeight) {
+    public CameraManager() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, screenWidth, screenHeight);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public void updateCameraPosition(PC pc) {
-        float targetX = pc.getX() + pc.getWidth() / 2;
-        float targetY = pc.getY() + pc.getHeight() / 2;
-
+    public void updateCameraPosition(Player pc) {
         float lerpAlpha = 0.1f;
-        float cameraX = camera.position.x + (targetX - camera.position.x) * lerpAlpha;
-        float cameraY = camera.position.y + (targetY - camera.position.y) * lerpAlpha;
+        float cameraX = camera.position.x + (pc.getX() - camera.position.x) * lerpAlpha;
+        float cameraY = camera.position.y + (pc.getY() - camera.position.y) * lerpAlpha;
 
         camera.position.set(cameraX, cameraY, 0);
         camera.update();

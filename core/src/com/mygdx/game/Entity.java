@@ -10,44 +10,37 @@ public class Entity {
     private float maxVelocity;
     private Rectangle position;
 
-    // DEBUG
-    private final ShapeRenderer interactionShape;
-    private final ShapeRenderer collisionShape;
-
     public Entity(Rectangle position) {
         this.position = position;
         this.velocity = 0;
         this.acceleration = 1;
         this.maxVelocity = 5;
-
-        interactionShape = new ShapeRenderer();
-        collisionShape = new ShapeRenderer();
     }
 
     public void updatePosition(float x, float y) {
-        setX(getX() + x * getVelocity());
-        setY(getY() + y * getVelocity());
+        this.setX(this.getX() + x * getVelocity());
+        this.setY(this.getY() + y * getVelocity());
     }
 
-    public void drawDebug() {
-        float interactionRange = 150;
-        float collisionRange = 75;
+    public void move(float dx, float dy) {
+        float length = Utils.normalize(dx, dy);
+        if (length > 0) {
+            dx = dx / length;
+            dy = dy / length;
+        }
+        if (dx != 0 || dy != 0) {
+            if (getVelocity() < getMaxVelocity()) {
+                setVelocity(getVelocity() + getAcceleration());
+            }
+        }
+        updatePosition(dx, dy);
+    }
 
-        float interactionX = getX() + getWidth() / 2 - interactionRange / 2;
-        float interactionY = getY() + getHeight() / 2 - interactionRange / 2;
-
-        float collisionX = getX() + getWidth() / 2 - collisionRange / 2;
-        float collisionY = getY() + getHeight() / 2 - collisionRange / 2;
-
-        this.interactionShape.begin(ShapeRenderer.ShapeType.Line);
-        this.interactionShape.setColor(Color.GREEN);
-        this.interactionShape.rect(interactionX, interactionY, interactionRange, interactionRange);
-        this.interactionShape.end();
-
-        this.collisionShape.begin(ShapeRenderer.ShapeType.Line);
-        this.collisionShape.setColor(Color.RED);
-        this.collisionShape.rect(collisionX, collisionY, collisionRange, collisionRange);
-        this.collisionShape.end();
+    public void renderCollisionBox(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+        shapeRenderer.end();
     }
 
     public float getVelocity() {
@@ -80,14 +73,6 @@ public class Entity {
 
     public void setPosition(Rectangle position) {
         this.position = position;
-    }
-
-    public ShapeRenderer getInteractionShape() {
-        return interactionShape;
-    }
-
-    public ShapeRenderer getCollisionShape() {
-        return collisionShape;
     }
 
     public float getX() {
