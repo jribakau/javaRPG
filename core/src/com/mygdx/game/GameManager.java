@@ -5,36 +5,48 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class GameEngine implements Screen {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GameManager implements Screen {
 	private static final String BUCKET_IMAGE_PATH = "bucket.png";
 	private static final String RAIN_MUSIC_PATH = "rain.mp3";
 	private static final String MAP_PATH = "map.jpg";
 
+	private final List<Entity> entities = new ArrayList<Entity>();
 	private final RPG game;
-	private PC pc;
+	private Player player;
 	private NPC npc;
 	private UI ui;
 
 	private Texture bucketTexture;
 	private Texture mapTexture;
 	private Music rainMusic;
+
 	private CameraManager cameraManager;
+	private InputManager inputManager;
 
 	private boolean debugPlayer = true;
 
-    public GameEngine(final RPG game) {
+	ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+    public GameManager(final RPG game) {
 		this.game = game;
 		initialize();
 	}
 
 	private void initialize() {
 		loadAssets();
-		cameraManager = new CameraManager(Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
-		npc = new NPC(0, 0);
-		pc = new PC(0, 0);
-		ui = new UI(game.batch, game.font, pc);
+		cameraManager = new CameraManager();
+		npc = new NPC(100, 100);
+		player = new Player(0, 0);
+		entities.add(player);
+		entities.add(npc);
+		ui = new UI(game.batch, game.font, player);
+		inputManager = new InputManager();
 	}
 
 	private void loadAssets() {
@@ -46,8 +58,10 @@ public class GameEngine implements Screen {
 
 	@Override
 	public void render(float delta) {
+		this.inputManager.movement(player);
+		cameraManager.updateCameraPosition(player);
+
 		ScreenUtils.clear(0, 0, 0.2f, 1);
-		cameraManager.updateCameraPosition(pc);
 
 		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		game.batch.begin();
@@ -55,17 +69,18 @@ public class GameEngine implements Screen {
 
 		ui.draw(cameraManager.getCamera());
 
-		game.batch.draw(bucketTexture, pc.getX(), pc.getY(), pc.getWidth(), pc.getHeight());
+		game.batch.draw(bucketTexture, player.getX(), player.getY(), player.getWidth(), player.getHeight());
+		game.batch.draw(bucketTexture, npc.getX(), npc.getY(), npc.getWidth(), npc.getHeight());
 		game.batch.end();
-
-		pc.processInput();
 
 		// DEBUG
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
 			toggleDebug();
 		}
 		if (debugPlayer) {
-			pc.drawDebug();
+			for (Entity entity : entities) {
+				entity.renderCollisionBox(shapeRenderer);
+			}
 		}
 	}
 
@@ -82,10 +97,7 @@ public class GameEngine implements Screen {
 	public void dispose() {
 		bucketTexture.dispose();
 		rainMusic.dispose();
-		pc.getInteractionShape().dispose();
-		pc.getCollisionShape().dispose();
-		npc.getInteractionShape().dispose();
-		npc.getCollisionShape().dispose();
+		shapeRenderer.dispose();
 	}
 
 	@Override
