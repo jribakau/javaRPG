@@ -3,7 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -13,7 +12,6 @@ import java.util.List;
 
 public class GameManager implements Screen {
 	private static final String BUCKET_IMAGE_PATH = "bucket.png";
-	private static final String RAIN_MUSIC_PATH = "rain.mp3";
 	private static final String MAP_PATH = "map.jpg";
 
 	private final List<Entity> entities = new ArrayList<Entity>();
@@ -24,7 +22,6 @@ public class GameManager implements Screen {
 
 	private Texture bucketTexture;
 	private Texture mapTexture;
-	private Music rainMusic;
 
 	private CameraManager cameraManager;
 	private InputManager inputManager;
@@ -42,7 +39,7 @@ public class GameManager implements Screen {
 	private void initialize() {
 		loadAssets();
 		cameraManager = new CameraManager();
-		npc = new NPC(100, 100);
+		npc = new NPC(200, 200);
 		player = new Player(0, 0);
 		entities.add(player);
 		entities.add(npc);
@@ -51,12 +48,13 @@ public class GameManager implements Screen {
 	}
 
 	private void loadAssets() {
-		bucketTexture = new Texture(Gdx.files.internal(BUCKET_IMAGE_PATH));
-		mapTexture = new Texture(Gdx.files.internal(MAP_PATH));
-		rainMusic = Gdx.audio.newMusic(Gdx.files.internal(RAIN_MUSIC_PATH));
-		rainMusic.setLooping(true);
+		try {
+			bucketTexture = new Texture(Gdx.files.internal(BUCKET_IMAGE_PATH));
+			mapTexture = new Texture(Gdx.files.internal(MAP_PATH));
+		} catch (Exception e) {
+			Gdx.app.error("GameManager", "Error loading assets", e);
+		}
 	}
-
 	@Override
 	public void render(float delta) {
 		this.inputManager.movement(player);
@@ -103,14 +101,15 @@ public class GameManager implements Screen {
 
 	@Override
 	public void show() {
-//		rainMusic.play();
+
 	}
 
 	@Override
 	public void dispose() {
 		bucketTexture.dispose();
-		rainMusic.dispose();
 		entityCollisionBoxRenderer.dispose();
+		entityInteractionBoxRenderer.dispose();
+		mapTexture.dispose();
 	}
 
 	@Override
