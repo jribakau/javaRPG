@@ -32,6 +32,7 @@ public class GameManager implements Screen {
 	private boolean debugPlayer = true;
 
 	ShapeRenderer entityCollisionBoxRenderer = new ShapeRenderer();
+	ShapeRenderer entityInteractionBoxRenderer = new ShapeRenderer();
 
     public GameManager(final RPG game) {
 		this.game = game;
@@ -69,9 +70,18 @@ public class GameManager implements Screen {
 
 		ui.draw(cameraManager.getCamera());
 
-		game.batch.draw(bucketTexture, player.getX(), player.getY(), player.getWidth(), player.getHeight());
 		game.batch.draw(bucketTexture, npc.getX(), npc.getY(), npc.getWidth(), npc.getHeight());
+		game.batch.draw(bucketTexture, player.getX(), player.getY(), player.getWidth(), player.getHeight());
 		game.batch.end();
+
+		for (Entity entity : entities) {
+			if (entity != player && player.collidesWith(entity)) {
+				System.out.println("Collision detected!");
+			}
+			if (entity != player && player.interactsWith(entity)) {
+				System.out.println("Interaction detected!");
+			}
+		}
 
 		// DEBUG
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
@@ -79,8 +89,10 @@ public class GameManager implements Screen {
 		}
 		if (debugPlayer) {
 			entityCollisionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
+			entityInteractionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
 			for (Entity entity : entities) {
 				entity.renderCollisionBox(entityCollisionBoxRenderer);
+				entity.renderInteractionBox(entityInteractionBoxRenderer);
 			}
 		}
 	}
