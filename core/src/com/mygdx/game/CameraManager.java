@@ -12,9 +12,8 @@ public class CameraManager {
     }
 
     public void updateCameraPosition(Player pc) {
-        float lerpAlpha = 0.1f;
-        float cameraX = camera.position.x + (pc.getX() - camera.position.x) * lerpAlpha;
-        float cameraY = camera.position.y + (pc.getY() - camera.position.y) * lerpAlpha;
+        float cameraX = camera.position.x + (pc.getX() - camera.position.x);
+        float cameraY = camera.position.y + (pc.getY() - camera.position.y);
 
         camera.position.set(cameraX, cameraY, 0);
         camera.update();
