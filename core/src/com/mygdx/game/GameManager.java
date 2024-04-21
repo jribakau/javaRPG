@@ -31,7 +31,7 @@ public class GameManager implements Screen {
 
 	private boolean debugPlayer = true;
 
-	ShapeRenderer shapeRenderer = new ShapeRenderer();
+	ShapeRenderer entityCollisionBoxRenderer = new ShapeRenderer();
 
     public GameManager(final RPG game) {
 		this.game = game;
@@ -78,8 +78,9 @@ public class GameManager implements Screen {
 			toggleDebug();
 		}
 		if (debugPlayer) {
+			entityCollisionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
 			for (Entity entity : entities) {
-				entity.renderCollisionBox(shapeRenderer);
+				entity.renderCollisionBox(entityCollisionBoxRenderer);
 			}
 		}
 	}
@@ -97,7 +98,7 @@ public class GameManager implements Screen {
 	public void dispose() {
 		bucketTexture.dispose();
 		rainMusic.dispose();
-		shapeRenderer.dispose();
+		entityCollisionBoxRenderer.dispose();
 	}
 
 	@Override
