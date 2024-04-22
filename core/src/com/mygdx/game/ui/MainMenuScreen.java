@@ -26,7 +26,7 @@ public class MainMenuScreen implements Screen {
 
     private void setupCamera() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     private void clearScreen() {
@@ -42,14 +42,14 @@ public class MainMenuScreen implements Screen {
 
     private void checkForStart() {
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameManager(game));
+            game.setScreen(game.getGameManager());
             dispose();
         }
     }
 
     @Override
     public void dispose() {
-        // Dispose of resources here if any
+
     }
 
     @Override
