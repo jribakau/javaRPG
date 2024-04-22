@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.*;
+import com.mygdx.game.dev.DeveloperMenuScreen;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.NPC;
 import com.mygdx.game.entities.Player;
@@ -19,11 +20,11 @@ public class GameManager implements Screen {
 	private static final String BUCKET_IMAGE_PATH = "bucket.png";
 	private static final String MAP_PATH = "map.jpg";
 
-	private final List<Entity> entities = new ArrayList<Entity>();
 	private final RPG game;
-	private Player player;
-	private NPC npc;
 	private UI ui;
+
+	private final List<Entity> entities = new ArrayList<Entity>();
+	private Player player;
 
 	private Texture bucketTexture;
 	private Texture mapTexture;
@@ -31,10 +32,12 @@ public class GameManager implements Screen {
 	private CameraManager cameraManager;
 	private InputManager inputManager;
 
-	private boolean debugPlayer = true;
-
 	ShapeRenderer entityCollisionBoxRenderer = new ShapeRenderer();
 	ShapeRenderer entityInteractionBoxRenderer = new ShapeRenderer();
+
+	DeveloperMenuScreen developerMenuScreen;
+	private boolean isDeveloperMenuOpen = false;
+	private boolean debugPlayer = false;
 
     public GameManager(final RPG game) {
 		this.game = game;
@@ -44,12 +47,11 @@ public class GameManager implements Screen {
 	private void initialize() {
 		loadAssets();
 		cameraManager = new CameraManager();
-		npc = new NPC(200, 200);
 		player = new Player(0, 0);
 		entities.add(player);
-		entities.add(npc);
 		ui = new UI(game.batch, game.font, player);
 		inputManager = new InputManager();
+		developerMenuScreen = new DeveloperMenuScreen(game);
 	}
 
 	private void loadAssets() {
@@ -62,10 +64,10 @@ public class GameManager implements Screen {
 	}
 	@Override
 	public void render(float delta) {
+		ScreenUtils.clear(0, 0, 0.2f, 1);
+
 		this.inputManager.movement(player);
 		cameraManager.updateCameraPosition(player);
-
-		ScreenUtils.clear(0, 0, 0.2f, 1);
 
 		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		game.batch.begin();
@@ -73,22 +75,21 @@ public class GameManager implements Screen {
 
 		ui.draw(cameraManager.getCamera());
 
-		game.batch.draw(bucketTexture, npc.getX(), npc.getY(), npc.getWidth(), npc.getHeight());
-		game.batch.draw(bucketTexture, player.getX(), player.getY(), player.getWidth(), player.getHeight());
+		drawEntities();
 		game.batch.end();
 
-		for (Entity entity : entities) {
-			if (entity != player && player.collidesWith(entity)) {
-				System.out.println("Collision detected!");
-			}
-			if (entity != player && player.interactsWith(entity)) {
-				System.out.println("Interaction detected!");
-			}
-		}
+		collisionAndInteractionDetection();
 
 		// DEBUG
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
 			toggleDebug();
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
+			isDeveloperMenuOpen = !isDeveloperMenuOpen;
+		}
+
+		if (isDeveloperMenuOpen) {
+			developerMenuScreen.render(delta);
 		}
 		if (debugPlayer) {
 			entityCollisionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
@@ -97,6 +98,34 @@ public class GameManager implements Screen {
 				entity.renderCollisionBox(entityCollisionBoxRenderer);
 				entity.renderInteractionBox(entityInteractionBoxRenderer);
 			}
+		}
+	}
+
+	private void collisionAndInteractionDetection() {
+		for (Entity entity : entities) {
+			if (entity != player && player.collidesWith(entity)) {
+				System.out.println("Collision detected!");
+			}
+			if (entity != player && player.interactsWith(entity)) {
+				System.out.println("Interaction detected!");
+			}
+		}
+	}
+
+	public void addNPC() {
+		NPC newNpc = new NPC(player.getX(), player.getY() + 100);
+		entities.add(newNpc);
+	}
+
+	public void listEntities() {
+		for (Entity entity : entities) {
+			System.out.println(entity + " at " + entity.getPosition());
+		}
+	}
+
+	public void drawEntities() {
+		for (Entity entity : entities) {
+			game.batch.draw(bucketTexture, entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
 		}
 	}
 
@@ -135,5 +164,9 @@ public class GameManager implements Screen {
 	@Override
 	public void hide() {
 
+	}
+
+	public RPG getGame() {
+		return game;
 	}
 }
