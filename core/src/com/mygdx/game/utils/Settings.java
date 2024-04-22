@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.utils;
 
 public class Settings {
     public static final int SCREEN_WIDTH = 1280;

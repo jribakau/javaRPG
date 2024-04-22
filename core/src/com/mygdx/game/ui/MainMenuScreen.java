@@ -1,9 +1,12 @@
-package com.mygdx.game;
+package com.mygdx.game.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.RPG;
+import com.mygdx.game.utils.Settings;
+import com.mygdx.game.core.GameManager;
 
 public class MainMenuScreen implements Screen {
     private static final String WELCOME_MESSAGE = "Welcome to RPG!!! ";

@@ -1,7 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.entities.Player;
 
 public class InputManager {
     public void movement(Player player) {

@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.utils;
 
 public class Utils {
     public static float normalize(float dx, float dy) {
