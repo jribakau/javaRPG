@@ -1,8 +1,9 @@
-package com.mygdx.game;
+package com.mygdx.game.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.utils.Utils;
 
 public class Entity {
     private float velocity;

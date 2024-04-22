@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,6 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.*;
+import com.mygdx.game.entities.Entity;
+import com.mygdx.game.entities.NPC;
+import com.mygdx.game.entities.Player;
+import com.mygdx.game.ui.UI;
 
 import java.util.ArrayList;
 import java.util.List;
