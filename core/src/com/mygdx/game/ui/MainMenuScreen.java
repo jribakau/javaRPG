@@ -7,7 +7,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
 import com.mygdx.game.utils.Settings;
 import com.mygdx.game.core.GameManager;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class MainMenuScreen implements Screen {
     private static final String WELCOME_MESSAGE = "Welcome to RPG!!! ";
     private static final String START_MESSAGE = "Tap anywhere to begin!";

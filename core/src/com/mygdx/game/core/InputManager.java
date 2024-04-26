@@ -3,7 +3,11 @@ package com.mygdx.game.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.game.entities.Player;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class InputManager {
     public void movement(Player player) {
         float dx = 0, dy = 0;

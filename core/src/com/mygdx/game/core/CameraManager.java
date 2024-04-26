@@ -3,7 +3,11 @@ package com.mygdx.game.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.mygdx.game.entities.Player;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CameraManager {
     private final OrthographicCamera camera;
 
@@ -20,7 +24,4 @@ public class CameraManager {
         camera.update();
     }
 
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
 }
