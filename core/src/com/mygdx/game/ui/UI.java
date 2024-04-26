@@ -5,7 +5,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.entities.Player;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class UI {
     private final SpriteBatch batch;
     private final BitmapFont font;

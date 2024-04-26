@@ -6,16 +6,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.*;
-import com.mygdx.game.dev.DeveloperMenuScreen;
+import com.mygdx.game.RPG;
+import com.mygdx.game.dev.QuickMenu;
 import com.mygdx.game.entities.Entity;
-import com.mygdx.game.entities.NPC;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.ui.UI;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class GameManager implements Screen {
 	private static final String BUCKET_IMAGE_PATH = "bucket.png";
 	private static final String MAP_PATH = "map.jpg";
@@ -23,7 +26,7 @@ public class GameManager implements Screen {
 	private final RPG game;
 	private UI ui;
 
-	private final List<Entity> entities = new ArrayList<Entity>();
+	private final List<Entity> entities = new ArrayList<>();
 	private Player player;
 
 	private Texture bucketTexture;
@@ -35,7 +38,7 @@ public class GameManager implements Screen {
 	ShapeRenderer entityCollisionBoxRenderer = new ShapeRenderer();
 	ShapeRenderer entityInteractionBoxRenderer = new ShapeRenderer();
 
-	DeveloperMenuScreen developerMenuScreen;
+	QuickMenu devMenu;
 	private boolean isDeveloperMenuOpen = false;
 	private boolean debugPlayer = false;
 
@@ -51,7 +54,7 @@ public class GameManager implements Screen {
 		entities.add(player);
 		ui = new UI(game.batch, game.font, player);
 		inputManager = new InputManager();
-		developerMenuScreen = new DeveloperMenuScreen(game);
+		devMenu = new QuickMenu(this);
 	}
 
 	private void loadAssets() {
@@ -89,7 +92,7 @@ public class GameManager implements Screen {
 		}
 
 		if (isDeveloperMenuOpen) {
-			developerMenuScreen.render(delta);
+			devMenu.render(delta);
 		}
 		if (debugPlayer) {
 			entityCollisionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
@@ -104,22 +107,11 @@ public class GameManager implements Screen {
 	private void collisionAndInteractionDetection() {
 		for (Entity entity : entities) {
 			if (entity != player && player.collidesWith(entity)) {
-				System.out.println("Collision detected!");
+
 			}
 			if (entity != player && player.interactsWith(entity)) {
-				System.out.println("Interaction detected!");
+
 			}
-		}
-	}
-
-	public void addNPC() {
-		NPC newNpc = new NPC(player.getX(), player.getY() + 100);
-		entities.add(newNpc);
-	}
-
-	public void listEntities() {
-		for (Entity entity : entities) {
-			System.out.println(entity + " at " + entity.getPosition());
 		}
 	}
 
@@ -164,9 +156,5 @@ public class GameManager implements Screen {
 	@Override
 	public void hide() {
 
-	}
-
-	public RPG getGame() {
-		return game;
 	}
 }

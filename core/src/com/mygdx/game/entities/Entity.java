@@ -4,7 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.utils.Utils;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Entity {
     private float velocity;
     private float acceleration;
@@ -14,6 +18,7 @@ public class Entity {
     private Rectangle position;
     private final Rectangle collisionBox;
     private final Rectangle interactionBox;
+    private final String name;
 
     public Entity(Rectangle position) {
         this.position = position;
@@ -24,6 +29,7 @@ public class Entity {
         this.collisionRange = 10;
         this.collisionBox = new Rectangle();
         this.interactionBox = new Rectangle();
+        this.name = "Entity";
         updateBoxes();
     }
 
@@ -74,38 +80,6 @@ public class Entity {
         shapeRenderer.end();
     }
 
-    public float getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(float velocity) {
-        this.velocity = velocity;
-    }
-
-    public float getAcceleration() {
-        return acceleration;
-    }
-
-    public void setAcceleration(float acceleration) {
-        this.acceleration = acceleration;
-    }
-
-    public float getMaxVelocity() {
-        return maxVelocity;
-    }
-
-    public void setMaxVelocity(float maxVelocity) {
-        this.maxVelocity = maxVelocity;
-    }
-
-    public Rectangle getPosition() {
-        return position;
-    }
-
-    public void setPosition(Rectangle position) {
-        this.position = position;
-    }
-
     public float getX() {
         return position.getX();
     }
@@ -128,21 +102,5 @@ public class Entity {
 
     public float getHeight() {
         return position.getHeight();
-    }
-
-    public float getInteractionRange() {
-        return interactionRange;
-    }
-
-    public void setInteractionRange(float interactionRange) {
-        this.interactionRange = interactionRange;
-    }
-
-    public float getCollisionRange() {
-        return collisionRange;
-    }
-
-    public void setCollisionRange(float collisionRange) {
-        this.collisionRange = collisionRange;
     }
 }
