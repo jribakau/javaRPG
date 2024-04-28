@@ -11,6 +11,6 @@ public class RemoveEntityCommand implements Command {
 
     @Override
     public void execute() {
-        gameManager.getEntities().removeLast();
+        gameManager.getEntities().remove(gameManager.getEntities().size() - 1);
     }
 }
