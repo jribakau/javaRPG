@@ -1,6 +1,8 @@
 package com.mygdx.game.entities;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.utils.Utils;
@@ -9,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Entity {
+public abstract class Entity {
     private float velocity;
     private float acceleration;
     private float maxVelocity;
@@ -19,6 +21,10 @@ public class Entity {
     private final Rectangle collisionBox;
     private final Rectangle interactionBox;
     private final String name;
+    private final Texture texture;
+    private int width = 64;
+    private int height  = 64;
+    private ShapeRenderer shapeRenderer;
 
     public Entity(Rectangle position) {
         this.position = position;
@@ -30,6 +36,8 @@ public class Entity {
         this.collisionBox = new Rectangle();
         this.interactionBox = new Rectangle();
         this.name = "Entity";
+        this.texture = new Texture("bucket.png");
+        this.shapeRenderer = new ShapeRenderer();
         updateBoxes();
     }
 
@@ -66,18 +74,18 @@ public class Entity {
         return interactionBox.overlaps(other.interactionBox);
     }
 
-    public void renderCollisionBox(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(getX() - getCollisionRange(), getY() - getCollisionRange(), getWidth() + getCollisionRange() * 2, getHeight() + getCollisionRange() * 2);
-        shapeRenderer.end();
+    public void renderCollisionBox() {
+        getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
+        getShapeRenderer().setColor(Color.RED);
+        getShapeRenderer().rect(getX() - getCollisionRange(), getY() - getCollisionRange(), getWidth() + getCollisionRange() * 2, getHeight() + getCollisionRange() * 2);
+        getShapeRenderer().end();
     }
 
-    public void renderInteractionBox(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(getX() - getInteractionRange(), getY() - getInteractionRange(), getWidth() + getInteractionRange() * 2, getHeight() + getInteractionRange() * 2);
-        shapeRenderer.end();
+    public void renderInteractionBox() {
+        getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
+        getShapeRenderer().setColor(Color.GREEN);
+        getShapeRenderer().rect(getX() - getInteractionRange(), getY() - getInteractionRange(), getWidth() + getInteractionRange() * 2, getHeight() + getInteractionRange() * 2);
+        getShapeRenderer().end();
     }
 
     public float getX() {
@@ -102,5 +110,18 @@ public class Entity {
 
     public float getHeight() {
         return position.getHeight();
+    }
+
+    public abstract void draw(SpriteBatch batch);
+
+    public abstract void drawDebug();
+
+    public void dispose() {
+        if (shapeRenderer != null) {
+            shapeRenderer.dispose();
+        }
+        if (texture != null) {
+            texture.dispose();
+        }
     }
 }

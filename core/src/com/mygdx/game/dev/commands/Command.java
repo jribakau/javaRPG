@@ -1,4 +1,4 @@
-package com.mygdx.game.commands;
+package com.mygdx.game.dev.commands;
 
 public interface Command {
     void execute();
