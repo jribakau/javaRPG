@@ -4,9 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.game.core.GameManager;
 import com.mygdx.game.dev.commands.Command;
 import com.mygdx.game.dev.commands.RemoveLastEntity;
-import com.mygdx.game.core.GameManager;
 
 public class RemoveEntityButton implements Button<RemoveLastEntity> {
     private final Command command;
