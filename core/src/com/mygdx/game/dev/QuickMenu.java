@@ -9,6 +9,7 @@ import com.mygdx.game.core.GameManager;
 import com.mygdx.game.dev.buttons.AddEntityButton;
 import com.mygdx.game.dev.buttons.Button;
 import com.mygdx.game.dev.buttons.RemoveEntityButton;
+import com.mygdx.game.dev.buttons.TogglePlayerBoxVisibility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class QuickMenu implements Screen {
         List<Button> buttons = new ArrayList<>();
         buttons.add(new AddEntityButton(gameManager));
         buttons.add(new RemoveEntityButton(gameManager));
+        buttons.add(new TogglePlayerBoxVisibility(gameManager));
 
         float currentY = 0;
         for (Button button : buttons) {

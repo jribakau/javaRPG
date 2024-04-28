@@ -4,21 +4,19 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.game.RPG;
-import com.mygdx.game.commands.AddEntityCommand;
-import com.mygdx.game.commands.Command;
+import com.mygdx.game.dev.commands.AddEntityAtPlayerPosition;
+import com.mygdx.game.dev.commands.Command;
 import com.mygdx.game.core.GameManager;
-import com.mygdx.game.entities.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class AddEntityButton implements Button<AddEntityCommand> {
+public class AddEntityButton implements Button<AddEntityAtPlayerPosition> {
     private final Command command;
 
     public AddEntityButton(GameManager gameManager) {
-        this.command = new AddEntityCommand(gameManager);
+        this.command = new AddEntityAtPlayerPosition(gameManager);
     }
 
     @Override

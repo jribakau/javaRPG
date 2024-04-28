@@ -1,128 +1,94 @@
 package com.mygdx.game.core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
+import com.mygdx.game.camera.CameraManager;
 import com.mygdx.game.dev.QuickMenu;
 import com.mygdx.game.entities.Entity;
-import com.mygdx.game.entities.Player;
+import com.mygdx.game.input.InputManager;
+import com.mygdx.game.level.Level;
 import com.mygdx.game.ui.UI;
+import com.mygdx.game.utils.Keybindings;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
 public class GameManager implements Screen {
-	private static final String BUCKET_IMAGE_PATH = "bucket.png";
-	private static final String MAP_PATH = "map.jpg";
-
 	private final RPG game;
+	private Level level;
 	private UI ui;
-
-	private final List<Entity> entities = new ArrayList<>();
-	private Player player;
-
-	private Texture bucketTexture;
-	private Texture mapTexture;
 
 	private CameraManager cameraManager;
 	private InputManager inputManager;
 
-	ShapeRenderer entityCollisionBoxRenderer = new ShapeRenderer();
-	ShapeRenderer entityInteractionBoxRenderer = new ShapeRenderer();
-
 	QuickMenu devMenu;
-	private boolean isDeveloperMenuOpen = false;
-	private boolean debugPlayer = false;
+	private boolean isDebug = false;
+	private boolean isEntityDebug = false;
 
     public GameManager(final RPG game) {
 		this.game = game;
-		initialize();
-	}
-
-	private void initialize() {
-		loadAssets();
 		cameraManager = new CameraManager();
-		player = new Player(0, 0);
-		entities.add(player);
-		ui = new UI(game.batch, game.font, player);
+		level = new Level();
+		ui = new UI(game.batch, game.font, level.getPlayer());
 		inputManager = new InputManager();
 		devMenu = new QuickMenu(this);
 	}
 
-	private void loadAssets() {
-		try {
-			bucketTexture = new Texture(Gdx.files.internal(BUCKET_IMAGE_PATH));
-			mapTexture = new Texture(Gdx.files.internal(MAP_PATH));
-		} catch (Exception e) {
-			Gdx.app.error("GameManager", "Error loading assets", e);
-		}
-	}
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
-		this.inputManager.movement(player);
-		cameraManager.updateCameraPosition(player);
+		this.inputManager.movement(level.getPlayer());
+		cameraManager.updateCameraPosition(level.getPlayer());
 
 		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		game.batch.begin();
-		game.batch.draw(mapTexture, 0, 0);
 
 		ui.draw(cameraManager.getCamera());
 
-		drawEntities();
+		draw();
 		game.batch.end();
 
 		collisionAndInteractionDetection();
 
 		// DEBUG
-		if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+		if (Gdx.input.isKeyJustPressed(Keybindings.DEBUG_KEY)) {
 			toggleDebug();
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
-			isDeveloperMenuOpen = !isDeveloperMenuOpen;
-		}
 
-		if (isDeveloperMenuOpen) {
-			devMenu.render(delta);
-		}
-		if (debugPlayer) {
-			entityCollisionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
-			entityInteractionBoxRenderer.setProjectionMatrix(cameraManager.getCamera().combined);
-			for (Entity entity : entities) {
-				entity.renderCollisionBox(entityCollisionBoxRenderer);
-				entity.renderInteractionBox(entityInteractionBoxRenderer);
+		if (isDebug) {
+			if (isEntityDebug) {
+				level.getPlayer().getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
+				level.getPlayer().drawDebug();
+				for (Entity entity : level.getNpcList()) {
+					entity.getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
+					entity.drawDebug();
+				}
 			}
+			devMenu.render(delta);
 		}
 	}
 
 	private void collisionAndInteractionDetection() {
-		for (Entity entity : entities) {
-			if (entity != player && player.collidesWith(entity)) {
+		for (Entity entity : level.getNpcList()) {
+			if (entity != level.getPlayer() && level.getPlayer().collidesWith(entity)) {
 
 			}
-			if (entity != player && player.interactsWith(entity)) {
+			if (entity != level.getPlayer() && level.getPlayer().interactsWith(entity)) {
 
 			}
 		}
 	}
 
-	public void drawEntities() {
-		for (Entity entity : entities) {
-			game.batch.draw(bucketTexture, entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
-		}
+	public void draw() {
+		level.draw(game.batch);
 	}
 
 	public void toggleDebug() {
-		debugPlayer = !debugPlayer;
+		isDebug = !isDebug;
 	}
 
 	@Override
@@ -132,10 +98,9 @@ public class GameManager implements Screen {
 
 	@Override
 	public void dispose() {
-		bucketTexture.dispose();
-		entityCollisionBoxRenderer.dispose();
-		entityInteractionBoxRenderer.dispose();
-		mapTexture.dispose();
+		game.batch.dispose();
+		game.font.dispose();
+		level.dispose();
 	}
 
 	@Override

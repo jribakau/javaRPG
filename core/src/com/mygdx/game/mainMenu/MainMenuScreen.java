@@ -1,12 +1,10 @@
-package com.mygdx.game.ui;
+package com.mygdx.game.mainMenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
-import com.mygdx.game.utils.Settings;
-import com.mygdx.game.core.GameManager;
 import lombok.Getter;
 import lombok.Setter;
 
