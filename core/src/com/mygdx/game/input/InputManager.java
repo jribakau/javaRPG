@@ -2,38 +2,50 @@ package com.mygdx.game.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.mygdx.game.core.GameManager;
 import com.mygdx.game.entities.Player;
+import com.mygdx.game.utils.Keybindings;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class InputManager {
-    public void movement(Player player) {
+    private GameManager gameManager;
+
+    public InputManager(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
+    public void update() {
+        Player player = gameManager.getLevel().getPlayer();
         float dx = 0, dy = 0;
-        boolean isMoving = false;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Keybindings.LEFT_KEY)) {
             dx -= player.getAcceleration();
-            isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Keybindings.RIGHT_KEY)) {
             dx += player.getAcceleration();
-            isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Keybindings.UP_KEY)) {
             dy += player.getAcceleration();
-            isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Keybindings.DOWN_KEY)) {
             dy -= player.getAcceleration();
-            isMoving = true;
         }
 
-        if (!isMoving) {
-            player.setVelocity(0);
-        } else {
+        if (dx != 0 || dy != 0) {
             player.move(dx, dy);
+        } else {
+            player.stop();
         }
+
+        if (Gdx.input.isKeyJustPressed(Keybindings.DEBUG_KEY)) {
+            toggleDebug();
+        }
+    }
+
+    private void toggleDebug() {
+        gameManager.setDebug(!gameManager.isDebug());
     }
 }

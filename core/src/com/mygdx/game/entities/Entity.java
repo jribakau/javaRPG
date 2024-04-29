@@ -25,6 +25,7 @@ public abstract class Entity {
     private int width = 64;
     private int height  = 64;
     private ShapeRenderer shapeRenderer;
+    private Boolean isVisible = false;
 
     public Entity(Rectangle position) {
         this.position = position;
@@ -52,7 +53,7 @@ public abstract class Entity {
         updateBoxes();
     }
 
-    public void move(float dx, float dy) {
+    public void calculateMovement(float dx, float dy) {
         float length = Utils.normalize(dx, dy);
         if (length > 0) {
             dx = dx / length;

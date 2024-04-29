@@ -11,6 +11,7 @@ public class Player extends Entity {
     public Player(float x, float y) {
         super(new Rectangle(x, y, 64, 64));
         this.setAcceleration(0.1f);
+        this.setIsVisible(true);
     }
 
     @Override
@@ -22,5 +23,13 @@ public class Player extends Entity {
     public void drawDebug() {
         renderCollisionBox();
         renderInteractionBox();
+    }
+
+    public void move(float dx, float dy) {
+        calculateMovement(dx, dy);
+    }
+
+    public void stop() {
+        setVelocity(0);
     }
 }

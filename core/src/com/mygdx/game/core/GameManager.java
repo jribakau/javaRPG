@@ -1,6 +1,5 @@
 package com.mygdx.game.core;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
@@ -9,8 +8,7 @@ import com.mygdx.game.dev.QuickMenu;
 import com.mygdx.game.entities.Entity;
 import com.mygdx.game.input.InputManager;
 import com.mygdx.game.level.Level;
-import com.mygdx.game.ui.UI;
-import com.mygdx.game.utils.Keybindings;
+import com.mygdx.game.ui.UIGameInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +17,7 @@ import lombok.Setter;
 public class GameManager implements Screen {
 	private final RPG game;
 	private Level level;
-	private UI ui;
+	private UIGameInfo uiGameInfo;
 
 	private CameraManager cameraManager;
 	private InputManager inputManager;
@@ -32,32 +30,30 @@ public class GameManager implements Screen {
 		this.game = game;
 		cameraManager = new CameraManager();
 		level = new Level();
-		ui = new UI(game.batch, game.font, level.getPlayer());
-		inputManager = new InputManager();
+		uiGameInfo = new UIGameInfo(game.batch, game.font, this);
+		inputManager = new InputManager(this);
 		devMenu = new QuickMenu(this);
 	}
 
 	@Override
 	public void render(float delta) {
+		GameManagerUtils.updateEntitiesVisibility(level.getNpcList(), cameraManager);
+
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
-		this.inputManager.movement(level.getPlayer());
+		this.inputManager.update();
 		cameraManager.updateCameraPosition(level.getPlayer());
 
 		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		game.batch.begin();
 
 		draw();
-		ui.draw(cameraManager.getCamera());
+		uiGameInfo.draw();
 		game.batch.end();
 
 		collisionAndInteractionDetection();
 
 		// DEBUG
-		if (Gdx.input.isKeyJustPressed(Keybindings.DEBUG_KEY)) {
-			toggleDebug();
-		}
-
 		if (isDebug) {
 			if (isEntityDebug) {
 				level.getPlayer().getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
@@ -84,10 +80,6 @@ public class GameManager implements Screen {
 
 	public void draw() {
 		level.draw(game.batch);
-	}
-
-	public void toggleDebug() {
-		isDebug = !isDebug;
 	}
 
 	@Override
