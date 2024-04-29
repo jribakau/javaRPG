@@ -1,7 +1,6 @@
 package com.mygdx.game.input;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.mygdx.game.core.GameManager;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.utils.Keybindings;

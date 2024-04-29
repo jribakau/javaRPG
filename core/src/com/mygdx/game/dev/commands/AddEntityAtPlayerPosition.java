@@ -12,6 +12,7 @@ public class AddEntityAtPlayerPosition implements Command {
 
     @Override
     public void execute() {
-        gameManager.getLevel().getNpcList().add(new NPC(gameManager.getLevel().getPlayer().getX(), gameManager.getLevel().getPlayer().getY()));
+        gameManager.getLevel().getNpcList().add(new NPC(gameManager.getLevel().getPlayer().getX(), gameManager.getLevel().getPlayer().getY()
+                , gameManager.getAssetManager().getRandomRogueTexture()));
     }
 }

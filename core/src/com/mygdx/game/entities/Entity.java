@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.enums.EntityType;
 import com.mygdx.game.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,12 +21,13 @@ public abstract class Entity {
     private Rectangle position;
     private final Rectangle collisionBox;
     private final Rectangle interactionBox;
-    private final String name;
-    private final Texture texture;
-    private int width = 64;
-    private int height  = 64;
+    private String name;
+    private Texture texture;
+    private int width;
+    private int height;
     private ShapeRenderer shapeRenderer;
     private Boolean isVisible = false;
+    private EntityType entityType;
 
     public Entity(Rectangle position) {
         this.position = position;
@@ -36,8 +38,6 @@ public abstract class Entity {
         this.collisionRange = 10;
         this.collisionBox = new Rectangle();
         this.interactionBox = new Rectangle();
-        this.name = "Entity";
-        this.texture = new Texture("bucket.png");
         this.shapeRenderer = new ShapeRenderer();
         updateBoxes();
     }

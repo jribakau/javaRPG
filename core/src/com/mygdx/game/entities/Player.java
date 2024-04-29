@@ -1,7 +1,10 @@
 package com.mygdx.game.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.enums.EntityType;
+import com.mygdx.game.utils.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +12,14 @@ import lombok.Setter;
 @Setter
 public class Player extends Entity {
     public Player(float x, float y) {
-        super(new Rectangle(x, y, 64, 64));
+        super(new Rectangle(x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT));
         this.setAcceleration(0.1f);
         this.setIsVisible(true);
+        this.setWidth(Constants.PLAYER_WIDTH);
+        this.setHeight(Constants.PLAYER_HEIGHT);
+        this.setTexture(new Texture("bucket.png"));
+        this.setName("Player");
+        this.setEntityType(EntityType.PLAYER);
     }
 
     @Override
