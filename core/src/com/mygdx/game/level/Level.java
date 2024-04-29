@@ -37,8 +37,22 @@ public class Level {
     public void draw(SpriteBatch batch) {
         batch.draw(mapTexture, 0, 0);
         for (Entity entity : npcList) {
-            entity.draw(batch);
+            if (entity.getIsVisible()) {
+                entity.draw(batch);
+            }
         }
-        player.draw(batch);
+        if (player.getIsVisible()) {
+            player.draw(batch);
+        }
+    }
+
+    public List<Entity> getEntitiesInView() {
+        List<Entity> entitiesInView = new ArrayList<>();
+        for (Entity entity : this.getNpcList()) {
+            if (entity.getIsVisible()) {
+                entitiesInView.add(entity);
+            }
+        }
+        return entitiesInView;
     }
 }

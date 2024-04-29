@@ -19,7 +19,9 @@ public class NPC extends Entity {
 
     @Override
     public void drawDebug() {
-        renderCollisionBox();
-        renderInteractionBox();
+        if (getIsVisible()) {
+            renderCollisionBox();
+            renderInteractionBox();
+        }
     }
 }
