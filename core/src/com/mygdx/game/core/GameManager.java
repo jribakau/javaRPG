@@ -47,9 +47,8 @@ public class GameManager implements Screen {
 		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		game.batch.begin();
 
-		ui.draw(cameraManager.getCamera());
-
 		draw();
+		ui.draw(cameraManager.getCamera());
 		game.batch.end();
 
 		collisionAndInteractionDetection();
