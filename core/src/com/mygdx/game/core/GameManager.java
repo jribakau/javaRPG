@@ -3,6 +3,7 @@ package com.mygdx.game.core;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
+import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.camera.CameraManager;
 import com.mygdx.game.dev.QuickMenu;
 import com.mygdx.game.entities.Entity;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GameManager implements Screen {
+	private AssetManager assetManager;
 	private final RPG game;
 	private Level level;
 	private UIGameInfo uiGameInfo;
@@ -27,6 +29,8 @@ public class GameManager implements Screen {
 	private boolean isEntityDebug = false;
 
     public GameManager(final RPG game) {
+		assetManager = new AssetManager();
+		assetManager.loadAssets();
 		this.game = game;
 		cameraManager = new CameraManager();
 		level = new Level();
