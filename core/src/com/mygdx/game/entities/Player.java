@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.enums.EntityType;
 import com.mygdx.game.utils.Constants;
+import com.mygdx.game.utils.Files;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +18,7 @@ public class Player extends Entity {
         this.setIsVisible(true);
         this.setWidth(Constants.PLAYER_WIDTH);
         this.setHeight(Constants.PLAYER_HEIGHT);
-        this.setTexture(new Texture("bucket.png"));
+        this.setTexture(new Texture(Files.BUCKET_IMG_PATH));
         this.setName("Player");
         this.setEntityType(EntityType.PLAYER);
     }
