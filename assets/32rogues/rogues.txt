@@ -3,20 +3,24 @@
 1.c. ranger
 1.d. rogue
 1.e. bandit
+
 2.a. knight
 2.b. maleFighter
 2.c. femaleKnight
 2.d. femaleKnightHelmetless
 2.e. shieldKnight
+
 3.a. monk
 3.b. priest
 3.c. femaleWarCleric
 3.d. maleWarCleric
 3.e. templar
+
 4.a. maleBarbarian
 4.b. maleWinterBarbarian
 4.c. femaleWinterBarbarian
-4.e. swordsman
+4.d. swordsman
+
 5.a. femaleWizard
 5.b. maleWizard
 5.c. druid
