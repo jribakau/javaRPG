@@ -10,7 +10,6 @@ import com.mygdx.game.entities.Entity;
 import com.mygdx.game.input.InputManager;
 import com.mygdx.game.level.Level;
 import com.mygdx.game.ui.UIGameInfo;
-import com.mygdx.game.utils.Files;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,11 +30,10 @@ public class GameManager implements Screen {
 
     public GameManager(final RPG game) {
 		assetManager = new AssetManager();
-		assetManager.loadAssets();
 		this.game = game;
 		cameraManager = new CameraManager();
 		level = new Level(assetManager);
-		level.setTileList(assetManager.loadLevelTiles(Files.LEVEL_1_PATH));
+		level.setTileList(getAssetManager().getLevels().get(0));
 		uiGameInfo = new UIGameInfo(game.batch, game.font, this);
 		inputManager = new InputManager(this);
 		devMenu = new QuickMenu(this);

@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GenerateLevelButton implements Button<GenerateLevel>{
+public class GenerateLevelButton implements Button{
     private final Command command;
 
     public GenerateLevelButton(GameManager gameManager) {

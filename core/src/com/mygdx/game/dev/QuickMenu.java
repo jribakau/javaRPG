@@ -31,6 +31,7 @@ public class QuickMenu implements Screen {
         buttons.add(new RemoveEntityButton(gameManager));
         buttons.add(new TogglePlayerBoxVisibility(gameManager));
         buttons.add(new GenerateLevelButton(gameManager));
+        buttons.add(new LoadLevel_1Button(gameManager));
 
         float currentY = 0;
         for (Button button : buttons) {

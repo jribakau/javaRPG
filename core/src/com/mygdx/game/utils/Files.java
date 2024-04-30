@@ -15,5 +15,5 @@ public class Files {
 
     public static final String SKIN_PATH = "assets/skin/uiskin.json";
 
-    public static final String LEVEL_1_PATH = "assets/levels/level1.txt";
+    public static final String LEVEL_1_TXT_PATH = "assets/levels/level1.txt";
 }
