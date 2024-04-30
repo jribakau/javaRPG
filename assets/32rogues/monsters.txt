@@ -1,22 +1,29 @@
 1.a. orc
 1.b. orcWizard
 1.c. goblin
+
 2.a. ettin
 2.b. twoHeadedEttin
+2.c. greenGuy
+
 3.a. smallSlime
 3.b. bigSlime
 3.c. slimebody
+
 4.a. facelessMonk
 4.b. unholyCardinal
+
 5.a. skeleton
 5.b. skeletonArcher
 5.c. lich
 5.d. deathKnight
 5.e. zombie
 5.f. ghoul
+
 6.a. banshee
 6.b. reaper
 6.c. wraith
+
 7.a. giantCentipede
 7.b. lampreymander
 7.c. giantEarthworm
@@ -24,6 +31,7 @@
 7.e. giantAnt
 7.f. lycanthrope
 7.g. giantBat
+
 8.a. dryad
 8.b. wendigo
 8.c. rockGolem
