@@ -8,7 +8,7 @@ import com.mygdx.game.core.GameManager;
 import com.mygdx.game.dev.commands.Command;
 import com.mygdx.game.dev.commands.RemoveLastEntity;
 
-public class RemoveEntityButton implements Button<RemoveLastEntity> {
+public class RemoveEntityButton implements Button {
     private final Command command;
 
     public RemoveEntityButton(GameManager gameManager) {
