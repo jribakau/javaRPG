@@ -1,6 +1,6 @@
 package com.mygdx.game.enums;
 
-public enum EntityType {
+public enum EntityTypeEnum {
     PLAYER,
     NPC,
     MONSTER,
