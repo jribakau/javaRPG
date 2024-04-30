@@ -44,8 +44,6 @@ public class TextureUtils {
             return null;
         }
 
-        System.out.println("x: " + (region.getRegionX() / 32 + 1) + " y: " + (region.getRegionY() / 32 + 1) + " name: ");
-
         Texture texture = region.getTexture();
         texture.getTextureData().prepare();
 

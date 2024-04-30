@@ -1,0 +1,118 @@
+1.a. sword1
+1.b. sword2
+1.c. sword3
+1.d. sword4
+1.e. sword5
+1.f. sword6
+
+2.a. wideSword1
+2.b. wideSword2
+2.c. wideSword3
+2.d. wideSword4
+2.e. wideSword5
+2.f. wideSword6
+
+3.a. swooshy1
+3.b. swooshy2
+
+4.a. axe1
+4.b. axe2
+4.c. axe3
+
+5.a. hammer1
+5.b. hammer2
+5.c. hammer3
+5.d. hammer4
+5.e. hammer5
+
+6.a. mace1
+6.a. mace2
+6.a. mace3
+
+7.a. spear1
+
+8.a. flail1
+8.b. flail2
+8.c. flail3
+
+9.a. club1
+9.b. club2
+9.c. club3
+
+10.a. crowsbow1
+10.b. shortbow1
+10.c. bow1
+
+11.a. staff1
+11.b. staff2
+11.c. staff3-
+11.d. staff4
+11.e. staff5
+11.f. staff6
+
+12.a. shield1
+12.b. shield2
+12.c. shield3
+12.d. shield4
+
+13.a. chestArmor1
+13.b. chestArmor2
+13.c. chestArmor3
+13.d. chestArmor4
+13.e. chestArmor5
+13.f. chestArmor6
+
+14.a. gloves1
+14.b. gloves2
+14.c. gloves3
+14.d. gloves4
+
+15.a. boots1
+15.b. boots2
+15.c. boots3
+15.d. boots4
+
+16.a. headArmor1
+16.b. headArmor2
+16.c. headArmor3
+16.d. headArmor4
+16.e. headArmor5
+16.f. headArmor6
+16.g. headArmor7
+16.h. headArmor8
+
+17.a. necklace1
+17.b. necklace2
+17.c. necklace3
+17.d. necklace4
+17.e. necklace5
+17.f. necklace6
+
+18.a. ring1_1
+18.a. ring1_2
+18.a. ring1_3
+18.a. ring1_4
+18.a. ring1_5
+18.a. ring1_6
+
+19.a. ring2_1
+19.b. ring2_2
+19.c. ring2_3
+19.d. ring2_4
+19.e. ring2_5
+19.f. ring2_6
+
+20.a. potion1_1
+20.b. potion1_2
+20.c. potion1_3
+20.d. potion1_4
+20.e. potion1_5
+
+21.a. potion2_1
+21.a. potion2_2
+21.a. potion2_3
+21.a. potion2_4
+21.a. potion2_5
+
+22.a. scroll1
+22.b. book1

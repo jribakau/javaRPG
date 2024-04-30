@@ -1,0 +1,134 @@
+1.a. g1
+1.b. g1Wall
+1.c. g1blue
+
+2.a. rockGround1
+2.b. rockWall1
+
+3.a. brickGround1
+3.b. brickWall1
+3.c. brickEntrance1
+
+4.a. rock2Ground1
+4.b. rock2Wall1
+
+5.a. redBrickGround
+5.b. redBrickWall
+
+6.a. skullGround
+6.b. skullWall
+
+7.a. blackGround
+7.b. blackGroundStone1
+7.c. blackGroundStone2
+7.d. blackGroundStone3
+7.e. groundStone1
+7.f. groundStone2
+7.g. groundStone3
+
+8.a. violetGround
+8.b. blackGroundGrass1
+8.c. blackGroundGrass2
+8.d. blackGroundGrass3
+8.e. groundGrass1
+8.f. groundGrass2
+8.g. groundGrass3
+
+9.a. blank
+9.b. blackGroundSpot1
+9.c. blackGroundSpot2
+9.d. blackGroundSpot3
+9.e. groundSpot1
+9.f. groundSpot2
+9.g. groundSpot3
+
+10.a. blank
+10.b. blackGroundBlueBrick1
+10.c. blackGroundBlueBrick2
+10.d. blackGroundBlueBrick3
+10.e. groundBlueBrick1
+10.f. groundBlueBrick2
+10.g. groundBlueBrick3
+
+11.a. blank
+11.b. blackGroundBone1
+11.c. blackGroundBone2
+11.d. blackGroundBone3
+11.d. groundBone1
+11.e. groundBone2
+11.f. groundBone3
+
+11.a. pink
+11.b. pinkGroundPinkBrick1
+11.c. pinkGroundPinkBrick2
+11.d. pinkGroundPinkBrick3
+11.e. groundPinkBrick1
+11.f. groundPinkBrick2
+11.g. groundPinkBrick3
+
+12.a. blue
+12.b. blueGroundBlueBrick1
+12.c. blueGroundBlueBrick2
+12.d. blueGroundBlueBrick3
+
+13.a. green
+13.b. greenGroundSpot1
+13.c. greenGroundSpot2
+13.d. greenGroundSpot3
+
+14.a. blank
+14.b. greenGroundGrass1
+14.c. greenGroundGrass2
+14.d. greenGroundGrass3
+
+14.a. brown
+14.b. brownGroundBone1
+14.c. brownGroundBone2
+14.d. brownGroundBone3
+
+15.a. door1
+15.b. door2
+15.c. door3
+15.d. door4
+15.e. door5
+15.f. door6
+15.g. door7
+15.h. stairsDown1
+15.i. stairsUp1
+
+16.a. chestClosed1
+16.b. chestOpen1
+16.c. potClosed1
+16.d. potOpen1
+16.e. barrel1
+16.f. bag1
+16.g. logs1
+
+17.a. rock1
+17.b. rock2
+
+18.a. plant1
+18.b. plant2
+18.c. plant3
+18.d. plant4
+18.e. plant5
+18.f. plant6
+18.g. plant7
+18.h. plant8
+18.i. plant9
+18.j. plant10
+18.k. plant11
+18.l. plant12
+18.m. plant13
+18.n. plant14
+18.o. plant15
+18.p. plant16
+
+19.a. shroom1
+19.b. shroom2
+
+20.a. remains1
+20.b. remains2
+
+21.a. blood1
+21.b. blood2
