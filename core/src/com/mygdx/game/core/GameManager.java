@@ -10,6 +10,7 @@ import com.mygdx.game.entities.Entity;
 import com.mygdx.game.input.InputManager;
 import com.mygdx.game.level.Level;
 import com.mygdx.game.ui.UIGameInfo;
+import com.mygdx.game.utils.Files;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +34,8 @@ public class GameManager implements Screen {
 		assetManager.loadAssets();
 		this.game = game;
 		cameraManager = new CameraManager();
-		level = new Level();
+		level = new Level(assetManager);
+		level.setTileList(assetManager.loadLevelTiles(Files.LEVEL_1_PATH));
 		uiGameInfo = new UIGameInfo(game.batch, game.font, this);
 		inputManager = new InputManager(this);
 		devMenu = new QuickMenu(this);
@@ -41,7 +43,7 @@ public class GameManager implements Screen {
 
 	@Override
 	public void render(float delta) {
-		GameManagerUtils.updateEntitiesVisibility(level.getNpcList(), cameraManager);
+		GameManagerUtils.updateEntitiesVisibility(level, cameraManager);
 
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 

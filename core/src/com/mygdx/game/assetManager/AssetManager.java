@@ -2,10 +2,12 @@ package com.mygdx.game.assetManager;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.entities.Tile;
 import com.mygdx.game.utils.Files;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -23,11 +25,11 @@ public class AssetManager {
     }
 
     public void loadAssets() {
-        animalTextures = textureUtils.parseTextures(Files.ANIMALS_TXT_PATH, Files.ANIMALS_IMG_PATH);
-        itemTextures = textureUtils.parseTextures(Files.ITEMS_TXT_PATH, Files.ITEMS_IMG_PATH);
-        tileTextures = textureUtils.parseTextures(Files.TILES_TXT_PATH, Files.TILES_IMG_PATH);
-        monsterTextures = textureUtils.parseTextures(Files.MONSTERS_TXT_PATH, Files.MONSTERS_IMG_PATH);
-        rogueTextures = textureUtils.parseTextures(Files.ROGUES_TXT_PATH, Files.ROGUES_IMG_PATH);
+        animalTextures = textureUtils.importSpriteSheetsFromFile(Files.ANIMALS_TXT_PATH, Files.ANIMALS_IMG_PATH);
+        itemTextures = textureUtils.importSpriteSheetsFromFile(Files.ITEMS_TXT_PATH, Files.ITEMS_IMG_PATH);
+        tileTextures = textureUtils.importSpriteSheetsFromFile(Files.TILES_TXT_PATH, Files.TILES_IMG_PATH);
+        monsterTextures = textureUtils.importSpriteSheetsFromFile(Files.MONSTERS_TXT_PATH, Files.MONSTERS_IMG_PATH);
+        rogueTextures = textureUtils.importSpriteSheetsFromFile(Files.ROGUES_TXT_PATH, Files.ROGUES_IMG_PATH);
     }
 
     public Texture getMonsterTextureByIndex(int index) {
@@ -68,5 +70,9 @@ public class AssetManager {
 
     public Texture getRandomItemTexture() {
         return textureUtils.getRandomTexture(itemTextures);
+    }
+
+    public List<Tile> loadLevelTiles(String txtPath) {
+        return textureUtils.importTilesFromFile(txtPath, tileTextures);
     }
 }

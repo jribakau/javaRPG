@@ -6,10 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mygdx.game.core.GameManager;
-import com.mygdx.game.dev.buttons.AddEntityButton;
-import com.mygdx.game.dev.buttons.Button;
-import com.mygdx.game.dev.buttons.RemoveEntityButton;
-import com.mygdx.game.dev.buttons.TogglePlayerBoxVisibility;
+import com.mygdx.game.dev.buttons.*;
+import com.mygdx.game.utils.Files;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ public class QuickMenu implements Screen {
         this.gameManager = gameManager;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        skin = new Skin(Gdx.files.internal(Files.SKIN_PATH));
         initialize();
     }
 
@@ -32,6 +30,7 @@ public class QuickMenu implements Screen {
         buttons.add(new AddEntityButton(gameManager));
         buttons.add(new RemoveEntityButton(gameManager));
         buttons.add(new TogglePlayerBoxVisibility(gameManager));
+        buttons.add(new GenerateLevelButton(gameManager));
 
         float currentY = 0;
         for (Button button : buttons) {
