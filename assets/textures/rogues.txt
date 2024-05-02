@@ -1,27 +1,27 @@
-1.a. dwarf
-1.b. elf
-1.c. ranger
-1.d. rogue
-1.e. bandit
+1.a. DWARF
+1.b. ELF
+1.c. RANGER
+1.d. ROGUE
+1.e. BANDIT
 
-2.a. knight
-2.b. maleFighter
-2.c. femaleKnight
-2.d. femaleKnightHelmetless
-2.e. shieldKnight
+2.a. MALE_KNIGHT
+2.b. MALE_FIGHTER
+2.c. FEMALE_KNIGHT
+2.d. FEMALE_KNIGHT_HELMETLESS
+2.e. SHIELD_KNIGHT
 
-3.a. monk
-3.b. priest
-3.c. femaleWarCleric
-3.d. maleWarCleric
-3.e. templar
+3.a. MONK
+3.b. PRIEST
+3.c. FEMALE_WAR_CLERIC
+3.d. MALE_WAR_CLERIC
+3.e. TEMPLAR
 
-4.a. maleBarbarian
-4.b. maleWinterBarbarian
-4.c. femaleWinterBarbarian
-4.d. swordsman
+4.a. MALE_BARBARIAN
+4.b. MALE_WINTER_BARBARIAN
+4.c. FEMALE_WINTER_BARBARIAN
+4.d. SWORDSMAN
 
-5.a. femaleWizard
-5.b. maleWizard
-5.c. druid
-5.d. desertSage
+5.a. FEMALE_WIZARD
+5.b. MALE_WIZARD
+5.c. DRUID
+5.d. DESERT_SAGE

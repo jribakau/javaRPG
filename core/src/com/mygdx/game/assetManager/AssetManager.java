@@ -32,24 +32,24 @@ public class AssetManager {
         levels = Collections.singletonList(textureUtils.importTilesFromFile(Files.LEVEL_1_TXT_PATH, tileTextures));
     }
 
-    public Texture getMonsterTextureByIndex(int index) {
-        return textureUtils.getTextureByIndex(index, monsterTextures);
+    public Texture getMonsterTextureByIndex(String textureName) {
+        return textureUtils.getTextureByIndex(textureName, monsterTextures);
     }
 
-    public Texture getRogueTextureByIndex(int index) {
-        return textureUtils.getTextureByIndex(index, rogueTextures);
+    public Texture getRogueTextureByIndex(String textureName) {
+        return textureUtils.getTextureByIndex(textureName, rogueTextures);
     }
 
-    public Texture getAnimalTextureByIndex(int index) {
-        return textureUtils.getTextureByIndex(index, animalTextures);
+    public Texture getAnimalTextureByIndex(String textureName) {
+        return textureUtils.getTextureByIndex(textureName, animalTextures);
     }
 
-    public Texture getTileTextureByIndex(int index) {
-        return textureUtils.getTextureByIndex(index, tileTextures);
+    public Texture getTileTextureByIndex(String textureName) {
+        return textureUtils.getTextureByIndex(textureName, tileTextures);
     }
 
-    public Texture getItemTextureByIndex(int index) {
-        return textureUtils.getTextureByIndex(index, itemTextures);
+    public Texture getItemTextureByIndex(String textureName) {
+        return textureUtils.getTextureByIndex(textureName, itemTextures);
     }
 
     public Texture getRandomMonsterTexture() {

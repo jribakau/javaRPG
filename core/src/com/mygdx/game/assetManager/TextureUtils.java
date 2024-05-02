@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.entities.Tile;
+import com.mygdx.game.enums.TileTypeNum;
 import com.mygdx.game.utils.Constants;
 
 import java.io.BufferedReader;
@@ -47,7 +48,8 @@ public class TextureUtils {
                 String[] parts = line.split(" ");
                 for (int col = 0; col < parts.length; col++) {
                     int index = Integer.parseInt(parts[col]);
-                    Texture texture = getTextureByIndex(index, textures);
+                    String tileName = TileTypeNum.values()[index].name();
+                    Texture texture = getTextureByIndex(tileName, textures);
                     Tile tile = new Tile(col * Constants.TILE_WIDTH, row * Constants.TILE_HEIGHT, texture);
                     tiles.add(tile);
                 }
@@ -88,10 +90,10 @@ public class TextureUtils {
         return textureRegionToTexture(new ArrayList<>(textures.values()).get(randomIndex));
     }
 
-    public Texture getTextureByIndex(int index, Map<String, TextureRegion> textures) {
+    public Texture getTextureByIndex(String textureName, Map<String, TextureRegion> textures) {
         if (textures == null || textures.isEmpty()) {
             return null;
         }
-        return textureRegionToTexture(new ArrayList<>(textures.values()).get(index));
+        return textureRegionToTexture(textures.get(textureName));
     }
 }

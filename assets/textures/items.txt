@@ -1,118 +1,118 @@
-1.a. sword1
-1.b. sword2
-1.c. sword3
-1.d. sword4
-1.e. sword5
-1.f. sword6
+1.a. SWORD_1,
+1.b. SWORD_2,
+1.c. SWORD_3,
+1.d. SWORD_4,
+1.e. SWORD_5,
+1.f. SWORD_6,
 
-2.a. wideSword1
-2.b. wideSword2
-2.c. wideSword3
-2.d. wideSword4
-2.e. wideSword5
-2.f. wideSword6
+2.a. WIDE_SWORD_1,
+2.b. WIDE_SWORD_2,
+2.c. WIDE_SWORD_3,
+2.d. WIDE_SWORD_4,
+2.e. WIDE_SWORD_5,
+2.f. WIDE_SWORD_6,
 
-3.a. swooshy1
-3.b. swooshy2
+3.a. SWOOSHY_1,
+3.b. SWOOSHY_2,
 
-4.a. axe1
-4.b. axe2
-4.c. axe3
+4.a. AXE_1,
+4.b. AXE_2,
+4.c. AXE_3,
 
-5.a. hammer1
-5.b. hammer2
-5.c. hammer3
-5.d. hammer4
-5.e. hammer5
+5.a. HAMMER_1,
+5.b. HAMMER_2,
+5.c. HAMMER_3,
+5.d. HAMMER_4,
+5.e. HAMMER_5,
 
-6.a. mace1
-6.a. mace2
-6.a. mace3
+6.a. MACE_1,
+6.a. MACE_2,
+6.a. MACE_3,
 
-7.a. spear1
+7.a. SPEAR_1,
 
-8.a. flail1
-8.b. flail2
-8.c. flail3
+8.a. FLAIL_1,
+8.b. FLAIL_2,
+8.c. FLAIL_3,
 
-9.a. club1
-9.b. club2
-9.c. club3
+9.a. CLUB_1,
+9.b. CLUB_2,
+9.c. CLUB_3,
 
-10.a. crowsbow1
-10.b. shortbow1
-10.c. bow1
+10.a. CROSSBOW_1,
+10.b. SHORTBOW_1,
+10.c. BOW_1,
 
-11.a. staff1
-11.b. staff2
-11.c. staff3-
-11.d. staff4
-11.e. staff5
-11.f. staff6
+11.a. STAFF_1,
+11.b. STAFF_2,
+11.c. STAFF_3,
+11.d. STAFF_4,
+11.e. STAFF_5,
+11.f. STAFF_6,
 
-12.a. shield1
-12.b. shield2
-12.c. shield3
-12.d. shield4
+12.a. SHIELD_1,
+12.b. SHIELD_2,
+12.c. SHIELD_3,
+12.d. SHIELD_4,
 
-13.a. chestArmor1
-13.b. chestArmor2
-13.c. chestArmor3
-13.d. chestArmor4
-13.e. chestArmor5
-13.f. chestArmor6
+13.a. CHEST_ARMOR_1,
+13.b. CHEST_ARMOR_2,
+13.c. CHEST_ARMOR_3,
+13.d. CHEST_ARMOR_4,
+13.e. CHEST_ARMOR_5,
+13.f. CHEST_ARMOR_6,
 
-14.a. gloves1
-14.b. gloves2
-14.c. gloves3
-14.d. gloves4
+14.a. GLOVES_1,
+14.b. GLOVES_2,
+14.c. GLOVES_3,
+14.d. GLOVES_4,
 
-15.a. boots1
-15.b. boots2
-15.c. boots3
-15.d. boots4
+15.a. BOOTS_1,
+15.b. BOOTS_2,
+15.c. BOOTS_3,
+15.d. BOOTS_4,
 
-16.a. headArmor1
-16.b. headArmor2
-16.c. headArmor3
-16.d. headArmor4
-16.e. headArmor5
-16.f. headArmor6
-16.g. headArmor7
-16.h. headArmor8
+16.a. HEAD_ARMOR_1,
+16.b. HEAD_ARMOR_2,
+16.c. HEAD_ARMOR_3,
+16.d. HEAD_ARMOR_4,
+16.e. HEAD_ARMOR_5,
+16.f. HEAD_ARMOR_6,
+16.g. HEAD_ARMOR_7,
+16.h. HEAD_ARMOR_8,
 
-17.a. necklace1
-17.b. necklace2
-17.c. necklace3
-17.d. necklace4
-17.e. necklace5
-17.f. necklace6
+17.a. NECKLACE_1,
+17.b. NECKLACE_2,
+17.c. NECKLACE_3,
+17.d. NECKLACE_4,
+17.e. NECKLACE_5,
+17.f. NECKLACE_6,
 
-18.a. ring1_1
-18.a. ring1_2
-18.a. ring1_3
-18.a. ring1_4
-18.a. ring1_5
-18.a. ring1_6
+18.a. RING1_1,
+18.a. RING1_2,
+18.a. RING1_3,
+18.a. RING1_4,
+18.a. RING1_5,
+18.a. RING1_6,
 
-19.a. ring2_1
-19.b. ring2_2
-19.c. ring2_3
-19.d. ring2_4
-19.e. ring2_5
-19.f. ring2_6
+19.a. RING2_1,
+19.b. RING2_2,
+19.c. RING2_3,
+19.d. RING2_4,
+19.e. RING2_5,
+19.f. RING2_6,
 
-20.a. potion1_1
-20.b. potion1_2
-20.c. potion1_3
-20.d. potion1_4
-20.e. potion1_5
+20.a. POTION1_1,
+20.b. POTION1_2,
+20.c. POTION1_3,
+20.d. POTION1_4,
+20.e. POTION1_5,
 
-21.a. potion2_1
-21.a. potion2_2
-21.a. potion2_3
-21.a. potion2_4
-21.a. potion2_5
+21.a. POTION2_1,
+21.a. POTION2_2,
+21.a. POTION2_3,
+21.a. POTION2_4,
+21.a. POTION2_5,
 
-22.a. scroll1
-22.b. book1
+22.a. SCROLL_1,
+22.b. BOOK_1
