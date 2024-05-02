@@ -1,4 +1,4 @@
-package com.mygdx.game.dev.commands;
+package com.mygdx.game.developerOptions.commands;
 
 @FunctionalInterface
 public interface Command {

@@ -1,6 +1,6 @@
-package com.mygdx.game.dev.commands;
+package com.mygdx.game.developerOptions.commands;
 
-import com.mygdx.game.core.GameManager;
+import com.mygdx.game.gameManager.GameManager;
 
 public class GenerateLevel implements Command {
     private final GameManager gameManager;

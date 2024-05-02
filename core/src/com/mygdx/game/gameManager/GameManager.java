@@ -1,15 +1,15 @@
-package com.mygdx.game.core;
+package com.mygdx.game.gameManager;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
 import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.camera.CameraManager;
-import com.mygdx.game.dev.QuickMenu;
-import com.mygdx.game.entities.Entity;
+import com.mygdx.game.developerOptions.QuickMenu;
+import com.mygdx.game.entity.Entity;
 import com.mygdx.game.input.InputManager;
 import com.mygdx.game.level.Level;
-import com.mygdx.game.ui.UIGameInfo;
+import com.mygdx.game.userInterface.UIGameInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,7 +62,7 @@ public class GameManager implements Screen {
 			if (isEntityDebug) {
 				level.getPlayer().getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
 				level.getPlayer().drawDebug();
-				for (Entity entity : level.getNpcList()) {
+				for (Entity entity : level.getVirtualCharacterList()) {
 					entity.getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
 					entity.drawDebug();
 				}
@@ -72,7 +72,7 @@ public class GameManager implements Screen {
 	}
 
 	private void collisionAndInteractionDetection() {
-		for (Entity entity : level.getNpcList()) {
+		for (Entity entity : level.getVirtualCharacterList()) {
 			if (entity != level.getPlayer() && level.getPlayer().collidesWith(entity)) {
 
 			}

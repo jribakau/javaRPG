@@ -2,7 +2,7 @@ package com.mygdx.game.assetManager;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.entities.Tile;
+import com.mygdx.game.entity.Tile;
 import com.mygdx.game.utils.Files;
 import lombok.Getter;
 import lombok.Setter;

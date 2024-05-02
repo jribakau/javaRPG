@@ -1,4 +1,4 @@
-package com.mygdx.game.ui;
+package com.mygdx.game.userInterface;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
