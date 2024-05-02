@@ -1,39 +1,39 @@
-1.a. orc
-1.b. orcWizard
-1.c. goblin
+1.a. ORC,
+1.b. ORC_WIZARD,
+1.c. GOBLIN,
 
-2.a. ettin
-2.b. twoHeadedEttin
-2.c. greenGuy
+2.a. ETTIN,
+2.b. TWO_HEADED_ETTIN,
+2.c. GREEN_GUY,
 
-3.a. smallSlime
-3.b. bigSlime
-3.c. slimebody
+3.a. SMALL_SLIME,
+3.b. BIG_SLIME,
+3.c. SLIME_BODY,
 
-4.a. facelessMonk
-4.b. unholyCardinal
+4.a. FACELESS_MONK,
+4.b. UNHOLY_CARDINAL,
 
-5.a. skeleton
-5.b. skeletonArcher
-5.c. lich
-5.d. deathKnight
-5.e. zombie
-5.f. ghoul
+5.a. SKELETON,
+5.b. SKELETON_ARCHER,
+5.c. LICH,
+5.d. DEATH_KNIGHT,
+5.e. ZOMBIE,
+5.f. GHOUL,
 
-6.a. banshee
-6.b. reaper
-6.c. wraith
+6.a. BANSHEE,
+6.b. REAPER,
+6.c. WRAITH,
 
-7.a. giantCentipede
-7.b. lampreymander
-7.c. giantEarthworm
-7.d. manticore
-7.e. giantAnt
-7.f. lycanthrope
-7.g. giantBat
+7.a. GIANT_CENTIPEDE,
+7.b. LAMPREYMANDER,
+7.c. GIANT_EARTHWORM,
+7.d. MANTICORE,
+7.e. GIANT_ANT,
+7.f. LYCANTHROPE,
+7.g. GIANT_BAT,
 
-8.a. dryad
-8.b. wendigo
-8.c. rockGolem
-8.d. centaur
-8.e. naga
+8.a. DRYAD,
+8.b. WENDIGO,
+8.c. ROCK_GOLEM,
+8.d. CENTAUR,
+8.e. NAGA

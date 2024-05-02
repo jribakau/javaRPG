@@ -6,6 +6,7 @@ import com.mygdx.game.entities.Entity;
 import com.mygdx.game.entities.NPC;
 import com.mygdx.game.entities.Player;
 import com.mygdx.game.entities.Tile;
+import com.mygdx.game.enums.RogueTypeEnum;
 import com.mygdx.game.utils.Constants;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class Level {
     private AssetManager assetManager;
 
     public Level(AssetManager assetManager) {
-        this.player = new Player(0, 0, assetManager.getRogueTextureByIndex(2));
+        this.player = new Player(0, 0, assetManager.getRogueTextureByIndex(RogueTypeEnum.FEMALE_WIZARD.name()));
         this.npcList = new ArrayList<>();
         this.tileList = new ArrayList<>();
         this.assetManager = assetManager;
