@@ -1,11 +1,10 @@
-package com.mygdx.game.entities;
+package com.mygdx.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.enums.EntityTypeEnum;
 import com.mygdx.game.utils.Constants;
-import com.mygdx.game.utils.Files;
 import lombok.Getter;
 import lombok.Setter;
 

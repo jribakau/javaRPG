@@ -1,4 +1,4 @@
-package com.mygdx.game.entities;
+package com.mygdx.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,11 +10,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NPC extends Entity {
-    public NPC(float x, float y, Texture texture) {
+public class VirtualCharacter extends Entity {
+    public VirtualCharacter(float x, float y, Texture texture) {
         super(new Rectangle(x, y, Constants.NPC_WIDTH, Constants.NPC_HEIGHT));
         this.setTexture(texture);
-        this.setName("NPC");
+        this.setName("VirtualCharacter");
         this.setEntityTypeEnum(EntityTypeEnum.NPC);
         this.setInteractionRange(50);
         this.setCollisionRange(10);

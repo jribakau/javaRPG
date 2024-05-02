@@ -2,7 +2,7 @@ package com.mygdx.game.camera;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.mygdx.game.entities.Player;
+import com.mygdx.game.entity.Player;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,10 +2,10 @@ package com.mygdx.game.level;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.assetManager.AssetManager;
-import com.mygdx.game.entities.Entity;
-import com.mygdx.game.entities.NPC;
-import com.mygdx.game.entities.Player;
-import com.mygdx.game.entities.Tile;
+import com.mygdx.game.entity.Entity;
+import com.mygdx.game.entity.VirtualCharacter;
+import com.mygdx.game.entity.Player;
+import com.mygdx.game.entity.Tile;
 import com.mygdx.game.enums.RogueTypeEnum;
 import com.mygdx.game.utils.Constants;
 import lombok.Getter;
@@ -17,20 +17,20 @@ import java.util.List;
 @Getter
 @Setter
 public class Level {
-    private List<NPC> npcList;
+    private List<VirtualCharacter> virtualCharacterList;
     private Player player;
     private List<Tile> tileList;
     private AssetManager assetManager;
 
     public Level(AssetManager assetManager) {
         this.player = new Player(0, 0, assetManager.getRogueTextureByIndex(RogueTypeEnum.FEMALE_WIZARD.name()));
-        this.npcList = new ArrayList<>();
+        this.virtualCharacterList = new ArrayList<>();
         this.tileList = new ArrayList<>();
         this.assetManager = assetManager;
     }
 
     public void dispose() {
-        for (Entity entity : npcList) {
+        for (Entity entity : virtualCharacterList) {
             entity.dispose();
         }
         if (player != null) {
@@ -44,7 +44,7 @@ public class Level {
                 entity.draw(batch);
             }
         }
-        for (Entity entity : npcList) {
+        for (Entity entity : virtualCharacterList) {
             if (entity.getIsVisible()) {
                 entity.draw(batch);
             }
@@ -56,7 +56,7 @@ public class Level {
 
     public List<Entity> getEntitiesInView() {
         List<Entity> entitiesInView = new ArrayList<>();
-        for (Entity entity : this.getNpcList()) {
+        for (Entity entity : this.getVirtualCharacterList()) {
             if (entity.getIsVisible()) {
                 entitiesInView.add(entity);
             }

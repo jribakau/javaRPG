@@ -1,8 +1,8 @@
 package com.mygdx.game.input;
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.core.GameManager;
-import com.mygdx.game.entities.Player;
+import com.mygdx.game.gameManager.GameManager;
+import com.mygdx.game.entity.Player;
 import com.mygdx.game.utils.Keybindings;
 import lombok.Getter;
 import lombok.Setter;

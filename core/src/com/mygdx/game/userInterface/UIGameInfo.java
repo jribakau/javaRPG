@@ -1,10 +1,10 @@
-package com.mygdx.game.ui;
+package com.mygdx.game.userInterface;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.core.GameManager;
+import com.mygdx.game.gameManager.GameManager;
 import lombok.Getter;
 import lombok.Setter;
 

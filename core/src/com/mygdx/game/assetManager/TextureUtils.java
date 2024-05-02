@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.entities.Tile;
+import com.mygdx.game.entity.Tile;
 import com.mygdx.game.enums.TileTypeNum;
 import com.mygdx.game.utils.Constants;
 
