@@ -18,4 +18,9 @@ public class Item extends Entity {
         renderCollisionBox();
         renderInteractionBox();
     }
+
+    @Override
+    public void drawHighlight() {
+        renderHighlight();
+    }
 }

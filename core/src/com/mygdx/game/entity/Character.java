@@ -33,6 +33,12 @@ public class Character extends Entity {
         if (getIsVisible()) {
             renderCollisionBox();
             renderInteractionBox();
+
         }
+    }
+
+    @Override
+    public void drawHighlight() {
+        renderHighlight();
     }
 }
