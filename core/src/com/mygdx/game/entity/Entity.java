@@ -35,18 +35,15 @@ public abstract class Entity {
         this.collisionBox = new Rectangle();
         this.interactionBox = new Rectangle();
         this.shapeRenderer = new ShapeRenderer();
-        updateBoxes();
-    }
-
-    private void updateBoxes() {
-        collisionBox.set(getX() - getCollisionRange(), getY() - getCollisionRange(), getWidth() + getCollisionRange() * 2, getHeight() + getCollisionRange() * 2);
-        interactionBox.set(getX() - getInteractionRange(), getY() - getInteractionRange(), getWidth() + getInteractionRange() * 2, getHeight() + getInteractionRange() * 2);
+        updateCollisionBox();
+        updateInteractionBox();
     }
 
     public void updatePosition(float x, float y) {
-        this.setX(this.getX() + x * getVelocity());
-        this.setY(this.getY() + y * getVelocity());
-        updateBoxes();
+        position.x = (this.position.x + x * getVelocity());
+        position.y = (this.position.y + y * getVelocity());
+        updateCollisionBox();
+        updateInteractionBox();
     }
 
     public void calculateMovement(float dx, float dy) {
@@ -71,49 +68,31 @@ public abstract class Entity {
         return interactionBox.overlaps(other.interactionBox);
     }
 
+    private void updateCollisionBox() {
+        collisionBox.set(position.x - collisionRange, position.y - collisionRange, position.width + collisionRange * 2, position.height + collisionRange * 2);
+    }
+
+    private void updateInteractionBox() {
+        interactionBox.set(position.x - interactionRange, position.y - interactionRange, position.width + interactionRange * 2, position.height + interactionRange * 2);
+    }
+
     public void renderCollisionBox() {
-        getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-        getShapeRenderer().setColor(Color.RED);
-        getShapeRenderer().rect(getX() - getCollisionRange(), getY() - getCollisionRange(), getWidth() + getCollisionRange() * 2, getHeight() + getCollisionRange() * 2);
-        getShapeRenderer().end();
+        renderBox(Color.RED, collisionBox);
     }
 
     public void renderInteractionBox() {
-        getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-        getShapeRenderer().setColor(Color.GREEN);
-        getShapeRenderer().rect(getX() - getInteractionRange(), getY() - getInteractionRange(), getWidth() + getInteractionRange() * 2, getHeight() + getInteractionRange() * 2);
-        getShapeRenderer().end();
+        renderBox(Color.GREEN, interactionBox);
     }
 
     public void renderHighlight() {
-        getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
-        getShapeRenderer().setColor(Color.BLUE);
-        getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
-        getShapeRenderer().end();
+        renderBox(Color.BLUE, position);
     }
 
-    public float getX() {
-        return position.getX();
-    }
-
-    public float getY() {
-        return position.getY();
-    }
-
-    public void setX(float x) {
-        position.setX(x);
-    }
-
-    public void setY(float y) {
-        position.setY(y);
-    }
-
-    public float getWidth() {
-        return position.getWidth();
-    }
-
-    public float getHeight() {
-        return position.getHeight();
+    private void renderBox(Color color, Rectangle box) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(box.x, box.y, box.width, box.height);
+        shapeRenderer.end();
     }
 
     public abstract void draw(SpriteBatch batch);
