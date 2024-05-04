@@ -2,8 +2,8 @@ package com.mygdx.game.levelManager;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.assetManager.AssetManager;
-import com.mygdx.game.entity.Entity;
 import com.mygdx.game.entity.Character;
+import com.mygdx.game.entity.Entity;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.entity.Tile;
 import com.mygdx.game.enums.RogueTypeEnum;

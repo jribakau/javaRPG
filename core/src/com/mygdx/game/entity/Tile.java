@@ -23,4 +23,9 @@ public class Tile extends Entity {
         renderCollisionBox();
         renderInteractionBox();
     }
+
+    @Override
+    public void drawHighlight() {
+        renderHighlight();
+    }
 }

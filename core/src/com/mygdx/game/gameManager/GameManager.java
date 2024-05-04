@@ -69,6 +69,13 @@ public class GameManager implements Screen {
 			}
 			devMenu.render(delta);
 		}
+
+		for (Entity entity : level.getEntitiesInView()) {
+			if (entity.isHighlight()) {
+				entity.getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
+				entity.drawHighlight();
+			}
+		}
 	}
 
 	private void collisionAndInteractionDetection() {

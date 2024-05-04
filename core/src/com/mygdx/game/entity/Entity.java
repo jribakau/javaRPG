@@ -28,6 +28,7 @@ public abstract class Entity {
     private Boolean isVisible;
     private EntityTypeEnum entityTypeEnum;
     private EntityBehavior entityBehavior;
+    private boolean highlight = false;
 
     public Entity(Rectangle position) {
         this.position = position;
@@ -84,6 +85,13 @@ public abstract class Entity {
         getShapeRenderer().end();
     }
 
+    public void renderHighlight() {
+        getShapeRenderer().begin(ShapeRenderer.ShapeType.Line);
+        getShapeRenderer().setColor(Color.BLUE);
+        getShapeRenderer().rect(getX(), getY(), getWidth(), getHeight());
+        getShapeRenderer().end();
+    }
+
     public float getX() {
         return position.getX();
     }
@@ -112,6 +120,8 @@ public abstract class Entity {
 
     public abstract void drawDebug();
 
+    public abstract void drawHighlight();
+
     public void dispose() {
         if (shapeRenderer != null) {
             shapeRenderer.dispose();
@@ -119,5 +129,9 @@ public abstract class Entity {
         if (texture != null) {
             texture.dispose();
         }
+    }
+
+    public boolean containsPoint(float x, float y) {
+        return position.contains(x, y);
     }
 }

@@ -36,6 +36,11 @@ public class Player extends Entity {
         renderInteractionBox();
     }
 
+    @Override
+    public void drawHighlight() {
+        renderHighlight();
+    }
+
     public void move(float dx, float dy) {
         calculateMovement(dx, dy);
     }
