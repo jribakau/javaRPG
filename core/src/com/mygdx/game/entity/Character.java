@@ -10,11 +10,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VirtualCharacter extends Entity {
-    public VirtualCharacter(float x, float y, Texture texture) {
+public class Character extends Entity {
+    public Character(float x, float y, Texture texture) {
         super(new Rectangle(x, y, Constants.NPC_WIDTH, Constants.NPC_HEIGHT));
         this.setTexture(texture);
-        this.setName("VirtualCharacter");
+        this.setName("Character");
         this.setEntityTypeEnum(EntityTypeEnum.NPC);
         this.setInteractionRange(50);
         this.setCollisionRange(10);

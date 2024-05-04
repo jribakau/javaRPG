@@ -1,12 +1,12 @@
 package com.mygdx.game.gameManager;
 
-import com.mygdx.game.camera.CameraManager;
+import com.mygdx.game.cameraManager.CameraManager;
 import com.mygdx.game.entity.Entity;
-import com.mygdx.game.level.Level;
+import com.mygdx.game.levelManager.Level;
 public class GameManagerUtils {
 
     public static void updateEntitiesVisibility(Level level, CameraManager cameraManager){
-        for (Entity entity : level.getVirtualCharacterList()) {
+        for (Entity entity : level.getCharacterList()) {
             entity.setIsVisible(calculateVisibility(entity, cameraManager));
         }
         for (Entity entity : level.getTileList()) {

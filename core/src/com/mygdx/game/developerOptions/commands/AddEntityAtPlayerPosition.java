@@ -1,7 +1,7 @@
 package com.mygdx.game.developerOptions.commands;
 
+import com.mygdx.game.entity.Character;
 import com.mygdx.game.gameManager.GameManager;
-import com.mygdx.game.entity.VirtualCharacter;
 
 public class AddEntityAtPlayerPosition implements Command {
     private final GameManager gameManager;
@@ -12,7 +12,7 @@ public class AddEntityAtPlayerPosition implements Command {
 
     @Override
     public void execute() {
-        gameManager.getLevel().getVirtualCharacterList().add(new VirtualCharacter(gameManager.getLevel().getPlayer().getX(), gameManager.getLevel().getPlayer().getY()
+        gameManager.getLevel().getCharacterList().add(new Character(gameManager.getLevel().getPlayer().getX(), gameManager.getLevel().getPlayer().getY()
                 , gameManager.getAssetManager().getRandomRogueTexture()));
     }
 }
