@@ -1,4 +1,4 @@
-package com.mygdx.game.mainMenu;
+package com.mygdx.game.mainMenuManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

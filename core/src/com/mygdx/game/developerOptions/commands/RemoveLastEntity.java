@@ -11,8 +11,8 @@ public class RemoveLastEntity implements Command {
 
     @Override
     public void execute() {
-        if (!gameManager.getLevel().getVirtualCharacterList().isEmpty()) {
-            gameManager.getLevel().getVirtualCharacterList().remove(gameManager.getLevel().getVirtualCharacterList().size() - 1);
+        if (!gameManager.getLevel().getCharacterList().isEmpty()) {
+            gameManager.getLevel().getCharacterList().remove(gameManager.getLevel().getCharacterList().size() - 1);
         }
     }
 }

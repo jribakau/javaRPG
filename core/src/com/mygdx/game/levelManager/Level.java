@@ -1,9 +1,9 @@
-package com.mygdx.game.level;
+package com.mygdx.game.levelManager;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.entity.Entity;
-import com.mygdx.game.entity.VirtualCharacter;
+import com.mygdx.game.entity.Character;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.entity.Tile;
 import com.mygdx.game.enums.RogueTypeEnum;
@@ -17,20 +17,20 @@ import java.util.List;
 @Getter
 @Setter
 public class Level {
-    private List<VirtualCharacter> virtualCharacterList;
+    private List<Character> characterList;
     private Player player;
     private List<Tile> tileList;
     private AssetManager assetManager;
 
     public Level(AssetManager assetManager) {
         this.player = new Player(0, 0, assetManager.getRogueTextureByIndex(RogueTypeEnum.FEMALE_WIZARD.name()));
-        this.virtualCharacterList = new ArrayList<>();
+        this.characterList = new ArrayList<>();
         this.tileList = new ArrayList<>();
         this.assetManager = assetManager;
     }
 
     public void dispose() {
-        for (Entity entity : virtualCharacterList) {
+        for (Entity entity : characterList) {
             entity.dispose();
         }
         if (player != null) {
@@ -44,7 +44,7 @@ public class Level {
                 entity.draw(batch);
             }
         }
-        for (Entity entity : virtualCharacterList) {
+        for (Entity entity : characterList) {
             if (entity.getIsVisible()) {
                 entity.draw(batch);
             }
@@ -56,7 +56,7 @@ public class Level {
 
     public List<Entity> getEntitiesInView() {
         List<Entity> entitiesInView = new ArrayList<>();
-        for (Entity entity : this.getVirtualCharacterList()) {
+        for (Entity entity : this.getCharacterList()) {
             if (entity.getIsVisible()) {
                 entitiesInView.add(entity);
             }

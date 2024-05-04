@@ -1,4 +1,4 @@
-package com.mygdx.game.userInterface;
+package com.mygdx.game.uiManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
