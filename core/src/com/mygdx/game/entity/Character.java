@@ -20,7 +20,7 @@ public class Character extends Entity {
         this.setInteractionRange(50);
         this.setCollisionRange(10);
         this.setVelocity(2);
-        this.setEntityBehavior(new RandomWalkBehavior());
+        this.setEntityBehavior(new RandomWalkBehavior(this));
     }
 
     @Override
