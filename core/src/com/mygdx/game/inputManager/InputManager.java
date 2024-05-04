@@ -17,10 +17,6 @@ import lombok.Setter;
 public class InputManager extends InputAdapter {
     private GameManager gameManager;
 
-    public InputManager(GameManager gameManager) {
-        this.gameManager = gameManager;
-    }
-
     public void update() {
         Player player = gameManager.getLevel().getPlayer();
         float dx = 0, dy = 0;
