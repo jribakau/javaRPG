@@ -5,12 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.mygdx.game.developerOptions.buttons.*;
+import com.mygdx.game.commandManager.Command;
+import com.mygdx.game.commandManager.CommandButton;
 import com.mygdx.game.gameManager.GameManager;
 import com.mygdx.game.utils.Files;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuickMenu implements Screen {
     private final Stage stage;
@@ -26,15 +24,9 @@ public class QuickMenu implements Screen {
     }
 
     private void initialize() {
-        List<Button> buttons = new ArrayList<>();
-        buttons.add(new AddEntityButton(gameManager));
-        buttons.add(new RemoveEntityButton(gameManager));
-        buttons.add(new TogglePlayerBoxVisibility(gameManager));
-        buttons.add(new GenerateLevelButton(gameManager));
-        buttons.add(new LoadLevel_1Button(gameManager));
-
         float currentY = 0;
-        for (Button button : buttons) {
+        for (Command command : gameManager.getCommandManager().getCommandList()) {
+            Button button = new CommandButton(command, command.getCommandName().name());
             TextButton textButton = button.createButton(skin);
             textButton.setY(currentY);
             stage.addActor(textButton);

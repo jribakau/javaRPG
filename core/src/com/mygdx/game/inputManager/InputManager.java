@@ -15,7 +15,6 @@ import lombok.Setter;
 @Setter
 public class InputManager extends InputAdapter {
     private GameManager gameManager;
-    private Entity highlightedEntity;
 
     public InputManager(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -48,7 +47,10 @@ public class InputManager extends InputAdapter {
             toggleDebug();
         }
 
-        mouseMoved(Gdx.input.getX(), Gdx.input.getY());
+        mouseOverEntity(Gdx.input.getX(), Gdx.input.getY());
+        if (Gdx.input.isButtonPressed(Keybindings.LEFT_CLICK)) {
+            leftClick(Gdx.input.getX(), Gdx.input.getY());
+        }
 
         if (Gdx.input.isKeyPressed(Keybindings.ESCAPE_KEY)) {
             gameManager.getGame().setScreen(new MainMenuScreen(gameManager.getGame()));
@@ -59,17 +61,14 @@ public class InputManager extends InputAdapter {
         gameManager.setDebug(!gameManager.isDebug());
     }
 
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
+    public void mouseOverEntity(int screenX, int screenY) {
         Vector3 worldCoordinates = gameManager.getCameraManager().getCamera().unproject(new Vector3(screenX, screenY, 0));
         for (Entity entity : gameManager.getLevel().getEntitiesInView()) {
-            if (entity.containsPoint(worldCoordinates.x, worldCoordinates.y)) {
-                entity.setHighlight(true);
-                return true;
-            } else {
-                entity.setHighlight(false);
-            }
+            entity.setHighlight(entity.containsPoint(worldCoordinates.x, worldCoordinates.y));
         }
-        return false;
+    }
+
+    public void leftClick(int screenX, int screenY) {
+
     }
 }

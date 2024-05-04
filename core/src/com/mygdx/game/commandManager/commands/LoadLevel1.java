@@ -1,11 +1,14 @@
-package com.mygdx.game.developerOptions.commands;
+package com.mygdx.game.commandManager.commands;
 
+import com.mygdx.game.commandManager.Command;
+import com.mygdx.game.enums.CommandEnum;
 import com.mygdx.game.gameManager.GameManager;
 
-public class LoadLevel_1 implements Command {
+public class LoadLevel1 extends Command {
     private final GameManager gameManager;
 
-    public LoadLevel_1(GameManager gameManager) {
+    public LoadLevel1(GameManager gameManager) {
+        super(gameManager, CommandEnum.LOAD_LEVEL_1);
         this.gameManager = gameManager;
     }
 
