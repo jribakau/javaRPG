@@ -8,7 +8,7 @@ import com.mygdx.game.cameraManager.CameraManager;
 import com.mygdx.game.commandManager.CommandManager;
 import com.mygdx.game.gameManager.GameManager;
 import com.mygdx.game.inputManager.InputManager;
-import com.mygdx.game.mainMenuManager.MainMenuScreen;
+import com.mygdx.game.screenManager.MainMenuScreen;
 import lombok.Getter;
 import lombok.Setter;
 

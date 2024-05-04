@@ -1,10 +1,10 @@
-package com.mygdx.game.mainMenuManager;
+package com.mygdx.game.screenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
+import com.mygdx.game.gameManager.GameScreen;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,10 +31,6 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    private void clearScreen() {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-    }
-
     private void drawMessages() {
         game.batch.begin();
         game.font.draw(game.batch, WELCOME_MESSAGE, 100, 150);
@@ -44,7 +40,7 @@ public class MainMenuScreen implements Screen {
 
     private void checkForStart() {
         if (Gdx.input.isTouched()) {
-            game.setScreen(game.getGameManager());
+            game.setScreen(new GameScreen(game));
             dispose();
         }
     }
@@ -61,7 +57,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        clearScreen();
+        ScreenUtils.clearScreen();
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         drawMessages();

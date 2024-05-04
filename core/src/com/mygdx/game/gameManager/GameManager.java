@@ -1,7 +1,5 @@
 package com.mygdx.game.gameManager;
 
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
 import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.cameraManager.CameraManager;
@@ -10,13 +8,14 @@ import com.mygdx.game.developerOptions.QuickMenu;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.inputManager.InputManager;
 import com.mygdx.game.levelManager.Level;
+import com.mygdx.game.screenManager.ScreenUtils;
 import com.mygdx.game.uiManager.UIGameInfo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GameManager implements Screen {
+public class GameManager {
 	private final RPG game;
 	private AssetManager assetManager;
 	private CommandManager commandManager;
@@ -47,21 +46,14 @@ public class GameManager implements Screen {
 		devMenu = new QuickMenu(this);
 	}
 
-	@Override
-	public void render(float delta) {
-		updateEntities();
-		renderGame(delta);
-		detectCollisionsAndInteractions();
-	}
-
-	private void updateEntities() {
+	public void updateEntities() {
 		GameManagerUtils.updateEntitiesVisibility(level, cameraManager);
 		this.inputManager.update();
 		cameraManager.updateCameraPosition(level.getPlayer());
 	}
 
-	private void renderGame(float delta) {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
+	public void renderGame(float delta) {
+		ScreenUtils.clearScreen();
 		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		game.batch.begin();
 		draw();
@@ -75,14 +67,14 @@ public class GameManager implements Screen {
 		renderEntityHighlights();
 	}
 
-	private void renderDebug(float delta) {
+	public void renderDebug(float delta) {
 		if (isEntityDebug) {
 			renderEntityDebug();
 		}
 		devMenu.render(delta);
 	}
 
-	private void renderEntityDebug() {
+	public void renderEntityDebug() {
 		level.getPlayer().getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
 		level.getPlayer().drawDebug();
 		for (Entity entity : level.getCharacterList()) {
@@ -91,7 +83,7 @@ public class GameManager implements Screen {
 		}
 	}
 
-	private void renderEntityHighlights() {
+	public void renderEntityHighlights() {
 		for (Entity entity : level.getEntitiesInView()) {
 			if (entity.isHighlight()) {
 				entity.getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
@@ -100,60 +92,7 @@ public class GameManager implements Screen {
 		}
 	}
 
-	private void detectCollisionsAndInteractions() {
-		for (Entity entity : level.getCharacterList()) {
-			if (entity != level.getPlayer()) {
-				detectCollisionWithPlayer(entity);
-				detectInteractionWithPlayer(entity);
-			}
-		}
-	}
-
-	private void detectCollisionWithPlayer(Entity entity) {
-		if (level.getPlayer().collidesWith(entity)) {
-			// handle collision
-		}
-	}
-
-	private void detectInteractionWithPlayer(Entity entity) {
-		if (level.getPlayer().interactsWith(entity)) {
-			// handle interaction
-		}
-	}
-
 	public void draw() {
 		level.draw(game.batch);
-	}
-
-	@Override
-	public void show() {
-
-	}
-
-	@Override
-	public void dispose() {
-		game.batch.dispose();
-		game.font.dispose();
-		level.dispose();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-
-	}
-
-	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void hide() {
-
 	}
 }
