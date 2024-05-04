@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.gameManager.GameManager;
+import com.mygdx.game.levelManager.LevelEditorScreen;
 import com.mygdx.game.mainMenuManager.MainMenuScreen;
 import com.mygdx.game.utils.Keybindings;
 import lombok.Getter;
@@ -45,6 +46,9 @@ public class InputManager extends InputAdapter {
 
         if (Gdx.input.isKeyJustPressed(Keybindings.DEBUG_KEY)) {
             toggleDebug();
+        }
+        if (Gdx.input.isKeyJustPressed(Keybindings.LEVEL_EDITOR_KEY)) {
+            gameManager.getGame().setScreen(new LevelEditorScreen(gameManager.getGame()));
         }
 
         mouseOverEntity(Gdx.input.getX(), Gdx.input.getY());
