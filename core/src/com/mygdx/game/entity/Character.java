@@ -3,6 +3,7 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.aiManager.RandomWalkBehavior;
 import com.mygdx.game.enums.EntityTypeEnum;
 import com.mygdx.game.utils.Constants;
 import lombok.Getter;
@@ -18,6 +19,8 @@ public class Character extends Entity {
         this.setEntityTypeEnum(EntityTypeEnum.NPC);
         this.setInteractionRange(50);
         this.setCollisionRange(10);
+        this.setVelocity(2);
+        this.setEntityBehavior(new RandomWalkBehavior(this));
     }
 
     @Override
