@@ -15,7 +15,7 @@ public class RandomWalkBehavior implements EntityBehavior {
         this.target = new Vector2();
         this.waitUntil = 0;
         this.random = new Random();
-        this.target.set(entity.getPosition().getX() + random.nextFloat() * 640 - 320, entity.getPosition().getY() + random.nextFloat() * 640 - 320);
+        this.target.set(entity.getPosition().getX() + random.nextFloat() * 160 - 80, entity.getPosition().getY() + random.nextFloat() * 160 - 80);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class RandomWalkBehavior implements EntityBehavior {
 
         if (target.dst(entity.getPosition().getX(), entity.getPosition().getY()) < 1) {
             waitUntil = currentTime + 5000;
-            target.set(entity.getPosition().getX() + random.nextFloat() * 640 - 320, entity.getPosition().getY() + random.nextFloat() * 640 - 320);
+            target.set(entity.getPosition().getX() + random.nextFloat() * 160 - 80, entity.getPosition().getY() + random.nextFloat() * 160 - 80);
         } else {
             float dx = target.x - entity.getPosition().getX();
             float dy = target.y - entity.getPosition().getX();

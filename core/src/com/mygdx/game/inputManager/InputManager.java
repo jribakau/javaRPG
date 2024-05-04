@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.gameManager.GameManager;
-import com.mygdx.game.levelManager.LevelEditorScreen;
-import com.mygdx.game.mainMenuManager.MainMenuScreen;
+import com.mygdx.game.screenManager.LevelEditorScreen;
+import com.mygdx.game.screenManager.MainMenuScreen;
 import com.mygdx.game.utils.Keybindings;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +16,6 @@ import lombok.Setter;
 @Setter
 public class InputManager extends InputAdapter {
     private GameManager gameManager;
-
-    public InputManager(GameManager gameManager) {
-        this.gameManager = gameManager;
-    }
 
     public void update() {
         Player player = gameManager.getLevel().getPlayer();

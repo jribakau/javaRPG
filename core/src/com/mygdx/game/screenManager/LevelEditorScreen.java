@@ -1,9 +1,10 @@
-package com.mygdx.game.levelManager;
+package com.mygdx.game.screenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.RPG;
+import com.mygdx.game.levelManager.LevelEditor;
 
 public class LevelEditorScreen implements Screen {
     private final RPG game;

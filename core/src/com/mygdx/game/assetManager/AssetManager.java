@@ -20,10 +20,10 @@ public class AssetManager {
     private final Map<String, TextureRegion> monsterTextures;
     private final Map<String, TextureRegion> rogueTextures;
     private final List<List<Tile>> levels;
-    private final TextureUtils textureUtils;
+    private final AssetUtils textureUtils;
 
     public AssetManager() {
-        textureUtils = new TextureUtils();
+        textureUtils = new AssetUtils();
         animalTextures = textureUtils.importSpriteSheetsFromFile(Files.ANIMALS_TXT_PATH, Files.ANIMALS_IMG_PATH);
         itemTextures = textureUtils.importSpriteSheetsFromFile(Files.ITEMS_TXT_PATH, Files.ITEMS_IMG_PATH);
         tileTextures = textureUtils.importSpriteSheetsFromFile(Files.TILES_TXT_PATH, Files.TILES_IMG_PATH);
@@ -33,23 +33,23 @@ public class AssetManager {
     }
 
     public Texture getMonsterTextureByIndex(String textureName) {
-        return textureUtils.getTextureByIndex(textureName, monsterTextures);
+        return textureUtils.getTextureByName(textureName, monsterTextures);
     }
 
     public Texture getRogueTextureByIndex(String textureName) {
-        return textureUtils.getTextureByIndex(textureName, rogueTextures);
+        return textureUtils.getTextureByName(textureName, rogueTextures);
     }
 
     public Texture getAnimalTextureByIndex(String textureName) {
-        return textureUtils.getTextureByIndex(textureName, animalTextures);
+        return textureUtils.getTextureByName(textureName, animalTextures);
     }
 
     public Texture getTileTextureByIndex(String textureName) {
-        return textureUtils.getTextureByIndex(textureName, tileTextures);
+        return textureUtils.getTextureByName(textureName, tileTextures);
     }
 
     public Texture getItemTextureByIndex(String textureName) {
-        return textureUtils.getTextureByIndex(textureName, itemTextures);
+        return textureUtils.getTextureByName(textureName, itemTextures);
     }
 
     public Texture getRandomMonsterTexture() {

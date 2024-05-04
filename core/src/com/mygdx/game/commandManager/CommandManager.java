@@ -10,15 +10,19 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class CommandManager {
+    private GameManager gameManager;
     private final ArrayList<Command> commandList;
 
-    public CommandManager(GameManager gameManager) {
+    public CommandManager() {
         commandList = new ArrayList<>();
-        commandList.add(new RemoveEntityById(gameManager));
-        commandList.add(new LoadLevel1(gameManager));
-        commandList.add(new GenerateRandomTiles(gameManager));
-        commandList.add(new ToggleEntityDebugBox(gameManager));
-        commandList.add(new RemoveLastEntity(gameManager));
-        commandList.add(new AddEntityAtPlayerPosition(gameManager));
+    }
+
+    public void init() {
+        commandList.add(new RemoveEntityById(this.gameManager));
+        commandList.add(new LoadLevel1(this.gameManager));
+        commandList.add(new GenerateRandomTiles(this.gameManager));
+        commandList.add(new ToggleEntityDebugBox(this.gameManager));
+        commandList.add(new RemoveLastEntity(this.gameManager));
+        commandList.add(new AddEntityAtPlayerPosition(this.gameManager));
     }
 }

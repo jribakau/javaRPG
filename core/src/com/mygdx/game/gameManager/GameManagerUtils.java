@@ -18,4 +18,25 @@ public class GameManagerUtils {
         float offset = 30.0f;
         return cameraManager.getCamera().frustum.pointInFrustum(entity.getPosition().getX() + offset, entity.getPosition().getY() + offset, 0);
     }
+
+    public static void detectCollisionsAndInteractions(Level level) {
+        for (Entity entity : level.getCharacterList()) {
+            if (entity != level.getPlayer()) {
+                detectCollisionWithPlayer(entity, level);
+                detectInteractionWithPlayer(entity, level);
+            }
+        }
+    }
+
+    private static void detectCollisionWithPlayer(Entity entity, Level level) {
+        if (level.getPlayer().collidesWith(entity)) {
+            // handle collision
+        }
+    }
+
+    private static void detectInteractionWithPlayer(Entity entity, Level level) {
+        if (level.getPlayer().interactsWith(entity)) {
+            // handle interaction
+        }
+    }
 }

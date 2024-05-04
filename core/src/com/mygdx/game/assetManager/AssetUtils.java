@@ -15,7 +15,7 @@ import java.util.*;
 
 import static com.mygdx.game.utils.Constants.TEXTURE_SIZE_32x32;
 
-public class TextureUtils {
+public class AssetUtils {
     public Map<String, TextureRegion> importSpriteSheetsFromFile(String txtPath, String pngPath) {
         Map<String, TextureRegion> textures = new HashMap<>();
         Texture texture = new Texture(Gdx.files.internal(pngPath));
@@ -49,7 +49,7 @@ public class TextureUtils {
                 for (int col = 0; col < parts.length; col++) {
                     int index = Integer.parseInt(parts[col]);
                     String tileName = TileTypeNum.values()[index].name();
-                    Texture texture = getTextureByIndex(tileName, textures);
+                    Texture texture = getTextureByName(tileName, textures);
                     Tile tile = new Tile(col * Constants.TILE_WIDTH, row * Constants.TILE_HEIGHT, texture);
                     tiles.add(tile);
                 }
@@ -90,7 +90,7 @@ public class TextureUtils {
         return textureRegionToTexture(new ArrayList<>(textures.values()).get(randomIndex));
     }
 
-    public Texture getTextureByIndex(String textureName, Map<String, TextureRegion> textures) {
+    public Texture getTextureByName(String textureName, Map<String, TextureRegion> textures) {
         if (textures == null || textures.isEmpty()) {
             return null;
         }
