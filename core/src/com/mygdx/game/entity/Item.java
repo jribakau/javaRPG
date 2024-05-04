@@ -10,7 +10,7 @@ public class Item extends Entity {
 
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(getTexture(), getX(), getY(), getWidth(), getHeight());
+        batch.draw(getTexture(), getPosition().getX(), getPosition().getY(), getPosition().getWidth(), getPosition().getHeight());
     }
 
     @Override

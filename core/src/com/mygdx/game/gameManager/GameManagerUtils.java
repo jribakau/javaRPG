@@ -16,6 +16,6 @@ public class GameManagerUtils {
 
     private static boolean calculateVisibility(Entity entity, CameraManager cameraManager) {
         float offset = 30.0f;
-        return cameraManager.getCamera().frustum.pointInFrustum(entity.getX() + offset, entity.getY() + offset, 0);
+        return cameraManager.getCamera().frustum.pointInFrustum(entity.getPosition().getX() + offset, entity.getPosition().getY() + offset, 0);
     }
 }
