@@ -11,9 +11,12 @@ import com.mygdx.game.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public abstract class Entity {
+    private UUID id;
     private float velocity;
     private float acceleration;
     private float maxVelocity;
@@ -31,6 +34,7 @@ public abstract class Entity {
     private boolean highlight = false;
 
     public Entity(Rectangle position) {
+        this.id = UUID.randomUUID();
         this.position = position;
         this.collisionBox = new Rectangle();
         this.interactionBox = new Rectangle();

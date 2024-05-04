@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.RPG;
 import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.cameraManager.CameraManager;
+import com.mygdx.game.commandManager.CommandManager;
 import com.mygdx.game.developerOptions.QuickMenu;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.inputManager.InputManager;
@@ -20,6 +21,7 @@ public class GameManager implements Screen {
 	private final RPG game;
 	private Level level;
 	private UIGameInfo uiGameInfo;
+	private CommandManager commandManager;
 
 	private CameraManager cameraManager;
 	private InputManager inputManager;
@@ -29,6 +31,7 @@ public class GameManager implements Screen {
 	private boolean isEntityDebug = false;
 
     public GameManager(final RPG game) {
+		commandManager = new CommandManager(this);
 		assetManager = new AssetManager();
 		this.game = game;
 		cameraManager = new CameraManager();
