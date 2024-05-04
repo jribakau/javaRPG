@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.aiManager.EntityBehavior;
 import com.mygdx.game.enums.EntityTypeEnum;
 import com.mygdx.game.utils.Utils;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public abstract class Entity {
     private ShapeRenderer shapeRenderer;
     private Boolean isVisible;
     private EntityTypeEnum entityTypeEnum;
+    private EntityBehavior entityBehavior;
 
     public Entity(Rectangle position) {
         this.position = position;

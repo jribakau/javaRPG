@@ -45,6 +45,7 @@ public class Level {
             }
         }
         for (Entity entity : characterList) {
+            entity.getEntityBehavior().update(entity);
             if (entity.getIsVisible()) {
                 entity.draw(batch);
             }
