@@ -18,7 +18,7 @@ public class Character extends Entity {
         this.setName("Character");
         this.setEntityTypeEnum(EntityTypeEnum.NPC);
         this.setInteractionRange(50);
-        this.setCollisionRange(10);
+        this.setCollisionRange(5);
         this.setVelocity(2);
         this.setEntityBehavior(new RandomWalkBehavior(this));
     }
