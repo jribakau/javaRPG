@@ -28,4 +28,9 @@ public class Tile extends Entity {
     public void drawHighlight() {
         renderHighlight();
     }
+
+    @Override
+    public void update() {
+
+    }
 }

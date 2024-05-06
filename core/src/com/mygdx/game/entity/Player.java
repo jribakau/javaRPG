@@ -41,6 +41,11 @@ public class Player extends Entity {
         renderHighlight();
     }
 
+    @Override
+    public void update() {
+
+    }
+
     public void move(float dx, float dy) {
         calculateMovement(dx, dy);
     }
