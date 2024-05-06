@@ -19,7 +19,7 @@ public class Player extends Entity {
         this.setName("Player");
         this.setEntityTypeEnum(EntityTypeEnum.PLAYER);
         this.setInteractionRange(50);
-        this.setCollisionRange(10);
+        this.setCollisionRange(5);
         this.setVelocity(0);
         this.setAcceleration(1);
         this.setMaxVelocity(5);

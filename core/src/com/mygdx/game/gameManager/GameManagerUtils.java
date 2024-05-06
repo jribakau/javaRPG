@@ -5,6 +5,8 @@ import com.mygdx.game.cameraManager.CameraManager;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.levelManager.Level;
 
+import java.util.List;
+
 public class GameManagerUtils {
 
     public static void updateEntitiesVisibility(Level level, CameraManager cameraManager){
@@ -22,24 +24,27 @@ public class GameManagerUtils {
     }
 
     public static void detectCollisionsAndInteractions(Level level) {
-        for (int i = 0; i < level.getCharacterList().size(); i++) {
-            Entity entity1 = level.getCharacterList().get(i);
-            for (int j = i + 1; j < level.getCharacterList().size(); j++) {
-                Entity entity2 = level.getCharacterList().get(j);
+        List<Entity> entitiesInView = level.getEntitiesInView();
+
+        for (Entity entity1 : entitiesInView) {
+            for (Entity entity2 : entitiesInView) {
+                if (entity1 == entity2) {
+                    continue;
+                }
                 if (entity1.collidesWith(entity2)) {
-                     resolveCollision(entity1, entity2);
+                    resolveCollision(entity1, entity2);
                 }
             }
         }
 
         Entity player = level.getPlayer();
-        for (Entity entity : level.getCharacterList()) {
+        for (Entity entity : entitiesInView) {
             if (player.collidesWith(entity)) {
                 resolveCollision(player, entity);
             }
         }
 
-        for (Entity entity : level.getCharacterList()) {
+        for (Entity entity : entitiesInView) {
             detectInteractionWithPlayer(entity, level);
         }
     }
