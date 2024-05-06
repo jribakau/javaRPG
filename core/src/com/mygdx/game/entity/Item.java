@@ -23,4 +23,9 @@ public class Item extends Entity {
     public void drawHighlight() {
         renderHighlight();
     }
+
+    @Override
+    public void update() {
+
+    }
 }

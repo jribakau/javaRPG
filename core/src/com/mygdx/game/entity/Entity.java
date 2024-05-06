@@ -80,6 +80,11 @@ public abstract class Entity {
         interactionBox.set(position.x - interactionRange, position.y - interactionRange, position.width + interactionRange * 2, position.height + interactionRange * 2);
     }
 
+    public void updateCollisionAndInteractionBoxes() {
+        updateCollisionBox();
+        updateInteractionBox();
+    }
+
     public void renderCollisionBox() {
         renderBox(Color.RED, collisionBox);
     }
@@ -104,6 +109,8 @@ public abstract class Entity {
     public abstract void drawDebug();
 
     public abstract void drawHighlight();
+
+    public abstract void update();
 
     public void dispose() {
         if (shapeRenderer != null) {

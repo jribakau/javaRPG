@@ -41,4 +41,9 @@ public class Character extends Entity {
     public void drawHighlight() {
         renderHighlight();
     }
+
+    @Override
+    public void update() {
+
+    }
 }
