@@ -58,7 +58,7 @@ public class InputManager extends InputAdapter {
     }
 
     private void toggleDebug() {
-        gameManager.setDebug(!gameManager.isDebug());
+        gameManager.setDevMenuOpen(!gameManager.isDevMenuOpen());
     }
 
     public void mouseOverEntity(int screenX, int screenY) {
