@@ -41,7 +41,7 @@ public class QuickMenu implements Screen {
 
     @Override
     public void render(float delta) {
-        stage.act(delta);
+        stage.act();
         stage.draw();
     }
 

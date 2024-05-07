@@ -5,10 +5,9 @@ import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.cameraManager.CameraManager;
 import com.mygdx.game.commandManager.CommandManager;
 import com.mygdx.game.developerOptions.QuickMenu;
-import com.mygdx.game.entity.Entity;
 import com.mygdx.game.inputManager.InputManager;
 import com.mygdx.game.levelManager.Level;
-import com.mygdx.game.screenManager.ScreenUtils;
+import com.mygdx.game.renderingManager.RenderingManager;
 import com.mygdx.game.uiManager.UIGameInfo;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,7 @@ public class GameManager {
 	private UIGameInfo uiGameInfo;
 
 	QuickMenu devMenu;
-	private boolean isDebug = false;
+	private boolean isDevMenuOpen = false;
 	private boolean isEntityDebug = false;
 
     public GameManager(final RPG game, AssetManager assetManager, CommandManager commandManager, CameraManager cameraManager, InputManager inputManager) {
@@ -53,46 +52,13 @@ public class GameManager {
 	}
 
 	public void renderGame(float delta) {
-		ScreenUtils.clearScreen();
-		game.batch.setProjectionMatrix(cameraManager.getCamera().combined);
-		game.batch.begin();
-		draw();
-		uiGameInfo.draw();
-		game.batch.end();
-
-		if (isDebug) {
-			renderDebug(delta);
+		RenderingManager.renderGame(getGame().getBatch(), level, uiGameInfo, isEntityDebug, getCameraManager().getCamera());
+		if (isDevMenuOpen) {
+			renderDevMenu(delta);
 		}
-
-		renderEntityHighlights();
 	}
 
-	public void renderDebug(float delta) {
-		if (isEntityDebug) {
-			renderEntityDebug();
-		}
+	public void renderDevMenu(float delta) {
 		devMenu.render(delta);
-	}
-
-	public void renderEntityDebug() {
-		level.getPlayer().getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
-		level.getPlayer().drawDebug();
-		for (Entity entity : level.getCharacterList()) {
-			entity.getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
-			entity.drawDebug();
-		}
-	}
-
-	public void renderEntityHighlights() {
-		for (Entity entity : level.getEntitiesInView()) {
-			if (entity.isHighlight()) {
-				entity.getShapeRenderer().setProjectionMatrix(cameraManager.getCamera().combined);
-				entity.drawHighlight();
-			}
-		}
-	}
-
-	public void draw() {
-		level.draw(game.batch);
 	}
 }

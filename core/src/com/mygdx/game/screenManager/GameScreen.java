@@ -1,7 +1,8 @@
-package com.mygdx.game.gameManager;
+package com.mygdx.game.screenManager;
 
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.RPG;
+import com.mygdx.game.gameManager.GameManagerUtils;
 
 public class GameScreen implements Screen {
     private final RPG game;
