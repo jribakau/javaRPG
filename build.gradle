@@ -79,5 +79,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         compileOnly 'org.projectlombok:lombok:1.18.32'
         annotationProcessor 'org.projectlombok:lombok:1.18.32'
+        implementation 'com.google.code.gson:gson:2.10.1'
     }
 }
