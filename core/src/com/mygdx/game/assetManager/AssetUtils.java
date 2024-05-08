@@ -4,13 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mygdx.game.entity.Character;
 import com.mygdx.game.entity.Tile;
+import com.mygdx.game.enums.EntityTypeEnum;
 import com.mygdx.game.enums.TileTypeNum;
 import com.mygdx.game.utils.Constants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.*;
 
 import static com.mygdx.game.utils.Constants.TEXTURE_SIZE_32x32;
@@ -27,7 +32,7 @@ public class AssetUtils {
                 }
                 String[] parts = line.split("\\.");
                 int row = Integer.parseInt(parts[0]) - 1;
-                int col = Character.toLowerCase(parts[1].charAt(0)) - 'a';
+                int col = java.lang.Character.toLowerCase(parts[1].charAt(0)) - 'a';
                 String animalName = parts[2].trim();
                 TextureRegion animalTexture = new TextureRegion(texture, col * TEXTURE_SIZE_32x32, row * TEXTURE_SIZE_32x32, TEXTURE_SIZE_32x32, TEXTURE_SIZE_32x32);
                 textures.put(animalName, animalTexture);
@@ -59,6 +64,29 @@ public class AssetUtils {
             e.printStackTrace();
         }
         return tiles;
+    }
+
+    public List<Character> importCharactersFromFile(String jsonPath, Map<String, TextureRegion> textures) {
+        List<Character> characters = new ArrayList<>();
+
+        try {
+            String json = Gdx.files.internal(jsonPath).readString();
+            Type type = new TypeToken<Map<String, Map<String, String>>>(){}.getType();
+            Map<String, Map<String, String>> data = new Gson().fromJson(json, type);
+
+            for (Map<String, String> characterData : data.values()) {
+                String textureName = characterData.get("texture");
+                Texture texture = getTextureByName(textureName, textures);
+                Character character = new Character(0, 0, texture);
+                character.setName(characterData.get("name"));
+                character.setEntityTypeEnum(EntityTypeEnum.valueOf(characterData.get("entityType")));
+                characters.add(character);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return characters;
     }
 
     public Texture textureRegionToTexture(TextureRegion region) {

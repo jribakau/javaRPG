@@ -1,0 +1,13 @@
+{
+  "joe": {
+    "name": "JoeDanger",
+    "entityType": "NPC",
+    "texture": "ORC_WIZARD"
+  },
+
+  "jane": {
+      "name": "JaneDanger",
+      "entityType": "NPC",
+      "texture": "ORC_WIZARD"
+  }
+}
