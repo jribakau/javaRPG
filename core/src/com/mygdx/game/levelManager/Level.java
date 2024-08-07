@@ -4,6 +4,7 @@ import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.entity.Character;
 import com.mygdx.game.entity.*;
 import com.mygdx.game.enums.RogueTypeEnum;
+import com.mygdx.game.enums.TextureTypeEnum;
 import com.mygdx.game.utils.Constants;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class Level {
     private AssetManager assetManager;
 
     public Level(AssetManager assetManager) {
-        this.player = new Player(0, 0, assetManager.getRogueTextureByIndex(RogueTypeEnum.FEMALE_WIZARD.name()));
+        this.player = new Player(0, 0, assetManager.getTextureByIndex(TextureTypeEnum.ROGUE, RogueTypeEnum.FEMALE_WIZARD.name()));
         this.characterList = new ArrayList<>();
         this.tileList = new ArrayList<>();
         this.itemList = new ArrayList<>();
@@ -51,7 +52,7 @@ public class Level {
     public void generateLevel() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                Tile tile = new Tile(i * Constants.TILE_WIDTH, j * Constants.TILE_HEIGHT, assetManager.getRandomTileTexture());
+                Tile tile = new Tile(i * Constants.TILE_WIDTH, j * Constants.TILE_HEIGHT, assetManager.getRandomTexture(TextureTypeEnum.TILE));
                 tileList.add(tile);
             }
         }

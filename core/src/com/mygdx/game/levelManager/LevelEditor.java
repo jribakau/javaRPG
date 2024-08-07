@@ -3,6 +3,7 @@ package com.mygdx.game.levelManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.assetManager.AssetManager;
 import com.mygdx.game.entity.Tile;
+import com.mygdx.game.enums.TextureTypeEnum;
 import com.mygdx.game.utils.Constants;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class LevelEditor {
     }
 
     public void selectTile(String textureName) {
-        this.selectedTile = new Tile(0, 0, assetManager.getTileTextureByIndex(textureName));
+        this.selectedTile = new Tile(0, 0, assetManager.getTextureByIndex(TextureTypeEnum.TILE, textureName));
     }
 
     public void placeTile(int x, int y) {
