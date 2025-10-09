@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GameManagerUtils {
 
-    public static void updateEntitiesVisibility(Level level, CameraManager cameraManager){
+    public static void updateEntitiesVisibility(Level level, CameraManager cameraManager) {
         for (Entity entity : level.getCharacterList()) {
             entity.setIsVisible(calculateVisibility(entity, cameraManager));
         }

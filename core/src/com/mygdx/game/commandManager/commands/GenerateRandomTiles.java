@@ -2,19 +2,16 @@ package com.mygdx.game.commandManager.commands;
 
 import com.mygdx.game.commandManager.Command;
 import com.mygdx.game.enums.CommandEnum;
-import com.mygdx.game.gameManager.GameManager;
+import com.mygdx.game.events.level.GenerateRandomTilesEvent;
 
 public class GenerateRandomTiles extends Command {
-    private final GameManager gameManager;
 
-    public GenerateRandomTiles(GameManager gameManager) {
-        super(gameManager, CommandEnum.GENERATE_RANDOM_TILES);
-        this.gameManager = gameManager;
+    public GenerateRandomTiles() {
+        super(CommandEnum.GENERATE_RANDOM_TILES);
     }
 
     @Override
     public void execute() {
-        gameManager.getLevel().getTileList().clear();
-        gameManager.getLevel().generateLevel();
+        eventBus.publish(new GenerateRandomTilesEvent());
     }
 }

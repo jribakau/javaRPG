@@ -43,8 +43,7 @@ public class UIGameInfo {
 
     public void updateLabels() {
         for (UIElement element : elements) {
-            if (element instanceof UILabel) {
-                UILabel label = (UILabel) element;
+            if (element instanceof UILabel label) {
                 if (label.getText().contains("Velocity")) {
                     label.setText("Velocity: " + gameManager.getLevel().getPlayer().getVelocity());
                 }

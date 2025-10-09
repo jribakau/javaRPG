@@ -2,19 +2,16 @@ package com.mygdx.game.commandManager.commands;
 
 import com.mygdx.game.commandManager.Command;
 import com.mygdx.game.enums.CommandEnum;
-import com.mygdx.game.gameManager.GameManager;
+import com.mygdx.game.events.level.LoadLevelEvent;
 
 public class LoadLevel1 extends Command {
-    private final GameManager gameManager;
 
-    public LoadLevel1(GameManager gameManager) {
-        super(gameManager, CommandEnum.LOAD_LEVEL_1);
-        this.gameManager = gameManager;
+    public LoadLevel1() {
+        super(CommandEnum.LOAD_LEVEL_1);
     }
 
     @Override
     public void execute() {
-        gameManager.getLevel().clearTileList();
-        gameManager.getLevel().setTileList(gameManager.getAssetManager().getLevels().get(0));
+        eventBus.publish(new LoadLevelEvent(0));
     }
 }

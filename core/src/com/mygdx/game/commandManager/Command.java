@@ -1,18 +1,18 @@
 package com.mygdx.game.commandManager;
 
 import com.mygdx.game.enums.CommandEnum;
-import com.mygdx.game.gameManager.GameManager;
+import com.mygdx.game.events.EventBus;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public abstract class Command {
-    private final GameManager gameManager;
+    protected final EventBus eventBus;
     private final CommandEnum commandName;
 
-    public Command(GameManager gameManager, CommandEnum commandName) {
-        this.gameManager = gameManager;
+    public Command(CommandEnum commandName) {
+        this.eventBus = EventBus.getInstance();
         this.commandName = commandName;
     }
 

@@ -1,7 +1,7 @@
 package com.mygdx.game.commandManager;
 
 import com.mygdx.game.commandManager.commands.*;
-import com.mygdx.game.gameManager.GameManager;
+import com.mygdx.game.events.EventBus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,19 +10,25 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class CommandManager {
-    private GameManager gameManager;
+    private final EventBus eventBus;
     private final ArrayList<Command> commandList;
 
     public CommandManager() {
+        this.eventBus = EventBus.getInstance();
         commandList = new ArrayList<>();
     }
 
     public void init() {
-        commandList.add(new RemoveEntityById(this.gameManager));
-        commandList.add(new LoadLevel1(this.gameManager));
-        commandList.add(new GenerateRandomTiles(this.gameManager));
-        commandList.add(new ToggleEntityDebugBox(this.gameManager));
-        commandList.add(new RemoveLastEntity(this.gameManager));
-        commandList.add(new AddEntityAtPlayerPosition(this.gameManager));
+        commandList.add(new RemoveEntityById());
+        commandList.add(new LoadLevel1());
+        commandList.add(new GenerateRandomTiles());
+        commandList.add(new ToggleEntityDebugBox());
+        commandList.add(new RemoveLastEntity());
+        commandList.add(new AddEntityAtPlayerPosition());
+
+        commandList.add(new PrintEventStats());
+        commandList.add(new ClearEventLog());
+        commandList.add(new ToggleEventLogging());
     }
+
 }
