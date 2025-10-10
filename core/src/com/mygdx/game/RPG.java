@@ -15,6 +15,7 @@ import com.mygdx.game.input.InputService;
 import com.mygdx.game.state.GameStateManager;
 import com.mygdx.game.state.MenuState;
 import com.mygdx.game.systems.*;
+import com.mygdx.game.ui.UIService;
 import com.mygdx.game.world.MapLoader;
 
 /**
@@ -50,6 +51,10 @@ public class RPG extends Game {
         // Initialize and register Render Service
         RenderService renderService = new RenderService(batch);
         ServiceLocator.provide(RenderService.class, renderService);
+
+        // Initialize and register UI Service
+        UIService uiService = new UIService();
+        ServiceLocator.provide(UIService.class, uiService);
 
         // Initialize and register Asset Manager
         AssetManager assetManager = new AssetManager();
@@ -110,6 +115,11 @@ public class RPG extends Game {
             ServiceLocator.get(CameraService.class).resize(width, height);
         }
 
+        // Notify UI service about resize
+        if (ServiceLocator.has(UIService.class)) {
+            ServiceLocator.get(UIService.class).resize(width, height);
+        }
+
         // Notify state manager about resize
         if (gameStateManager != null) {
             gameStateManager.resize(width, height);
@@ -131,6 +141,10 @@ public class RPG extends Game {
         }
 
         // Dispose services that need cleanup
+        if (ServiceLocator.has(UIService.class)) {
+            ServiceLocator.get(UIService.class).dispose();
+        }
+
         if (ServiceLocator.has(RenderService.class)) {
             ServiceLocator.get(RenderService.class).dispose();
         }
