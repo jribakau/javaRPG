@@ -8,10 +8,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.benchmark.EntityServiceBenchmarks;
 import com.mygdx.game.core.ServiceLocator;
+import com.mygdx.game.state.GameStateManager;
+import com.mygdx.game.state.MenuState;
 
 /**
  * BenchmarkScreen - Screen for running performance benchmarks
  * Press SPACE to run benchmarks
+ *
+ * NOTE: This is a legacy Screen, not a GameState (for now)
+ * TODO: Convert to BenchmarkState for consistency
  */
 public class BenchmarkScreen implements Screen {
     private final SpriteBatch batch;
@@ -28,7 +33,7 @@ public class BenchmarkScreen implements Screen {
     public void show() {
         Gdx.app.log("BenchmarkScreen", "Benchmark screen ready");
         Gdx.app.log("BenchmarkScreen", "Press SPACE to run EntityService benchmarks");
-        Gdx.app.log("BenchmarkScreen", "Press ESC to return to game");
+        Gdx.app.log("BenchmarkScreen", "Press ESC to return to menu");
     }
 
     @Override
@@ -43,9 +48,9 @@ public class BenchmarkScreen implements Screen {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            // Return to game
-            ServiceLocator.get(com.mygdx.game.core.GameContext.class)
-                .setScreen(new GameScreen());
+            // Return to menu using state manager
+            GameStateManager stateManager = ServiceLocator.get(GameStateManager.class);
+            stateManager.changeState(new MenuState(stateManager));
         }
 
         // Draw UI
@@ -53,7 +58,7 @@ public class BenchmarkScreen implements Screen {
 
         font.draw(batch, "BENCHMARK SCREEN", 10, 590);
         font.draw(batch, "Press SPACE to run EntityService benchmarks", 10, 560);
-        font.draw(batch, "Press ESC to return to game", 10, 540);
+        font.draw(batch, "Press ESC to return to menu", 10, 540);
 
         if (benchmarksRunning) {
             font.draw(batch, "Running benchmarks... check console", 10, 500);
@@ -106,4 +111,3 @@ public class BenchmarkScreen implements Screen {
         font.dispose();
     }
 }
-

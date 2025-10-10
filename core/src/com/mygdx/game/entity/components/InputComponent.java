@@ -16,4 +16,10 @@ public class InputComponent extends Component {
     public InputComponent() {
         this.enabled = true;
     }
+
+    @Override
+    public void update(float delta) {
+        // Input processing is now handled by InputSystem
+        // This component is just a marker
+    }
 }

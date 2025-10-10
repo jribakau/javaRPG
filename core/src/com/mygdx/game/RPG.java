@@ -12,7 +12,8 @@ import com.mygdx.game.core.services.WorldService;
 import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityService;
 import com.mygdx.game.input.InputService;
-import com.mygdx.game.screens.GameScreen;
+import com.mygdx.game.state.GameStateManager;
+import com.mygdx.game.state.MenuState;
 import com.mygdx.game.systems.*;
 import com.mygdx.game.world.MapLoader;
 
@@ -22,6 +23,7 @@ import com.mygdx.game.world.MapLoader;
  */
 public class RPG extends Game {
     private SpriteBatch batch;
+    private GameStateManager gameStateManager;
 
     @Override
     public void create() {
@@ -79,27 +81,38 @@ public class RPG extends Game {
         systemManager.addSystem(new RenderSystem(entityService));
         ServiceLocator.provide(SystemManager.class, systemManager);
 
+        // Initialize Game State Manager
+        gameStateManager = new GameStateManager();
+        ServiceLocator.provide(GameStateManager.class, gameStateManager);
+
         Gdx.app.log("RPG", "All services registered: " + ServiceLocator.getServiceCount() + " services");
         Gdx.app.log("RPG", "Systems initialized: " + systemManager.getSystemCount() + " systems");
 
-        // Set initial screen
-        setScreen(new GameScreen());
+        // Set initial state (Menu)
+        gameStateManager.setInitialState(new MenuState(gameStateManager));
 
         Gdx.app.log("RPG", "Game initialized successfully");
     }
 
     @Override
     public void render() {
-        super.render(); // Delegates to current screen's render method
+        float delta = Gdx.graphics.getDeltaTime();
+
+        // Update and render through state manager
+        gameStateManager.update(delta);
+        gameStateManager.render(delta);
     }
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
-
         // Notify camera service about resize
         if (ServiceLocator.has(CameraService.class)) {
             ServiceLocator.get(CameraService.class).resize(width, height);
+        }
+
+        // Notify state manager about resize
+        if (gameStateManager != null) {
+            gameStateManager.resize(width, height);
         }
     }
 
@@ -107,14 +120,17 @@ public class RPG extends Game {
     public void dispose() {
         Gdx.app.log("RPG", "Disposing game resources...");
 
-        if (getScreen() != null) {
-            getScreen().dispose();
+        // Dispose state manager
+        if (gameStateManager != null) {
+            gameStateManager.dispose();
         }
 
+        // Dispose system manager
         if (ServiceLocator.has(SystemManager.class)) {
             ServiceLocator.get(SystemManager.class).dispose();
         }
 
+        // Dispose services that need cleanup
         if (ServiceLocator.has(RenderService.class)) {
             ServiceLocator.get(RenderService.class).dispose();
         }
@@ -131,10 +147,12 @@ public class RPG extends Game {
             ServiceLocator.get(EntityService.class).clear();
         }
 
+        // Dispose core resources
         if (batch != null) {
             batch.dispose();
         }
 
+        // Cleanup service locator
         ServiceLocator.dispose();
 
         Gdx.app.log("RPG", "Game disposed");
