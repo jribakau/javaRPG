@@ -1,127 +1,75 @@
 package com.mygdx.game.entity;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.game.aiManager.EntityBehavior;
-import com.mygdx.game.enums.EntityTypeEnum;
-import com.mygdx.game.utils.Utils;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
+/**
+ * Entity - Represents any game object (player, NPC, item, etc.)
+ * Uses Component-based design for maximum flexibility
+ */
 @Getter
 @Setter
-public abstract class Entity {
-    private UUID id;
-    private float velocity;
-    private float acceleration;
-    private float maxVelocity;
-    private float collisionRange;
-    private float interactionRange;
-    private Rectangle position;
-    private final Rectangle collisionBox;
-    private final Rectangle interactionBox;
-    private String name;
-    private Texture texture;
-    private ShapeRenderer shapeRenderer;
-    private Boolean isVisible;
-    private EntityTypeEnum entityTypeEnum;
-    private EntityBehavior entityBehavior;
-    private boolean highlight = false;
+public class Entity {
+    private static int nextId = 0;
 
-    public Entity(Rectangle position) {
-        this.id = UUID.randomUUID();
-        this.position = position;
-        this.collisionBox = new Rectangle();
-        this.interactionBox = new Rectangle();
-        this.shapeRenderer = new ShapeRenderer();
-        updateCollisionBox();
-        updateInteractionBox();
+    private final int id;
+    private final ObjectMap<Class<? extends Component>, Component> components;
+    private boolean active;
+
+    public Entity() {
+        this.id = nextId++;
+        this.components = new ObjectMap<>();
+        this.active = true;
     }
 
-    public void updatePosition(float x, float y) {
-        position.x = (this.position.x + x * getVelocity());
-        position.y = (this.position.y + y * getVelocity());
-        updateCollisionBox();
-        updateInteractionBox();
+    /**
+     * Add a component to this entity
+     */
+    public <T extends Component> Entity addComponent(T component) {
+        components.put(component.getClass(), component);
+        component.setEntity(this);
+        return this;
     }
 
-    public void calculateMovement(float dx, float dy) {
-        float length = Utils.normalize(dx, dy);
-        if (length > 0) {
-            dx = dx / length;
-            dy = dy / length;
+    /**
+     * Get a component of specific type
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends Component> T getComponent(Class<T> componentClass) {
+        return (T) components.get(componentClass);
+    }
+
+    /**
+     * Check if entity has a specific component
+     */
+    public <T extends Component> boolean hasComponent(Class<T> componentClass) {
+        return components.containsKey(componentClass);
+    }
+
+    /**
+     * Remove a component from this entity
+     */
+    public <T extends Component> void removeComponent(Class<T> componentClass) {
+        components.remove(componentClass);
+    }
+
+    /**
+     * Get all components
+     */
+    public Array<Component> getAllComponents() {
+        return components.values().toArray();
+    }
+
+    /**
+     * Update all components
+     */
+    public void update(float delta) {
+        if (!active) return;
+
+        for (Component component : components.values()) {
+            component.update(delta);
         }
-        if (dx != 0 || dy != 0) {
-            if (getVelocity() < getMaxVelocity()) {
-                setVelocity(getVelocity() + getAcceleration());
-            }
-        }
-        updatePosition(dx, dy);
-    }
-
-    public boolean collidesWith(Entity other) {
-        return collisionBox.overlaps(other.collisionBox);
-    }
-
-    public boolean interactsWith(Entity other) {
-        return interactionBox.overlaps(other.interactionBox);
-    }
-
-    private void updateCollisionBox() {
-        collisionBox.set(position.x - collisionRange, position.y - collisionRange, position.width + collisionRange * 2, position.height + collisionRange * 2);
-    }
-
-    private void updateInteractionBox() {
-        interactionBox.set(position.x - interactionRange, position.y - interactionRange, position.width + interactionRange * 2, position.height + interactionRange * 2);
-    }
-
-    public void updateCollisionAndInteractionBoxes() {
-        updateCollisionBox();
-        updateInteractionBox();
-    }
-
-    public void renderCollisionBox() {
-        renderBox(Color.RED, collisionBox);
-    }
-
-    public void renderInteractionBox() {
-        renderBox(Color.GREEN, interactionBox);
-    }
-
-    public void renderHighlight() {
-        renderBox(Color.BLUE, position);
-    }
-
-    private void renderBox(Color color, Rectangle box) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(color);
-        shapeRenderer.rect(box.x, box.y, box.width, box.height);
-        shapeRenderer.end();
-    }
-
-    public abstract void draw(SpriteBatch batch);
-
-    public abstract void drawDebug();
-
-    public abstract void drawHighlight();
-
-    public abstract void update();
-
-    public void dispose() {
-        if (shapeRenderer != null) {
-            shapeRenderer.dispose();
-        }
-        if (texture != null) {
-            texture.dispose();
-        }
-    }
-
-    public boolean containsPoint(float x, float y) {
-        return position.contains(x, y);
     }
 }

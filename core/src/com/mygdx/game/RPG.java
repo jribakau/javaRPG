@@ -1,49 +1,69 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.assetManager.AssetManager;
-import com.mygdx.game.cameraManager.CameraManager;
-import com.mygdx.game.commandManager.CommandManager;
-import com.mygdx.game.gameManager.GameManager;
-import com.mygdx.game.inputManager.InputManager;
-import com.mygdx.game.screenManager.MainMenuScreen;
-import lombok.Getter;
-import lombok.Setter;
+import com.mygdx.game.core.GameContext;
+import com.mygdx.game.core.ServiceLocator;
+import com.mygdx.game.screens.GameScreen;
 
-@Getter
-@Setter
+/**
+ * Main Game Class - Entry point for the RPG game
+ * Follows a clean architecture with ServiceLocator pattern for dependency management
+ */
 public class RPG extends Game {
-    public SpriteBatch batch;
-    public BitmapFont font;
+    private SpriteBatch batch;
+    private GameContext gameContext;
 
-    private GameManager gameManager;
-    private AssetManager assetManager;
-    private CommandManager commandManager;
-    private CameraManager cameraManager;
-    private InputManager inputManager;
-
+    @Override
     public void create() {
+        Gdx.app.log("RPG", "Initializing game...");
+
+        // Initialize core rendering components
         batch = new SpriteBatch();
-        font = new BitmapFont();
 
-        assetManager = new AssetManager();
-        commandManager = new CommandManager();
-        cameraManager = new CameraManager();
-        inputManager = new InputManager();
+        // Initialize service locator (dependency injection container)
+        ServiceLocator.initialize();
 
-        gameManager = new GameManager(this, assetManager, commandManager, cameraManager, inputManager);
+        // Create game context (holds shared game state and services)
+        gameContext = new GameContext(this, batch);
 
-        this.setScreen(new MainMenuScreen(this));
+        // Register core services
+        ServiceLocator.registerGameContext(gameContext);
+
+        // Set initial screen
+        setScreen(new GameScreen());
+
+        Gdx.app.log("RPG", "Game initialized successfully");
     }
 
+    @Override
     public void render() {
-        super.render();
+        super.render(); // Delegates to current screen's render method
     }
 
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+    }
+
+    @Override
     public void dispose() {
-        batch.dispose();
-        font.dispose();
+        Gdx.app.log("RPG", "Disposing game resources...");
+
+        // Dispose current screen
+        if (getScreen() != null) {
+            getScreen().dispose();
+        }
+
+        // Dispose core resources
+        if (batch != null) {
+            batch.dispose();
+        }
+
+        // Cleanup service locator
+        ServiceLocator.dispose();
+
+        Gdx.app.log("RPG", "Game disposed");
     }
 }
