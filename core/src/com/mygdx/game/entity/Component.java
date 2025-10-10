@@ -1,25 +1,23 @@
 package com.mygdx.game.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Component - Base class for all entity components
  * Components hold data and optionally behavior
  */
+@Setter
+@Getter
 public abstract class Component {
+    /**
+     * -- GETTER --
+     *  Get the entity this component belongs to
+     * -- SETTER --
+     *  Set the entity this component belongs to
+
+     */
     protected Entity entity;
-
-    /**
-     * Set the entity this component belongs to
-     */
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-
-    /**
-     * Get the entity this component belongs to
-     */
-    public Entity getEntity() {
-        return entity;
-    }
 
     /**
      * Update this component (override if needed)

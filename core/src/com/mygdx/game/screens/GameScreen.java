@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.assets.AnimalType;
+import com.mygdx.game.assets.CharacterType;
+import com.mygdx.game.assets.MonsterType;
 import com.mygdx.game.core.GameContext;
 import com.mygdx.game.core.ServiceLocator;
 import com.mygdx.game.entity.Entity;
+import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityManager;
 import com.mygdx.game.entity.components.MovementComponent;
 import com.mygdx.game.entity.components.PositionComponent;
@@ -25,6 +29,7 @@ public class GameScreen implements Screen {
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final EntityManager entityManager;
+    private final EntityFactory entityFactory;
     private final ShapeRenderer shapeRenderer;
 
     private Entity player;
@@ -34,24 +39,46 @@ public class GameScreen implements Screen {
         this.batch = context.getBatch();
         this.font = new BitmapFont();
         this.entityManager = context.getEntityManager();
+        this.entityFactory = context.getEntityFactory();
         this.shapeRenderer = new ShapeRenderer();
 
-        // Create a test player entity
-        createPlayer();
+        // Create demo entities
+        createDemoEntities();
 
-        Gdx.app.log("GameScreen", "Screen created");
+        Gdx.app.log("GameScreen", "Screen created with demo entities");
     }
 
-    private void createPlayer() {
-        player = new Entity();
-        player.addComponent(new PositionComponent(400, 300, 32, 32));
-        player.addComponent(new MovementComponent(200f));
-        player.addComponent(new RenderComponent());
-        player.addComponent(new StatsComponent(100, 50));
-
+    private void createDemoEntities() {
+        // Create player using EntityFactory
+        player = entityFactory.createPlayer(400, 300, CharacterType.MALE_KNIGHT);
         entityManager.addEntity(player);
+        Gdx.app.log("GameScreen", "Player created with sprite");
 
-        Gdx.app.log("GameScreen", "Player entity created with ID: " + player.getId());
+        // Create some monsters
+        Entity goblin = entityFactory.createMonster(200, 400, MonsterType.GOBLIN, 30, 1);
+        entityManager.addEntity(goblin);
+
+        Entity skeleton = entityFactory.createMonster(600, 400, MonsterType.SKELETON, 40, 2);
+        entityManager.addEntity(skeleton);
+
+        Entity slime = entityFactory.createMonster(500, 150, MonsterType.BIG_SLIME, 20, 1);
+        entityManager.addEntity(slime);
+
+        // Create some NPCs
+        Entity priest = entityFactory.createNPC(100, 200, CharacterType.PRIEST, "Father Marcus");
+        entityManager.addEntity(priest);
+
+        Entity wizard = entityFactory.createNPC(700, 200, CharacterType.MALE_WIZARD, "Gandor");
+        entityManager.addEntity(wizard);
+
+        // Create some animals
+        Entity wolf = entityFactory.createAnimal(300, 500, AnimalType.COW);
+        entityManager.addEntity(wolf);
+
+        Entity rabbit = entityFactory.createAnimal(650, 100, AnimalType.RABBIT);
+        entityManager.addEntity(rabbit);
+
+        Gdx.app.log("GameScreen", "Demo entities created: " + entityManager.getEntityCount() + " total");
     }
 
     @Override
@@ -110,34 +137,47 @@ public class GameScreen implements Screen {
     }
 
     private void renderEntities() {
-        // Render all entities with PositionComponent
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        batch.begin();
 
+        // Render all entities with sprites
         for (Entity entity : entityManager.getEntitiesWithComponent(PositionComponent.class)) {
             PositionComponent pos = entity.getComponent(PositionComponent.class);
             RenderComponent render = entity.getComponent(RenderComponent.class);
 
-            if (render != null && render.isVisible()) {
-                // For now, render as colored rectangles until we add textures
+            if (render != null && render.isVisible() && render.getTextureRegion() != null) {
+                // Draw the sprite
+                batch.draw(
+                    render.getTextureRegion(),
+                    pos.getX() + render.getOffsetX(),
+                    pos.getY() + render.getOffsetY(),
+                    pos.getWidth(),
+                    pos.getHeight()
+                );
+            } else if (render != null && render.isVisible()) {
+                // Fallback: render as colored rectangle if no sprite
+                batch.end();
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 if (entity == player) {
                     shapeRenderer.setColor(Color.GREEN);
                 } else {
                     shapeRenderer.setColor(Color.WHITE);
                 }
                 shapeRenderer.rect(pos.getX(), pos.getY(), pos.getWidth(), pos.getHeight());
+                shapeRenderer.end();
+                batch.begin();
             }
         }
 
-        shapeRenderer.end();
+        batch.end();
     }
 
     private void renderUI() {
         batch.begin();
 
-        font.draw(batch, "RPG Game - Clean Architecture", 10, 590);
+        font.draw(batch, "RPG Game - Asset Management Demo", 10, 590);
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
         font.draw(batch, "Entities: " + entityManager.getEntityCount(), 10, 550);
-        font.draw(batch, "Use WASD to move", 10, 530);
+        font.draw(batch, "Use WASD to move the knight", 10, 530);
 
         // Show player stats
         if (player != null) {

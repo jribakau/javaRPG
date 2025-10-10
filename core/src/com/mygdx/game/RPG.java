@@ -13,7 +13,6 @@ import com.mygdx.game.screens.GameScreen;
  */
 public class RPG extends Game {
     private SpriteBatch batch;
-    private GameContext gameContext;
 
     @Override
     public void create() {
@@ -26,7 +25,7 @@ public class RPG extends Game {
         ServiceLocator.initialize();
 
         // Create game context (holds shared game state and services)
-        gameContext = new GameContext(this, batch);
+        GameContext gameContext = new GameContext(this, batch);
 
         // Register core services
         ServiceLocator.registerGameContext(gameContext);
