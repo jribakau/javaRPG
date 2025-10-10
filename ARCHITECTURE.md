@@ -14,7 +14,7 @@
 Create a clean ECS-inspired entity system:
 1. **Entity.java** - Base entity class
 2. **Component.java** - Base component interface
-3. **EntityManager.java** - Manages all entities
+3. **EntityService.java** - Manages all entities
 4. **Components package:**
    - PositionComponent
    - RenderComponent

@@ -1,91 +1,43 @@
 package com.mygdx.game.core;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.assets.managers.AssetManager;
-import com.mygdx.game.entity.EntityFactory;
-import com.mygdx.game.entity.EntityManager;
-import com.mygdx.game.world.MapLoader;
-import com.mygdx.game.world.World;
-import lombok.Getter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 
 /**
- * GameContext - Holds all shared game state and core services
- * This is the central hub that all systems can access
+ * GameContext - Lightweight context for core game reference
+ * No longer a God Object - specific responsibilities delegated to services
+ * <p>
+ * Services are now accessed via ServiceLocator:
+ * - CameraService: Camera and viewport management
+ * - RenderService: Batch and rendering utilities
+ * - WorldService: World/level management
+ * - EntityService: Entity lifecycle
+ * - AssetManager: Asset loading
+ * - EntityFactory: Entity creation
  */
-@Getter
-public class GameContext {
-    // Constants
-    public static final int WORLD_WIDTH = 800;
-    public static final int WORLD_HEIGHT = 600;
-
-    // Core references
-    private final Game game;
-    private final SpriteBatch batch;
-    private final OrthographicCamera camera;
-    private final Viewport viewport;
-
-    // Game systems
-    private final EntityManager entityManager;
-    private final AssetManager assetManager;
-    private final EntityFactory entityFactory;
-    private final MapLoader mapLoader;
-
-    // World
-    private World currentWorld;
-
-    public GameContext(Game game, SpriteBatch batch) {
+public record GameContext(Game game) {
+    public GameContext(Game game) {
         this.game = game;
-        this.batch = batch;
-
-        // Initialize camera and viewport
-        this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-        this.camera.position.set(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f, 0);
-        this.camera.update();
-
-        // Initialize asset manager
-        this.assetManager = new AssetManager();
-        this.assetManager.loadAssets();
-
-        // Initialize game systems
-        this.entityManager = new EntityManager();
-        this.entityFactory = new EntityFactory(assetManager);
-        this.mapLoader = new MapLoader(assetManager);
+        Gdx.app.log("GameContext", "Lightweight context created");
     }
 
     /**
-     * Load a world from a level file
+     * Switch to a different screen
      */
-    public void loadWorld(String levelPath) {
-        if (currentWorld != null) {
-            currentWorld.dispose();
-        }
-
-        currentWorld = new World(mapLoader.loadMap(levelPath), levelPath);
+    public void setScreen(Screen screen) {
+        game.setScreen(screen);
     }
 
     /**
-     * Set the current world
+     * Get current screen
      */
-    public void setCurrentWorld(World world) {
-        if (currentWorld != null) {
-            currentWorld.dispose();
-        }
-        currentWorld = world;
+    public Screen getScreen() {
+        return game.getScreen();
     }
 
     public void dispose() {
-        // Dispose any resources held by context
-        // SpriteBatch is disposed by RPG class
-        entityManager.clear();
-        assetManager.dispose();
-
-        if (currentWorld != null) {
-            currentWorld.dispose();
-        }
+        Gdx.app.log("GameContext", "Context disposed");
+        // Individual services handle their own disposal
     }
 }

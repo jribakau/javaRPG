@@ -40,7 +40,7 @@ public class World {
      */
     public void update(float delta) {
         // World-specific updates can go here
-        // For now, entity updates are handled by EntityManager
+        // For now, entity updates are handled by EntityService
     }
 
     /**

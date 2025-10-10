@@ -1,34 +1,21 @@
 package com.mygdx.game.entity.components;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.mygdx.game.core.ServiceLocator;
 import com.mygdx.game.entity.Component;
+import com.mygdx.game.input.InputAction;
+import com.mygdx.game.input.InputService;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * InputComponent - Handles input for player-controlled entities
+ * Now uses InputService for device-agnostic input handling
  */
 @Getter
 @Setter
 public class InputComponent extends Component {
     private boolean enabled;
-
-    // Input state
-    private float moveX;
-    private float moveY;
-    private boolean actionPressed;
-    private boolean attackPressed;
-    private boolean interactPressed;
-
-    // Key bindings
-    private int keyUp = Input.Keys.W;
-    private int keyDown = Input.Keys.S;
-    private int keyLeft = Input.Keys.A;
-    private int keyRight = Input.Keys.D;
-    private int keyAttack = Input.Keys.SPACE;
-    private int keyInteract = Input.Keys.E;
-    private int keyAction = Input.Keys.F;
+    private InputService inputService;
 
     public InputComponent() {
         this.enabled = true;
@@ -37,31 +24,28 @@ public class InputComponent extends Component {
     @Override
     public void update(float delta) {
         if (!enabled) {
-            resetInput();
+            stopMovement();
             return;
         }
 
-        // Read movement input
-        moveX = 0;
-        moveY = 0;
+        // Get input service on first update if not set
+        if (inputService == null) {
+            inputService = ServiceLocator.get(InputService.class);
+        }
 
-        if (Gdx.input.isKeyPressed(keyUp)) moveY = 1;
-        if (Gdx.input.isKeyPressed(keyDown)) moveY = -1;
-        if (Gdx.input.isKeyPressed(keyLeft)) moveX = -1;
-        if (Gdx.input.isKeyPressed(keyRight)) moveX = 1;
-
-        // Read action inputs
-        attackPressed = Gdx.input.isKeyJustPressed(keyAttack);
-        interactPressed = Gdx.input.isKeyJustPressed(keyInteract);
-        actionPressed = Gdx.input.isKeyJustPressed(keyAction);
-
-        // Apply input to movement component
+        // Apply movement from input service
         applyMovement();
+
+        // Handle action inputs
+        handleActions();
     }
 
     private void applyMovement() {
         MovementComponent movement = entity.getComponent(MovementComponent.class);
         if (movement != null) {
+            float moveX = inputService.getMoveX();
+            float moveY = inputService.getMoveY();
+
             if (moveX != 0 || moveY != 0) {
                 movement.moveInDirection(moveX, moveY);
             } else {
@@ -70,12 +54,27 @@ public class InputComponent extends Component {
         }
     }
 
-    private void resetInput() {
-        moveX = 0;
-        moveY = 0;
-        actionPressed = false;
-        attackPressed = false;
-        interactPressed = false;
+    private void handleActions() {
+        // Check for attack input
+        if (inputService.isActionJustPressed(InputAction.ATTACK)) {
+            // TODO: Trigger attack action
+        }
+
+        // Check for interact input
+        if (inputService.isActionJustPressed(InputAction.INTERACT)) {
+            // TODO: Trigger interact action
+        }
+
+        // Check for use item input
+        if (inputService.isActionJustPressed(InputAction.USE_ITEM)) {
+            // TODO: Trigger use item action
+        }
+    }
+
+    private void stopMovement() {
+        MovementComponent movement = entity.getComponent(MovementComponent.class);
+        if (movement != null) {
+            movement.stop();
+        }
     }
 }
-

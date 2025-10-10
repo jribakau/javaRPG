@@ -5,45 +5,52 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.assets.types.AnimalType;
 import com.mygdx.game.assets.types.CharacterType;
 import com.mygdx.game.assets.types.MonsterType;
-import com.mygdx.game.core.GameContext;
 import com.mygdx.game.core.ServiceLocator;
+import com.mygdx.game.core.services.CameraService;
+import com.mygdx.game.core.services.RenderService;
+import com.mygdx.game.core.services.WorldService;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.entity.EntityFactory;
-import com.mygdx.game.entity.EntityManager;
+import com.mygdx.game.entity.EntityService;
 import com.mygdx.game.entity.Player;
-import com.mygdx.game.entity.components.MovementComponent;
 import com.mygdx.game.entity.components.PositionComponent;
 import com.mygdx.game.entity.components.RenderComponent;
 import com.mygdx.game.entity.components.StatsComponent;
+import com.mygdx.game.input.InputService;
 import com.mygdx.game.world.World;
 
 /**
  * GameScreen - Main gameplay screen
- * This is where the actual game will run
+ * Now uses focused services instead of monolithic GameContext
  */
 public class GameScreen implements Screen {
-    private final GameContext context;
-    private final SpriteBatch batch;
-    private final BitmapFont font;
-    private final EntityManager entityManager;
+    // Services
+    private final CameraService cameraService;
+    private final RenderService renderService;
+    private final WorldService worldService;
+    private final EntityService entityService;
     private final EntityFactory entityFactory;
-    private final ShapeRenderer shapeRenderer;
 
+    // UI
+    private final BitmapFont font;
+
+    // Game state
     private Player player;
-    private World world;
 
     public GameScreen() {
-        this.context = ServiceLocator.getGameContext();
-        this.batch = context.getBatch();
+        // Get services from ServiceLocator
+        this.cameraService = ServiceLocator.get(CameraService.class);
+        this.renderService = ServiceLocator.get(RenderService.class);
+        this.worldService = ServiceLocator.get(WorldService.class);
+        this.entityService = ServiceLocator.get(EntityService.class);
+        this.entityFactory = ServiceLocator.get(EntityFactory.class);
+
+        // Initialize UI
         this.font = new BitmapFont();
-        this.entityManager = context.getEntityManager();
-        this.entityFactory = context.getEntityFactory();
-        this.shapeRenderer = new ShapeRenderer();
 
         // Load the world/map
         loadWorld();
@@ -56,42 +63,41 @@ public class GameScreen implements Screen {
 
     private void loadWorld() {
         // Load level1 from the assets
-        context.loadWorld("levels/level1.txt");
-        world = context.getCurrentWorld();
-        Gdx.app.log("GameScreen", "World loaded: " + world);
+        worldService.loadWorld("levels/level1.txt");
+        Gdx.app.log("GameScreen", "World loaded: " + worldService.getCurrentWorld());
     }
 
     private void createDemoEntities() {
         // Create player using the new Player class
         player = entityFactory.createPlayer("Hero", 400, 300, CharacterType.MALE_KNIGHT);
-        entityManager.addEntity(player);
+        entityService.addEntity(player);
         Gdx.app.log("GameScreen", "Player created with name: " + player.getPlayerComponent().getName());
 
         // Create some monsters
         Entity goblin = entityFactory.createMonster(200, 400, MonsterType.GOBLIN, 30, 1);
-        entityManager.addEntity(goblin);
+        entityService.addEntity(goblin);
 
         Entity skeleton = entityFactory.createMonster(600, 400, MonsterType.SKELETON, 40, 2);
-        entityManager.addEntity(skeleton);
+        entityService.addEntity(skeleton);
 
         Entity slime = entityFactory.createMonster(500, 150, MonsterType.BIG_SLIME, 20, 1);
-        entityManager.addEntity(slime);
+        entityService.addEntity(slime);
 
         // Create some NPCs
         Entity priest = entityFactory.createNPC(100, 200, CharacterType.PRIEST, "Father Marcus");
-        entityManager.addEntity(priest);
+        entityService.addEntity(priest);
 
         Entity wizard = entityFactory.createNPC(700, 200, CharacterType.MALE_WIZARD, "Gandor");
-        entityManager.addEntity(wizard);
+        entityService.addEntity(wizard);
 
         // Create some animals
         Entity wolf = entityFactory.createAnimal(300, 500, AnimalType.COW);
-        entityManager.addEntity(wolf);
+        entityService.addEntity(wolf);
 
         Entity rabbit = entityFactory.createAnimal(650, 100, AnimalType.RABBIT);
-        entityManager.addEntity(rabbit);
+        entityService.addEntity(rabbit);
 
-        Gdx.app.log("GameScreen", "Demo entities created: " + entityManager.getEntityCount() + " total");
+        Gdx.app.log("GameScreen", "Demo entities created: " + entityService.getEntityCount() + " total");
     }
 
     @Override
@@ -109,15 +115,14 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update camera
-        context.getCamera().update();
-        batch.setProjectionMatrix(context.getCamera().combined);
-        shapeRenderer.setProjectionMatrix(context.getCamera().combined);
+        cameraService.update();
 
         // Render world (tiles)
+        World world = worldService.getCurrentWorld();
         if (world != null) {
-            batch.begin();
-            world.render(batch);
-            batch.end();
+            renderService.begin(cameraService);
+            world.render(renderService.getBatch());
+            renderService.end();
         }
 
         // Render entities
@@ -128,26 +133,28 @@ public class GameScreen implements Screen {
     }
 
     private void update(float delta) {
+        // Update input service first (polls input state)
+        InputService inputService = ServiceLocator.get(InputService.class);
+        inputService.update();
+
         // Update world
-        if (world != null) {
-            world.update(delta);
-        }
+        worldService.update(delta);
 
         // Update all entities (including player input via InputComponent)
-        entityManager.update(delta);
+        entityService.update(delta);
     }
 
     private void renderEntities() {
-        batch.begin();
+        renderService.begin(cameraService);
 
         // Render all entities with sprites
-        for (Entity entity : entityManager.getEntitiesWithComponent(PositionComponent.class)) {
+        for (Entity entity : entityService.getEntitiesWithComponent(PositionComponent.class)) {
             PositionComponent pos = entity.getComponent(PositionComponent.class);
             RenderComponent render = entity.getComponent(RenderComponent.class);
 
             if (render != null && render.isVisible() && render.getTextureRegion() != null) {
                 // Draw the sprite
-                batch.draw(
+                renderService.getBatch().draw(
                     render.getTextureRegion(),
                     pos.getX() + render.getOffsetX(),
                     pos.getY() + render.getOffsetY(),
@@ -156,34 +163,35 @@ public class GameScreen implements Screen {
                 );
             } else if (render != null && render.isVisible()) {
                 // Fallback: render as colored rectangle if no sprite
-                batch.end();
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                renderService.end();
+                renderService.beginShapes(cameraService, ShapeRenderer.ShapeType.Filled);
                 if (entity == player) {
-                    shapeRenderer.setColor(Color.GREEN);
+                    renderService.getShapeRenderer().setColor(Color.GREEN);
                 } else {
-                    shapeRenderer.setColor(Color.WHITE);
+                    renderService.getShapeRenderer().setColor(Color.WHITE);
                 }
-                shapeRenderer.rect(pos.getX(), pos.getY(), pos.getWidth(), pos.getHeight());
-                shapeRenderer.end();
-                batch.begin();
+                renderService.getShapeRenderer().rect(pos.getX(), pos.getY(), pos.getWidth(), pos.getHeight());
+                renderService.endShapes();
+                renderService.begin(cameraService);
             }
         }
 
-        batch.end();
+        renderService.end();
     }
 
     private void renderUI() {
-        batch.begin();
+        renderService.begin(cameraService);
 
-        font.draw(batch, "RPG Game - World Demo", 10, 590);
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
-        font.draw(batch, "Entities: " + entityManager.getEntityCount(), 10, 550);
-        font.draw(batch, "Use WASD to move the knight", 10, 530);
+        font.draw(renderService.getBatch(), "RPG Game - World Demo", 10, 590);
+        font.draw(renderService.getBatch(), "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
+        font.draw(renderService.getBatch(), "Entities: " + entityService.getEntityCount(), 10, 550);
+        font.draw(renderService.getBatch(), "Use WASD to move the knight", 10, 530);
 
         // Show world info
+        World world = worldService.getCurrentWorld();
         if (world != null) {
-            font.draw(batch, "World: " + world.getWorldName(), 10, 510);
-            font.draw(batch, "Map Size: " + world.getTileMap().getWidth() + "x" + world.getTileMap().getHeight(), 10, 490);
+            font.draw(renderService.getBatch(), "World: " + world.getWorldName(), 10, 510);
+            font.draw(renderService.getBatch(), "Map Size: " + world.getTileMap().getWidth() + "x" + world.getTileMap().getHeight(), 10, 490);
         }
 
         // Show player stats
@@ -192,23 +200,23 @@ public class GameScreen implements Screen {
             PositionComponent pos = player.getPositionComponent();
 
             if (stats != null) {
-                font.draw(batch, "Player: " + player.getPlayerComponent().getName(), 10, 470);
-                font.draw(batch, "HP: " + stats.getHealth() + "/" + stats.getMaxHealth(), 10, 450);
-                font.draw(batch, "Level: " + stats.getLevel() + " (XP: " + stats.getExperience() + ")", 10, 430);
-                font.draw(batch, "Gold: " + player.getPlayerComponent().getGold(), 10, 410);
+                font.draw(renderService.getBatch(), "Player: " + player.getPlayerComponent().getName(), 10, 470);
+                font.draw(renderService.getBatch(), "HP: " + stats.getHealth() + "/" + stats.getMaxHealth(), 10, 450);
+                font.draw(renderService.getBatch(), "Level: " + stats.getLevel() + " (XP: " + stats.getExperience() + ")", 10, 430);
+                font.draw(renderService.getBatch(), "Gold: " + player.getPlayerComponent().getGold(), 10, 410);
             }
 
             if (pos != null) {
-                font.draw(batch, "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 390);
+                font.draw(renderService.getBatch(), "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 390);
             }
         }
 
-        batch.end();
+        renderService.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        context.getViewport().update(width, height, true);
+        cameraService.resize(width, height);
     }
 
     @Override
@@ -225,7 +233,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        font.dispose();
-        shapeRenderer.dispose();
+        if (font != null) {
+            font.dispose();
+        }
     }
 }
