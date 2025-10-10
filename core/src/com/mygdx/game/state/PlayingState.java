@@ -1,7 +1,6 @@
 package com.mygdx.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.game.assets.types.AnimalType;
@@ -16,7 +15,7 @@ import com.mygdx.game.entity.EntityService;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.entity.components.PositionComponent;
 import com.mygdx.game.entity.components.StatsComponent;
-import com.mygdx.game.input.InputService;
+import com.mygdx.game.input.InputAction;
 import com.mygdx.game.systems.RenderSystem;
 import com.mygdx.game.systems.SystemManager;
 import com.mygdx.game.world.World;
@@ -110,16 +109,16 @@ public class PlayingState extends GameState {
     @Override
     public void update(float delta) {
         // Update input service
-        InputService inputService = ServiceLocator.get(InputService.class);
         inputService.update();
 
-        // Check for state transitions
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        // Check for state transitions using InputService
+        if (inputService.isActionJustPressed(InputAction.PAUSE) ||
+            inputService.isActionJustPressed(InputAction.MENU)) {
             stateManager.pushState(new PauseState(stateManager));
             return;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+        if (inputService.isActionJustPressed(InputAction.INVENTORY)) {
             stateManager.pushState(new InventoryState(stateManager, player));
             return;
         }
@@ -192,4 +191,3 @@ public class PlayingState extends GameState {
         }
     }
 }
-

@@ -26,6 +26,8 @@ public class CombatSystem extends GameSystem {
 
     @Override
     public void update(float delta) {
+        if (!enabled) return;
+
         // Process pending combat actions
         for (CombatAction action : pendingActions) {
             processCombatAction(action);
@@ -101,6 +103,7 @@ public class CombatSystem extends GameSystem {
 
     /**
      * Check if two entities are within range of each other
+     * OPTIMIZED: Uses squared distance to avoid sqrt() call and Vector2 allocations
      */
     public boolean isInRange(Entity entity1, Entity entity2, float range) {
         PositionComponent pos1 = entity1.getComponent(PositionComponent.class);
@@ -108,10 +111,19 @@ public class CombatSystem extends GameSystem {
 
         if (pos1 == null || pos2 == null) return false;
 
-        Vector2 center1 = pos1.getCenter();
-        Vector2 center2 = pos2.getCenter();
+        // OPTIMIZATION: Calculate centers inline (no Vector2 allocation)
+        float center1X = pos1.getX() + pos1.getWidth() / 2;
+        float center1Y = pos1.getY() + pos1.getHeight() / 2;
+        float center2X = pos2.getX() + pos2.getWidth() / 2;
+        float center2Y = pos2.getY() + pos2.getHeight() / 2;
 
-        return center1.dst(center2) <= range;
+        // OPTIMIZATION: Compare squared distances to avoid sqrt()
+        float dx = center2X - center1X;
+        float dy = center2Y - center1Y;
+        float distSquared = dx * dx + dy * dy;
+        float rangeSquared = range * range;
+
+        return distSquared <= rangeSquared;
     }
 
     /**

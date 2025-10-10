@@ -133,13 +133,6 @@ public class GameScreen implements Screen {
         InputService inputService = ServiceLocator.get(InputService.class);
         inputService.update();
 
-        // Check for benchmark screen shortcut
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.B)) {
-            ServiceLocator.get(com.mygdx.game.core.GameContext.class)
-                .setScreen(new BenchmarkScreen());
-            return;
-        }
-
         // Update world
         worldService.update(delta);
 
@@ -157,7 +150,7 @@ public class GameScreen implements Screen {
         font.draw(renderService.getBatch(), "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
         font.draw(renderService.getBatch(), "Entities: " + entityService.getEntityCount(), 10, 550);
         font.draw(renderService.getBatch(), "Systems: " + systemManager.getSystemCount() + " active", 10, 530);
-        font.draw(renderService.getBatch(), "Use WASD to move, Press B for Benchmarks", 10, 510);
+        font.draw(renderService.getBatch(), "Use WASD to move", 10, 510);
 
         // Show world info
         World world = worldService.getCurrentWorld();
@@ -179,7 +172,7 @@ public class GameScreen implements Screen {
             }
 
             if (pos != null) {
-                font.draw(renderService.getBatch(), "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 360);
+                font.draw(renderService.getBatch(), "Position: (" + (int) pos.getX() + ", " + (int) pos.getY() + ")", 10, 360);
             }
         }
 

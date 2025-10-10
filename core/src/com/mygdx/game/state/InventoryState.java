@@ -1,7 +1,6 @@
 package com.mygdx.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,6 +11,7 @@ import com.mygdx.game.core.services.RenderService;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.entity.components.InventoryComponent;
 import com.mygdx.game.entity.components.StatsComponent;
+import com.mygdx.game.input.InputAction;
 
 /**
  * InventoryState - Inventory screen overlay
@@ -56,8 +56,12 @@ public class InventoryState extends GameState {
 
     @Override
     public void update(float delta) {
-        // Check for close inventory
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        // Update input service
+        inputService.update();
+
+        // Check for close inventory using InputService
+        if (inputService.isActionJustPressed(InputAction.INVENTORY) ||
+            inputService.isActionJustPressed(InputAction.CANCEL)) {
             stateManager.popState();
         }
     }

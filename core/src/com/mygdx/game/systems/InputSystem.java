@@ -24,6 +24,8 @@ public class InputSystem extends GameSystem {
 
     @Override
     public void update(float delta) {
+        if (!enabled) return;
+
         // Get all entities with input components
         Array<Entity> inputEntities = entityService.getEntitiesWithComponent(InputComponent.class);
 
@@ -63,4 +65,3 @@ public class InputSystem extends GameSystem {
         return 5; // Input processing happens early, before movement
     }
 }
-

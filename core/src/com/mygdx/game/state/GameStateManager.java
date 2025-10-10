@@ -255,16 +255,9 @@ public class GameStateManager {
     }
 
     /**
-     * State action data
-     */
-    private static class StateAction {
-        final StateActionType type;
-        final GameState state;
-
-        StateAction(StateActionType type, GameState state) {
-            this.type = type;
-            this.state = state;
-        }
+         * State action data
+         */
+        private record StateAction(StateActionType type, GameState state) {
     }
 }
 

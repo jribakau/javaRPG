@@ -1,6 +1,8 @@
 package com.mygdx.game.state;
 
 import com.badlogic.gdx.InputProcessor;
+import com.mygdx.game.core.ServiceLocator;
+import com.mygdx.game.input.InputService;
 
 /**
  * GameState - Base class for all game states
@@ -14,10 +16,12 @@ import com.badlogic.gdx.InputProcessor;
  */
 public abstract class GameState {
     protected GameStateManager stateManager;
+    protected InputService inputService;
     protected boolean initialized;
 
     public GameState(GameStateManager stateManager) {
         this.stateManager = stateManager;
+        this.inputService = ServiceLocator.get(InputService.class);
         this.initialized = false;
     }
 

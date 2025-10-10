@@ -8,28 +8,88 @@ import com.mygdx.game.entity.components.PositionComponent;
 
 /**
  * CollisionSystem - Detects and resolves entity-to-entity collisions
- * Uses spatial partitioning for efficient collision detection
+ * OPTIMIZED: Uses spatial partitioning for O(n) instead of O(n²) complexity
  */
 public class CollisionSystem extends GameSystem {
     private final Rectangle rect1;
     private final Rectangle rect2;
     private final Array<CollisionPair> collisions;
+    private final boolean useSpatialOptimization;
+
+    // Collision detection range (only check entities within this radius)
+    private static final float COLLISION_CHECK_RADIUS = 64f;
 
     public CollisionSystem(EntityService entityService) {
         super(entityService);
         this.rect1 = new Rectangle();
         this.rect2 = new Rectangle();
         this.collisions = new Array<>();
+        this.useSpatialOptimization = entityService.isSpatialGridEnabled();
     }
 
     @Override
     public void update(float delta) {
+        if (!enabled) return;
+
         collisions.clear();
 
         // Get all entities with position components
         Array<Entity> entities = entityService.getEntitiesWithComponent(PositionComponent.class);
 
-        // Broad phase: Check all pairs (can be optimized with spatial grid)
+        if (useSpatialOptimization) {
+            // OPTIMIZED: O(n) - Use spatial grid to only check nearby entities
+            detectCollisionsWithSpatialGrid(entities);
+        } else {
+            // FALLBACK: O(n²) - Check all pairs (only for small entity counts)
+            detectCollisionsBruteForce(entities);
+        }
+
+        // Process collisions
+        for (CollisionPair pair : collisions) {
+            handleCollision(pair.entity1, pair.entity2);
+        }
+    }
+
+    /**
+     * OPTIMIZED: Spatial grid collision detection - O(n)
+     * Only checks entities within collision radius of each entity
+     */
+    private void detectCollisionsWithSpatialGrid(Array<Entity> entities) {
+        for (Entity entity1 : entities) {
+            PositionComponent pos1 = entity1.getComponent(PositionComponent.class);
+            if (pos1 == null) continue;
+
+            rect1.set(pos1.getX(), pos1.getY(), pos1.getWidth(), pos1.getHeight());
+
+            // Get only nearby entities from spatial grid
+            float centerX = pos1.getX() + pos1.getWidth() / 2;
+            float centerY = pos1.getY() + pos1.getHeight() / 2;
+            Array<Entity> nearbyEntities = entityService.getEntitiesNear(
+                centerX, centerY, COLLISION_CHECK_RADIUS
+            );
+
+            // Check collision only with nearby entities
+            for (Entity entity2 : nearbyEntities) {
+                if (entity1.getId() >= entity2.getId()) continue; // Skip self and duplicates
+
+                PositionComponent pos2 = entity2.getComponent(PositionComponent.class);
+                if (pos2 == null) continue;
+
+                rect2.set(pos2.getX(), pos2.getY(), pos2.getWidth(), pos2.getHeight());
+
+                // Check collision
+                if (rect1.overlaps(rect2)) {
+                    collisions.add(new CollisionPair(entity1, entity2));
+                }
+            }
+        }
+    }
+
+    /**
+     * FALLBACK: Brute force collision detection - O(n²)
+     * Used when spatial grid is disabled
+     */
+    private void detectCollisionsBruteForce(Array<Entity> entities) {
         for (int i = 0; i < entities.size; i++) {
             Entity entity1 = entities.get(i);
             PositionComponent pos1 = entity1.getComponent(PositionComponent.class);
@@ -47,11 +107,6 @@ public class CollisionSystem extends GameSystem {
                     collisions.add(new CollisionPair(entity1, entity2));
                 }
             }
-        }
-
-        // Process collisions
-        for (CollisionPair pair : collisions) {
-            handleCollision(pair.entity1, pair.entity2);
         }
     }
 
@@ -76,9 +131,11 @@ public class CollisionSystem extends GameSystem {
 
         float dx = centerX2 - centerX1;
         float dy = centerY2 - centerY1;
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 0) {
+        // Use squared distance to avoid sqrt (performance optimization)
+        float distSquared = dx * dx + dy * dy;
+
+        if (distSquared > 0) {
             // Normalize and separate
             float overlapX = (pos1.getWidth() + pos2.getWidth()) / 2 - Math.abs(dx);
             float overlapY = (pos1.getHeight() + pos2.getHeight()) / 2 - Math.abs(dy);

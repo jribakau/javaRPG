@@ -57,7 +57,7 @@ public class RPG extends Game {
         ServiceLocator.provide(AssetManager.class, assetManager);
 
         // Initialize and register Entity Service
-        EntityService entityService = new EntityService();
+        EntityService entityService = new EntityService(true, true);
         ServiceLocator.provide(EntityService.class, entityService);
 
         // Initialize and register Entity Factory (depends on AssetManager)

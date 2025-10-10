@@ -1,7 +1,6 @@
 package com.mygdx.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.core.ServiceLocator;
 import com.mygdx.game.core.services.CameraService;
 import com.mygdx.game.core.services.RenderService;
+import com.mygdx.game.input.InputAction;
 
 /**
  * PauseState - Pause menu overlay
@@ -51,13 +51,18 @@ public class PauseState extends GameState {
 
     @Override
     public void update(float delta) {
-        // Check for resume
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        // Update input service
+        inputService.update();
+
+        // Check for resume using InputService
+        if (inputService.isActionJustPressed(InputAction.PAUSE) ||
+            inputService.isActionJustPressed(InputAction.CANCEL)) {
             stateManager.popState();
+            return;
         }
 
-        // Check for quit to menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+        // Check for quit to menu (Q key - could be mapped to an InputAction in the future)
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.Q)) {
             stateManager.changeState(new MenuState(stateManager));
         }
     }

@@ -15,22 +15,28 @@ import com.mygdx.game.world.World;
 
 /**
  * MovementSystem - Handles entity movement and collision with world tiles
- * Processes entities with both PositionComponent and MovementComponent
+ * OPTIMIZED: Reuses Vector2 objects to avoid garbage collection pressure
  */
 public class MovementSystem extends GameSystem {
     private final WorldService worldService;
     private final Rectangle entityBounds;
     private final Rectangle tileBounds;
 
+    // OPTIMIZATION: Reusable Vector2 to avoid allocations
+    private final Vector2 tempPosition;
+
     public MovementSystem(EntityService entityService) {
         super(entityService);
         this.worldService = ServiceLocator.get(WorldService.class);
         this.entityBounds = new Rectangle();
         this.tileBounds = new Rectangle();
+        this.tempPosition = new Vector2();
     }
 
     @Override
     public void update(float delta) {
+        if (!enabled) return;
+
         // Get all entities that can move
         Array<Entity> movableEntities = entityService.getEntitiesWithComponent(MovementComponent.class);
 
@@ -49,13 +55,14 @@ public class MovementSystem extends GameSystem {
 
             // Check collision with world tiles
             if (worldService.getCurrentWorld() != null) {
-                Vector2 validPosition = resolveWorldCollision(
+                resolveWorldCollision(
                     position.getX(), position.getY(),
                     newX, newY,
-                    position.getWidth(), position.getHeight()
+                    position.getWidth(), position.getHeight(),
+                    tempPosition  // Reuse Vector2 instead of allocating new one!
                 );
-                newX = validPosition.x;
-                newY = validPosition.y;
+                newX = tempPosition.x;
+                newY = tempPosition.y;
             }
 
             // Apply movement
@@ -65,8 +72,8 @@ public class MovementSystem extends GameSystem {
             if (movement.getFriction() > 0) {
                 velocity.scl(1f - movement.getFriction() * delta);
 
-                // Stop if velocity is very small
-                if (velocity.len2() < 0.1f) {
+                // Stop if velocity is very small (use squared length to avoid sqrt)
+                if (velocity.len2() < 0.01f) {  // 0.1 * 0.1
                     velocity.set(0, 0);
                 }
             }
@@ -75,15 +82,21 @@ public class MovementSystem extends GameSystem {
 
     /**
      * Check collision with world tiles and resolve
-     * @return Valid position after collision resolution
+     * OPTIMIZED: Uses output parameter instead of returning new Vector2
      */
-    private Vector2 resolveWorldCollision(float oldX, float oldY, float newX, float newY,
-                                         float width, float height) {
+    private void resolveWorldCollision(float oldX, float oldY, float newX, float newY,
+                                      float width, float height, Vector2 outPosition) {
         World world = worldService.getCurrentWorld();
-        if (world == null) return new Vector2(newX, newY);
+        if (world == null) {
+            outPosition.set(newX, newY);
+            return;
+        }
 
         TileMap tileMap = world.getTileMap();
-        if (tileMap == null) return new Vector2(newX, newY);
+        if (tileMap == null) {
+            outPosition.set(newX, newY);
+            return;
+        }
 
         // Set entity bounds at new position
         entityBounds.set(newX, newY, width, height);
@@ -101,7 +114,7 @@ public class MovementSystem extends GameSystem {
             newY = oldY; // Revert Y movement
         }
 
-        return new Vector2(newX, newY);
+        outPosition.set(newX, newY);
     }
 
     /**

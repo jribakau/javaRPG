@@ -1,13 +1,13 @@
 package com.mygdx.game.state;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.game.core.ServiceLocator;
 import com.mygdx.game.core.services.CameraService;
 import com.mygdx.game.core.services.RenderService;
+import com.mygdx.game.input.InputAction;
 
 /**
  * MenuState - Main menu state
@@ -53,17 +53,21 @@ public class MenuState extends GameState {
 
     @Override
     public void update(float delta) {
-        // Navigate menu
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+        // Update input service
+        inputService.update();
+
+        // Navigate menu using InputService
+        if (inputService.isActionJustPressed(InputAction.MOVE_UP)) {
             selectedOption = (selectedOption - 1 + MENU_OPTIONS.length) % MENU_OPTIONS.length;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+        if (inputService.isActionJustPressed(InputAction.MOVE_DOWN)) {
             selectedOption = (selectedOption + 1) % MENU_OPTIONS.length;
         }
 
-        // Select option
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        // Select option using InputService
+        if (inputService.isActionJustPressed(InputAction.CONFIRM) ||
+            inputService.isActionJustPressed(InputAction.INTERACT)) {
             handleMenuSelection();
         }
     }
