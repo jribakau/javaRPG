@@ -13,6 +13,7 @@ import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityService;
 import com.mygdx.game.input.InputService;
 import com.mygdx.game.screens.GameScreen;
+import com.mygdx.game.systems.*;
 import com.mygdx.game.world.MapLoader;
 
 /**
@@ -69,7 +70,17 @@ public class RPG extends Game {
         WorldService worldService = new WorldService(mapLoader);
         ServiceLocator.provide(WorldService.class, worldService);
 
+        // Initialize System Manager and register game systems
+        SystemManager systemManager = new SystemManager();
+        systemManager.addSystem(new InputSystem(entityService));
+        systemManager.addSystem(new MovementSystem(entityService));
+        systemManager.addSystem(new CollisionSystem(entityService));
+        systemManager.addSystem(new CombatSystem(entityService));
+        systemManager.addSystem(new RenderSystem(entityService));
+        ServiceLocator.provide(SystemManager.class, systemManager);
+
         Gdx.app.log("RPG", "All services registered: " + ServiceLocator.getServiceCount() + " services");
+        Gdx.app.log("RPG", "Systems initialized: " + systemManager.getSystemCount() + " systems");
 
         // Set initial screen
         setScreen(new GameScreen());
@@ -96,12 +107,14 @@ public class RPG extends Game {
     public void dispose() {
         Gdx.app.log("RPG", "Disposing game resources...");
 
-        // Dispose current screen
         if (getScreen() != null) {
             getScreen().dispose();
         }
 
-        // Dispose services that need cleanup
+        if (ServiceLocator.has(SystemManager.class)) {
+            ServiceLocator.get(SystemManager.class).dispose();
+        }
+
         if (ServiceLocator.has(RenderService.class)) {
             ServiceLocator.get(RenderService.class).dispose();
         }
@@ -118,12 +131,10 @@ public class RPG extends Game {
             ServiceLocator.get(EntityService.class).clear();
         }
 
-        // Dispose core resources
         if (batch != null) {
             batch.dispose();
         }
 
-        // Cleanup service locator
         ServiceLocator.dispose();
 
         Gdx.app.log("RPG", "Game disposed");

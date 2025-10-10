@@ -89,6 +89,23 @@ public class ServiceLocator {
         }
     }
 
+    /**
+     * Get the number of registered services
+     * @return The count of services
+     */
+    public static int getServiceCount() {
+        return services.size();
+    }
+
+    /**
+     * Dispose all services and clear the registry
+     */
+    public static void dispose() {
+        Gdx.app.log("ServiceLocator", "Disposing service locator...");
+        services.clear();
+        Gdx.app.log("ServiceLocator", "Service locator cleared");
+    }
+
     // Convenience methods for GameContext (backward compatibility)
 
     /**
@@ -107,29 +124,5 @@ public class ServiceLocator {
     @Deprecated
     public static GameContext getGameContext() {
         return get(GameContext.class);
-    }
-
-    /**
-     * Dispose all services and clear the registry
-     */
-    public static void dispose() {
-        Gdx.app.log("ServiceLocator", "Disposing all services...");
-
-        // Dispose GameContext if registered (it has its own dispose method)
-        if (has(GameContext.class)) {
-            GameContext context = get(GameContext.class);
-            context.dispose();
-        }
-
-        // Clear all services
-        services.clear();
-        Gdx.app.log("ServiceLocator", "All services disposed");
-    }
-
-    /**
-     * Get count of registered services (useful for debugging)
-     */
-    public static int getServiceCount() {
-        return services.size();
     }
 }

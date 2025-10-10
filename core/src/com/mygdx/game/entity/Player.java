@@ -1,6 +1,6 @@
 package com.mygdx.game.entity;
 
-import com.mygdx.game.assets.types.CharacterType;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.entity.components.*;
 import lombok.Getter;
 
@@ -70,7 +70,7 @@ public class Player extends Entity {
         private final float y;
 
         // Optional parameters with defaults
-        private com.badlogic.gdx.graphics.g2d.TextureRegion sprite;
+        private TextureRegion sprite;
         private float width = 32;
         private float height = 32;
         private float moveSpeed = 200f;
@@ -89,7 +89,7 @@ public class Player extends Entity {
             this.y = y;
         }
 
-        public Builder sprite(com.badlogic.gdx.graphics.g2d.TextureRegion sprite) {
+        public Builder sprite(TextureRegion sprite) {
             this.sprite = sprite;
             return this;
         }

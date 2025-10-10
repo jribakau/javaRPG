@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * MovementComponent - Handles entity movement and velocity
+ * MovementComponent - Stores movement data for an entity
+ * Movement logic is handled by MovementSystem
  */
 @Getter
 @Setter
@@ -15,27 +16,14 @@ public class MovementComponent extends Component {
     private float speed;
     private float maxSpeed;
     private boolean canMove;
+    private float friction;
 
     public MovementComponent(float speed) {
         this.velocity = new Vector2(0, 0);
         this.speed = speed;
         this.maxSpeed = speed;
         this.canMove = true;
-    }
-
-    @Override
-    public void update(float delta) {
-        if (!canMove) return;
-
-        PositionComponent position = entity.getComponent(PositionComponent.class);
-        if (position != null) {
-            // Apply velocity to position
-            position.setX(position.getX() + velocity.x * delta);
-            position.setY(position.getY() + velocity.y * delta);
-
-            // Apply friction/damping
-            velocity.scl(0.9f);
-        }
+        this.friction = 5.0f; // Default friction value
     }
 
     public void moveInDirection(float dirX, float dirY) {
@@ -48,4 +36,3 @@ public class MovementComponent extends Component {
         velocity.set(0, 0);
     }
 }
-

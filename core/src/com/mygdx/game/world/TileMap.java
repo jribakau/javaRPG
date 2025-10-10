@@ -64,6 +64,13 @@ public class TileMap {
     }
 
     /**
+     * Get the tile size in pixels
+     */
+    public int getTileSize() {
+        return Tile.TILE_SIZE;
+    }
+
+    /**
      * Get all tiles in the map
      */
     public Array<Tile> getAllTiles() {
@@ -166,4 +173,3 @@ public class TileMap {
         }
     }
 }
-

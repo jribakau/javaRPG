@@ -2,10 +2,8 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.assets.types.AnimalType;
 import com.mygdx.game.assets.types.CharacterType;
 import com.mygdx.game.assets.types.MonsterType;
@@ -18,14 +16,15 @@ import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityService;
 import com.mygdx.game.entity.Player;
 import com.mygdx.game.entity.components.PositionComponent;
-import com.mygdx.game.entity.components.RenderComponent;
 import com.mygdx.game.entity.components.StatsComponent;
 import com.mygdx.game.input.InputService;
+import com.mygdx.game.systems.RenderSystem;
+import com.mygdx.game.systems.SystemManager;
 import com.mygdx.game.world.World;
 
 /**
  * GameScreen - Main gameplay screen
- * Now uses focused services instead of monolithic GameContext
+ * Now uses System architecture for clean separation of concerns
  */
 public class GameScreen implements Screen {
     // Services
@@ -33,7 +32,8 @@ public class GameScreen implements Screen {
     private final RenderService renderService;
     private final WorldService worldService;
     private final EntityService entityService;
-    private final EntityFactory entityFactory;
+    private final SystemManager systemManager;
+    private final RenderSystem renderSystem;
 
     // UI
     private final BitmapFont font;
@@ -47,7 +47,8 @@ public class GameScreen implements Screen {
         this.renderService = ServiceLocator.get(RenderService.class);
         this.worldService = ServiceLocator.get(WorldService.class);
         this.entityService = ServiceLocator.get(EntityService.class);
-        this.entityFactory = ServiceLocator.get(EntityFactory.class);
+        this.systemManager = ServiceLocator.get(SystemManager.class);
+        this.renderSystem = systemManager.getSystem(RenderSystem.class);
 
         // Initialize UI
         this.font = new BitmapFont();
@@ -68,6 +69,8 @@ public class GameScreen implements Screen {
     }
 
     private void createDemoEntities() {
+        EntityFactory entityFactory = ServiceLocator.get(EntityFactory.class);
+
         // Create player using the new Player class
         player = entityFactory.createPlayer("Hero", 400, 300, CharacterType.MALE_KNIGHT);
         entityService.addEntity(player);
@@ -117,18 +120,11 @@ public class GameScreen implements Screen {
         // Update camera
         cameraService.update();
 
-        // Render world (tiles)
-        World world = worldService.getCurrentWorld();
-        if (world != null) {
-            renderService.begin(cameraService);
-            world.render(renderService.getBatch());
-            renderService.end();
-        }
+        // Render game (delegated to RenderSystem)
+        renderSystem.renderWorld();
+        renderSystem.renderEntities();
 
-        // Render entities
-        renderEntities();
-
-        // Render UI
+        // Render UI (still handled by screen for now)
         renderUI();
     }
 
@@ -147,53 +143,21 @@ public class GameScreen implements Screen {
         // Update world
         worldService.update(delta);
 
-        // Update all entities (including player input via InputComponent)
+        // Update all entities via InputComponent (for player input)
         entityService.update(delta);
-    }
 
-    private void renderEntities() {
-        renderService.begin(cameraService);
-
-        // Render all entities with sprites
-        for (Entity entity : entityService.getEntitiesWithComponent(PositionComponent.class)) {
-            PositionComponent pos = entity.getComponent(PositionComponent.class);
-            RenderComponent render = entity.getComponent(RenderComponent.class);
-
-            if (render != null && render.isVisible() && render.getTextureRegion() != null) {
-                // Draw the sprite
-                renderService.getBatch().draw(
-                    render.getTextureRegion(),
-                    pos.getX() + render.getOffsetX(),
-                    pos.getY() + render.getOffsetY(),
-                    pos.getWidth(),
-                    pos.getHeight()
-                );
-            } else if (render != null && render.isVisible()) {
-                // Fallback: render as colored rectangle if no sprite
-                renderService.end();
-                renderService.beginShapes(cameraService, ShapeRenderer.ShapeType.Filled);
-                if (entity == player) {
-                    renderService.getShapeRenderer().setColor(Color.GREEN);
-                } else {
-                    renderService.getShapeRenderer().setColor(Color.WHITE);
-                }
-                renderService.getShapeRenderer().rect(pos.getX(), pos.getY(), pos.getWidth(), pos.getHeight());
-                renderService.endShapes();
-                renderService.begin(cameraService);
-            }
-        }
-
-        renderService.end();
+        // Update all game systems (Movement, Collision, Combat)
+        systemManager.update(delta);
     }
 
     private void renderUI() {
         renderService.begin(cameraService);
 
-        font.draw(renderService.getBatch(), "RPG Game - World Demo", 10, 590);
+        font.draw(renderService.getBatch(), "RPG Game - System Architecture Demo", 10, 590);
         font.draw(renderService.getBatch(), "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
         font.draw(renderService.getBatch(), "Entities: " + entityService.getEntityCount(), 10, 550);
-        font.draw(renderService.getBatch(), "Use WASD to move the knight", 10, 530);
-        font.draw(renderService.getBatch(), "Press ESC for Benchmarks", 10, 510);
+        font.draw(renderService.getBatch(), "Systems: " + systemManager.getSystemCount() + " active", 10, 530);
+        font.draw(renderService.getBatch(), "Use WASD to move, Press B for Benchmarks", 10, 510);
 
         // Show world info
         World world = worldService.getCurrentWorld();
