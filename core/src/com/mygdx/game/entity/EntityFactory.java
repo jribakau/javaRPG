@@ -18,9 +18,28 @@ import com.mygdx.game.entity.components.StatsComponent;
 public record EntityFactory(AssetManager assetManager) {
 
     /**
-     * Create a player entity with a specific character type
+     * Create a player entity using the new Player class
      */
-    public Entity createPlayer(float x, float y, CharacterType characterType) {
+    public Player createPlayer(String name, float x, float y, CharacterType characterType) {
+        TextureRegion sprite = assetManager.getCharacterSprite(characterType);
+
+        return new Player.Builder(name, x, y)
+            .sprite(sprite)
+            .size(32, 32)
+            .moveSpeed(200f)
+            .health(100)
+            .mana(50)
+            .level(1)
+            .stats(10, 5, 5)
+            .gold(50)
+            .inventorySize(20)
+            .build();
+    }
+
+    /**
+     * Create a basic player entity with a specific character type (legacy support)
+     */
+    public Entity createBasicPlayer(float x, float y, CharacterType characterType) {
         Entity player = new Entity();
 
         TextureRegion sprite = assetManager.getCharacterSprite(characterType);

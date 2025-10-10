@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.assets.AssetManager;
 import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityManager;
+import com.mygdx.game.world.MapLoader;
+import com.mygdx.game.world.World;
 import lombok.Getter;
 
 /**
@@ -30,6 +32,10 @@ public class GameContext {
     private final EntityManager entityManager;
     private final AssetManager assetManager;
     private final EntityFactory entityFactory;
+    private final MapLoader mapLoader;
+
+    // World
+    private World currentWorld;
 
     public GameContext(Game game, SpriteBatch batch) {
         this.game = game;
@@ -48,6 +54,28 @@ public class GameContext {
         // Initialize game systems
         this.entityManager = new EntityManager();
         this.entityFactory = new EntityFactory(assetManager);
+        this.mapLoader = new MapLoader(assetManager);
+    }
+
+    /**
+     * Load a world from a level file
+     */
+    public void loadWorld(String levelPath) {
+        if (currentWorld != null) {
+            currentWorld.dispose();
+        }
+
+        currentWorld = new World(mapLoader.loadMap(levelPath), levelPath);
+    }
+
+    /**
+     * Set the current world
+     */
+    public void setCurrentWorld(World world) {
+        if (currentWorld != null) {
+            currentWorld.dispose();
+        }
+        currentWorld = world;
     }
 
     public void dispose() {
@@ -55,5 +83,9 @@ public class GameContext {
         // SpriteBatch is disposed by RPG class
         entityManager.clear();
         assetManager.dispose();
+
+        if (currentWorld != null) {
+            currentWorld.dispose();
+        }
     }
 }

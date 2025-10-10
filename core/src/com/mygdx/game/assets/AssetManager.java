@@ -141,6 +141,35 @@ public class AssetManager implements Disposable {
         return textures.get(name);
     }
 
+    /**
+     * Get a texture region by atlas name and region name
+     * This method looks up textures by name (e.g., "tiles" atlas with "DIRT_BRICK_FLOOR" name)
+     */
+    public TextureRegion getTextureRegion(String atlasName, String regionName) {
+        String cacheKey = atlasName + "_" + regionName;
+
+        if (cachedRegions.containsKey(cacheKey)) {
+            return cachedRegions.get(cacheKey);
+        }
+
+        // Try to find the tile type by name
+        if ("tiles".equals(atlasName)) {
+            try {
+                TileType tileType = TileType.valueOf(regionName);
+                TextureRegion region = getTileSprite(tileType);
+                if (region != null) {
+                    cachedRegions.put(cacheKey, region);
+                }
+                return region;
+            } catch (IllegalArgumentException e) {
+                Gdx.app.debug("AssetManager", "Tile type not found: " + regionName);
+            }
+        }
+
+        return null;
+    }
+
+
     @Override
     public void dispose() {
         Gdx.app.log("AssetManager", "Disposing assets...");

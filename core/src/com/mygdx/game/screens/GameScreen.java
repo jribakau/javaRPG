@@ -15,10 +15,12 @@ import com.mygdx.game.core.ServiceLocator;
 import com.mygdx.game.entity.Entity;
 import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityManager;
+import com.mygdx.game.entity.Player;
 import com.mygdx.game.entity.components.MovementComponent;
 import com.mygdx.game.entity.components.PositionComponent;
 import com.mygdx.game.entity.components.RenderComponent;
 import com.mygdx.game.entity.components.StatsComponent;
+import com.mygdx.game.world.World;
 
 /**
  * GameScreen - Main gameplay screen
@@ -32,7 +34,8 @@ public class GameScreen implements Screen {
     private final EntityFactory entityFactory;
     private final ShapeRenderer shapeRenderer;
 
-    private Entity player;
+    private Player player;
+    private World world;
 
     public GameScreen() {
         this.context = ServiceLocator.getGameContext();
@@ -42,17 +45,27 @@ public class GameScreen implements Screen {
         this.entityFactory = context.getEntityFactory();
         this.shapeRenderer = new ShapeRenderer();
 
+        // Load the world/map
+        loadWorld();
+
         // Create demo entities
         createDemoEntities();
 
-        Gdx.app.log("GameScreen", "Screen created with demo entities");
+        Gdx.app.log("GameScreen", "Screen created with world and demo entities");
+    }
+
+    private void loadWorld() {
+        // Load level1 from the assets
+        context.loadWorld("levels/level1.txt");
+        world = context.getCurrentWorld();
+        Gdx.app.log("GameScreen", "World loaded: " + world);
     }
 
     private void createDemoEntities() {
-        // Create player using EntityFactory
-        player = entityFactory.createPlayer(400, 300, CharacterType.MALE_KNIGHT);
+        // Create player using the new Player class
+        player = entityFactory.createPlayer("Hero", 400, 300, CharacterType.MALE_KNIGHT);
         entityManager.addEntity(player);
-        Gdx.app.log("GameScreen", "Player created with sprite");
+        Gdx.app.log("GameScreen", "Player created with name: " + player.getPlayerComponent().getName());
 
         // Create some monsters
         Entity goblin = entityFactory.createMonster(200, 400, MonsterType.GOBLIN, 30, 1);
@@ -100,6 +113,13 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(context.getCamera().combined);
         shapeRenderer.setProjectionMatrix(context.getCamera().combined);
 
+        // Render world (tiles)
+        if (world != null) {
+            batch.begin();
+            world.render(batch);
+            batch.end();
+        }
+
         // Render entities
         renderEntities();
 
@@ -108,32 +128,13 @@ public class GameScreen implements Screen {
     }
 
     private void update(float delta) {
-        // Update all entities
-        entityManager.update(delta);
-
-        // Handle player input
-        handleInput();
-    }
-
-    private void handleInput() {
-        if (player == null) return;
-
-        MovementComponent movement = player.getComponent(MovementComponent.class);
-        if (movement == null) return;
-
-        float dirX = 0;
-        float dirY = 0;
-
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.W)) dirY = 1;
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.S)) dirY = -1;
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.A)) dirX = -1;
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.D)) dirX = 1;
-
-        if (dirX != 0 || dirY != 0) {
-            movement.moveInDirection(dirX, dirY);
-        } else {
-            movement.stop();
+        // Update world
+        if (world != null) {
+            world.update(delta);
         }
+
+        // Update all entities (including player input via InputComponent)
+        entityManager.update(delta);
     }
 
     private void renderEntities() {
@@ -174,23 +175,31 @@ public class GameScreen implements Screen {
     private void renderUI() {
         batch.begin();
 
-        font.draw(batch, "RPG Game - Asset Management Demo", 10, 590);
+        font.draw(batch, "RPG Game - World Demo", 10, 590);
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
         font.draw(batch, "Entities: " + entityManager.getEntityCount(), 10, 550);
         font.draw(batch, "Use WASD to move the knight", 10, 530);
 
+        // Show world info
+        if (world != null) {
+            font.draw(batch, "World: " + world.getWorldName(), 10, 510);
+            font.draw(batch, "Map Size: " + world.getTileMap().getWidth() + "x" + world.getTileMap().getHeight(), 10, 490);
+        }
+
         // Show player stats
         if (player != null) {
-            StatsComponent stats = player.getComponent(StatsComponent.class);
-            PositionComponent pos = player.getComponent(PositionComponent.class);
+            StatsComponent stats = player.getStatsComponent();
+            PositionComponent pos = player.getPositionComponent();
 
             if (stats != null) {
-                font.draw(batch, "HP: " + stats.getHealth() + "/" + stats.getMaxHealth(), 10, 510);
-                font.draw(batch, "Level: " + stats.getLevel(), 10, 490);
+                font.draw(batch, "Player: " + player.getPlayerComponent().getName(), 10, 470);
+                font.draw(batch, "HP: " + stats.getHealth() + "/" + stats.getMaxHealth(), 10, 450);
+                font.draw(batch, "Level: " + stats.getLevel() + " (XP: " + stats.getExperience() + ")", 10, 430);
+                font.draw(batch, "Gold: " + player.getPlayerComponent().getGold(), 10, 410);
             }
 
             if (pos != null) {
-                font.draw(batch, "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 470);
+                font.draw(batch, "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 390);
             }
         }
 
@@ -218,6 +227,5 @@ public class GameScreen implements Screen {
     public void dispose() {
         font.dispose();
         shapeRenderer.dispose();
-        Gdx.app.log("GameScreen", "Screen disposed");
     }
 }
