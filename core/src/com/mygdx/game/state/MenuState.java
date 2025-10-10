@@ -19,7 +19,7 @@ public class MenuState extends GameState {
     private BitmapFont font;
     private BitmapFont titleFont;
     private int selectedOption;
-    private static final String[] MENU_OPTIONS = {"New Game", "Continue", "Settings", "Quit"};
+    private static final String[] MENU_OPTIONS = {"New Game (Level 1)", "Level 2 (Dungeon)", "Continue", "Settings", "Quit"};
 
     public MenuState(GameStateManager stateManager) {
         super(stateManager);
@@ -74,19 +74,23 @@ public class MenuState extends GameState {
 
     private void handleMenuSelection() {
         switch (selectedOption) {
-            case 0: // New Game
-                Gdx.app.log("MenuState", "Starting new game...");
+            case 0: // New Game (Level 1)
+                Gdx.app.log("MenuState", "Starting new game (Level 1)...");
                 stateManager.changeState(new PlayingState(stateManager));
                 break;
-            case 1: // Continue
+            case 1: // Level 2 (Dungeon)
+                Gdx.app.log("MenuState", "Starting Level 2 (Dungeon)...");
+                stateManager.changeState(new Level2State(stateManager));
+                break;
+            case 2: // Continue
                 Gdx.app.log("MenuState", "Continue not yet implemented");
                 // TODO: Implement save/load system
                 break;
-            case 2: // Settings
+            case 3: // Settings
                 Gdx.app.log("MenuState", "Settings not yet implemented");
                 // TODO: Implement settings state
                 break;
-            case 3: // Quit
+            case 4: // Quit
                 Gdx.app.log("MenuState", "Quitting game...");
                 Gdx.app.exit();
                 break;

@@ -43,6 +43,36 @@ public class MapLoader {
         // Type 5: Red brick
         tileConfigs.put(5, new TileConfig(TileType.RED_BRICK_FLOOR, true, true));
 
+        // Type 6: Skull tile floor
+        tileConfigs.put(6, new TileConfig(TileType.SKULL_TILE_FLOOR, true, true));
+
+        // Type 7: Ice stone floor
+        tileConfigs.put(7, new TileConfig(TileType.ICE_STONE_FLOOR, true, true));
+
+        // Type 8: Doorway (walkable opening)
+        tileConfigs.put(8, new TileConfig(TileType.STONE_BRICK_DOORWAY, true, true));
+
+        // Type 9: Dark cave floor
+        tileConfigs.put(9, new TileConfig(TileType.DARK_CAVE_FLOOR, true, true));
+
+        // Type 10: Purple cave floor
+        tileConfigs.put(10, new TileConfig(TileType.PURPLE_CAVE_FLOOR, true, true));
+
+        // Type 11: Maroon cave floor
+        tileConfigs.put(11, new TileConfig(TileType.MAROON_CAVE_FLOOR, true, true));
+
+        // Type 12: Grass floor
+        tileConfigs.put(12, new TileConfig(TileType.GRASS_FLOOR, true, true));
+
+        // Type 13: Stone brick wall
+        tileConfigs.put(13, new TileConfig(TileType.STONE_BRICK_WALL, false, false));
+
+        // Type 14: Red brick wall
+        tileConfigs.put(14, new TileConfig(TileType.RED_BRICK_WALL, false, false));
+
+        // Type 15: Ice stone wall
+        tileConfigs.put(15, new TileConfig(TileType.ICE_STONE_WALL, false, false));
+
         Gdx.app.log("MapLoader", "Initialized " + tileConfigs.size() + " tile configurations");
     }
 
