@@ -1,6 +1,6 @@
 package com.mygdx.game.entity;
 
-import com.mygdx.game.assets.CharacterType;
+import com.mygdx.game.assets.types.CharacterType;
 import com.mygdx.game.entity.components.*;
 import lombok.Getter;
 

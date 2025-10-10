@@ -3,8 +3,8 @@ package com.mygdx.game.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.assets.AssetManager;
-import com.mygdx.game.assets.TileType;
+import com.mygdx.game.assets.managers.AssetManager;
+import com.mygdx.game.assets.types.TileType;
 
 import java.util.HashMap;
 import java.util.Map;

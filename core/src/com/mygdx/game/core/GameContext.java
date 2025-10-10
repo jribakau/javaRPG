@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.assets.AssetManager;
+import com.mygdx.game.assets.managers.AssetManager;
 import com.mygdx.game.entity.EntityFactory;
 import com.mygdx.game.entity.EntityManager;
 import com.mygdx.game.world.MapLoader;

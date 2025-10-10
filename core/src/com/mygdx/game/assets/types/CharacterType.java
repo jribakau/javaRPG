@@ -1,4 +1,4 @@
-package com.mygdx.game.assets;
+package com.mygdx.game.assets.types;
 
 import lombok.Getter;
 

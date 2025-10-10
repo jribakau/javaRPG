@@ -1,11 +1,11 @@
 package com.mygdx.game.entity;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.assets.AnimalType;
-import com.mygdx.game.assets.AssetManager;
-import com.mygdx.game.assets.CharacterType;
-import com.mygdx.game.assets.ItemType;
-import com.mygdx.game.assets.MonsterType;
+import com.mygdx.game.assets.types.AnimalType;
+import com.mygdx.game.assets.managers.AssetManager;
+import com.mygdx.game.assets.types.CharacterType;
+import com.mygdx.game.assets.types.ItemType;
+import com.mygdx.game.assets.types.MonsterType;
 import com.mygdx.game.entity.components.MovementComponent;
 import com.mygdx.game.entity.components.PositionComponent;
 import com.mygdx.game.entity.components.RenderComponent;
