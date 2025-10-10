@@ -3,15 +3,15 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * EntityManager - Manages all entities in the game
+ * EntityService - Manages all entities in the game
  * Single source of truth for all active entities
  */
-public class EntityManager {
+public class EntityService {
     private final Array<Entity> entities;
     private final Array<Entity> entitiesToAdd;
     private final Array<Entity> entitiesToRemove;
 
-    public EntityManager() {
+    public EntityService() {
         this.entities = new Array<>();
         this.entitiesToAdd = new Array<>();
         this.entitiesToRemove = new Array<>();
@@ -101,4 +101,3 @@ public class EntityManager {
         return entities.size;
     }
 }
-
