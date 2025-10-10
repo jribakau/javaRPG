@@ -137,6 +137,13 @@ public class GameScreen implements Screen {
         InputService inputService = ServiceLocator.get(InputService.class);
         inputService.update();
 
+        // Check for benchmark screen shortcut
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.B)) {
+            ServiceLocator.get(com.mygdx.game.core.GameContext.class)
+                .setScreen(new BenchmarkScreen());
+            return;
+        }
+
         // Update world
         worldService.update(delta);
 
@@ -186,12 +193,13 @@ public class GameScreen implements Screen {
         font.draw(renderService.getBatch(), "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 570);
         font.draw(renderService.getBatch(), "Entities: " + entityService.getEntityCount(), 10, 550);
         font.draw(renderService.getBatch(), "Use WASD to move the knight", 10, 530);
+        font.draw(renderService.getBatch(), "Press ESC for Benchmarks", 10, 510);
 
         // Show world info
         World world = worldService.getCurrentWorld();
         if (world != null) {
-            font.draw(renderService.getBatch(), "World: " + world.getWorldName(), 10, 510);
-            font.draw(renderService.getBatch(), "Map Size: " + world.getTileMap().getWidth() + "x" + world.getTileMap().getHeight(), 10, 490);
+            font.draw(renderService.getBatch(), "World: " + world.getWorldName(), 10, 480);
+            font.draw(renderService.getBatch(), "Map Size: " + world.getTileMap().getWidth() + "x" + world.getTileMap().getHeight(), 10, 460);
         }
 
         // Show player stats
@@ -200,14 +208,14 @@ public class GameScreen implements Screen {
             PositionComponent pos = player.getPositionComponent();
 
             if (stats != null) {
-                font.draw(renderService.getBatch(), "Player: " + player.getPlayerComponent().getName(), 10, 470);
-                font.draw(renderService.getBatch(), "HP: " + stats.getHealth() + "/" + stats.getMaxHealth(), 10, 450);
-                font.draw(renderService.getBatch(), "Level: " + stats.getLevel() + " (XP: " + stats.getExperience() + ")", 10, 430);
-                font.draw(renderService.getBatch(), "Gold: " + player.getPlayerComponent().getGold(), 10, 410);
+                font.draw(renderService.getBatch(), "Player: " + player.getPlayerComponent().getName(), 10, 440);
+                font.draw(renderService.getBatch(), "HP: " + stats.getHealth() + "/" + stats.getMaxHealth(), 10, 420);
+                font.draw(renderService.getBatch(), "Level: " + stats.getLevel() + " (XP: " + stats.getExperience() + ")", 10, 400);
+                font.draw(renderService.getBatch(), "Gold: " + player.getPlayerComponent().getGold(), 10, 380);
             }
 
             if (pos != null) {
-                font.draw(renderService.getBatch(), "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 390);
+                font.draw(renderService.getBatch(), "Position: (" + (int)pos.getX() + ", " + (int)pos.getY() + ")", 10, 360);
             }
         }
 
