@@ -3,6 +3,7 @@ package com.mygdx.game.benchmark;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import lombok.Getter;
 
 /**
  * BenchmarkRunner - Framework for running and comparing benchmarks
@@ -13,8 +14,13 @@ import com.badlogic.gdx.utils.TimeUtils;
  *     // Code to benchmark
  * });
  */
+@Getter
 public class BenchmarkRunner {
     private static final int WARMUP_ITERATIONS = 10;
+    /**
+     * -- GETTER --
+     *  Get all benchmark results
+     */
     private final Array<BenchmarkResult> results;
 
     public BenchmarkRunner() {
@@ -161,13 +167,6 @@ public class BenchmarkRunner {
         }
         Gdx.app.log("Benchmark", "===================");
         Gdx.app.log("Benchmark", "");
-    }
-
-    /**
-     * Get all benchmark results
-     */
-    public Array<BenchmarkResult> getResults() {
-        return results;
     }
 
     /**
