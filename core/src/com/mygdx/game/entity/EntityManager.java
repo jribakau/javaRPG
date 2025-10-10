@@ -47,13 +47,6 @@ public class EntityManager {
     }
 
     /**
-     * Get all entities
-     */
-    public Array<Entity> getEntities() {
-        return entities;
-    }
-
-    /**
      * Get entities with a specific component
      */
     public <T extends Component> Array<Entity> getEntitiesWithComponent(Class<T> componentClass) {

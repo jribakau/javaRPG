@@ -141,13 +141,6 @@ public class AssetManager implements Disposable {
         return textures.get(name);
     }
 
-    /**
-     * Check if assets are loaded
-     */
-    public boolean isLoaded() {
-        return loaded;
-    }
-
     @Override
     public void dispose() {
         Gdx.app.log("AssetManager", "Disposing assets...");

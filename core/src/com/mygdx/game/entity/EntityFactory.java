@@ -15,12 +15,7 @@ import com.mygdx.game.entity.components.StatsComponent;
  * EntityFactory - Convenient factory for creating pre-configured entities
  * Makes it easy to spawn players, monsters, NPCs, items, etc. with proper sprites
  */
-public class EntityFactory {
-    private final AssetManager assetManager;
-
-    public EntityFactory(AssetManager assetManager) {
-        this.assetManager = assetManager;
-    }
+public record EntityFactory(AssetManager assetManager) {
 
     /**
      * Create a player entity with a specific character type
